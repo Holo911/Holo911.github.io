@@ -94,3 +94,27 @@ video {
     border: 1px solid #333;
     background-color: #000;
 }
+
+/* JS ANIMATION STYLES */
+
+.typewriter-cursor {
+    border-right: 3px solid var(--accent-neon);
+    padding-right: 5px;
+    animation: blink 0.75s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--accent-neon); }
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
