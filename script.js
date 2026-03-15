@@ -1,16 +1,21 @@
 const subtitle = document.querySelector('.subtitle');
-
 const textToType = subtitle.textContent;
 subtitle.textContent = '';
 
-subtitle.classList.add('typewriter-cursor');
+const textSpan = document.createElement('span');
+subtitle.appendChild(textSpan);
+
+const cursorSpan = document.createElement('span');
+cursorSpan.textContent = '|'; 
+cursorSpan.classList.add('cursor');
+subtitle.appendChild(cursorSpan);
 
 let charIndex = 0;
-const typingSpeed = 40;
+const typingSpeed = 40; 
 
 function typeText() {
     if (charIndex < textToType.length) {
-        subtitle.textContent += textToType.charAt(charIndex);
+        textSpan.textContent += textToType.charAt(charIndex);
         charIndex++;
         setTimeout(typeText, typingSpeed);
     }
