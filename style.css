@@ -89,23 +89,26 @@ header {
 
 video {
     width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 20px auto 0;
     border-radius: 6px;
-    margin-top: 20px;
     border: 1px solid #333;
     background-color: #000;
 }
 
 /* JS ANIMATION STYLES */
 
-.typewriter-cursor {
-    border-right: 3px solid var(--accent-neon);
-    padding-right: 5px;
-    animation: blink 0.75s step-end infinite;
+.cursor {
+    color: var(--accent-neon);
+    font-weight: bold;
+    margin-left: 2px;
+    animation: blink 0.8s infinite;
 }
 
 @keyframes blink {
-    from, to { border-color: transparent; }
-    50% { border-color: var(--accent-neon); }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 .hidden {
@@ -117,4 +120,20 @@ video {
 .show {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* MOBILE RESPONSIVENESS*/
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+    
+    body {
+        padding: 30px 15px;
+    }
 }
