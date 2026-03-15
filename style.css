@@ -1,0 +1,96 @@
+:root {
+    --bg-color: #050505;
+    --card-bg: #111111;
+    --text-main: #f0f0f0;
+    --text-muted: #888888;
+    --accent-neon: #ccff00;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin: 0;
+    letter-spacing: -2px;
+    transition: color 0.3s ease;
+}
+
+h1:hover {
+    color: var(--accent-neon);
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--accent-neon);
+    font-weight: 600;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    text-transform: uppercase;
+    border-left: 5px solid var(--accent-neon);
+    padding-left: 15px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    margin-top: 0;
+    color: #ffffff;
+}
+
+header {
+    margin-bottom: 50px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 30px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 25px;
+    /* Smooth transition for the hover effect */
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-neon);
+    box-shadow: 0 10px 30px rgba(204, 255, 0, 0.05);
+}
+
+.tech-stack {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+video {
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 20px;
+    border: 1px solid #333;
+    background-color: #000;
+}
