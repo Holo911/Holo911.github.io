@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holo911 | Portfolio</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 20px; max-width: 800px; margin: auto; }
-        header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .project { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
-    </style>
+    <title>Holo911 | Security & Robotics</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <h1>Hello, I'm Holo911</h1>
-        <p>A Cybersecurity student at Howest.</p>
+        <h1>HOLO911</h1>
+        <p class="subtitle">Cybersecurity Student @ Howest | Robotics Intern @ Advantech</p>
     </header>
 
     <main>
-        <section id="about">
-            <h2>About Me</h2>
-            <p>Welcome to my purely informational portfolio. This is where I showcase the projects I've built during my studies.</p>
+        <section id="about" class="card">
+            <h2>System Overview</h2>
+            <p>I specialize at the intersection of offensive security and hardware engineering. My core interests lie in pentesting and digital forensics, combined with a strong passion for integrating AI and computer vision into autonomous mobile robots (AMRs).</p>
         </section>
 
         <section id="projects">
-            <h2>My Projects</h2>
+            <h2>Featured Deployments</h2>
             
-            <div class="project">
-                <h3>Project Title 1</h3>
-                <p>Coming Soon...</p>
+            <div class="project card">
+                <h3>Autonomous AI Drone Integration</h3>
+                <p class="tech-stack"><strong>Role:</strong> R&D Intern at Advantech (Feb - May 2026)</p>
+                <p>Designed and built a custom drone capable of autonomous flight. Wrote the underlying Python scripts for flight control and integrated computer vision for real-time object recognition and autonomous navigation.</p>
+                
+                <video width="100%" controls muted style="border-radius: 8px; margin-top: 15px; border: 1px solid #333;">
+                    <source src="drone-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="project card">
+                <h3>Real-World Penetration Testing</h3>
+                <p class="tech-stack"><strong>Focus:</strong> Network Security & Forensics Analysis</p>
+                <p>Conducted comprehensive security audits and penetration tests for local infrastructure, including a high school and a pharmacy. Focused on identifying vulnerabilities, analyzing potential exploit paths, and providing actionable remediation strategies.</p>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>Contact:</p>
-    </footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
