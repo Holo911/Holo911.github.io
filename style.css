@@ -122,6 +122,23 @@ video {
     transform: translateY(0);
 }
 
+.drone-icon {
+    color: var(--accent-neon);
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-bottom: 4px;
+    display: inline-block;
+}
+
+.hovering-drone {
+    animation: hoverDrone 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes hoverDrone {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-4px); }
+}
+
 /* MOBILE RESPONSIVENESS*/
 @media (max-width: 600px) {
     h1 {
