@@ -126,7 +126,7 @@
                 <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw commands to the motors so the drone follows the object while hovering at a fixed altitude.</p>
                 <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
                 <video width="100%" controls muted>
-                    <source src="drone-video.mp4" type="video/mp4">
+                    <source src="media/drone-video.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -151,7 +151,7 @@
                     <span class="tech-badge">Linux</span>
                 </div>
                 <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
-                <img src="BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" class="project-img">
+                <img src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" class="project-img">
             </div>
 
             <!-- CATEGORY: SECURITY -->
@@ -191,8 +191,8 @@
                 </div>
                 <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
                 <div class="project-gallery">
-                    <img src="Labyrinth1.png" alt="Labyrinth game board" class="project-img">
-                    <img src="Labyrinth2.png" alt="Labyrinth lobby and menu screens" class="project-img">
+                    <img src="media/Labyrinth1.png" alt="Labyrinth game board" class="project-img">
+                    <img src="media/Labyrinth2.png" alt="Labyrinth lobby and menu screens" class="project-img">
                 </div>
             </div>
 
@@ -207,10 +207,10 @@
                 <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
                 <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
                 <div class="project-gallery">
-                    <img src="BinBots1.png" alt="BinBots user app screens" class="project-img">
-                    <img src="BinBots2.png" alt="BinBots admin panel" class="project-img">
-                    <img src="BinBots3.png" alt="BinBots wireframe overview" class="project-img">
-                    <img src="BinBots4.png" alt="BinBots detailed screens" class="project-img">
+                    <img src="media/BinBots1.png" alt="BinBots user app screens" class="project-img">
+                    <img src="media/BinBots2.png" alt="BinBots admin panel" class="project-img">
+                    <img src="media/BinBots3.png" alt="BinBots wireframe overview" class="project-img">
+                    <img src="media/BinBots4.png" alt="BinBots detailed screens" class="project-img">
                 </div>
             </div>
         </div>
@@ -222,12 +222,39 @@
             <div class="section-header reveal">
                 <div class="prompt-line"><span>$</span> cat ~/hackathons/log.json</div>
                 <h2>Hackathons</h2>
-                <p>48-hour sprints and high-pressure problem solving.</p>
+                <p>High-pressure problem solving under tight deadlines.</p>
             </div>
-            <div class="coming-soon reveal">
-                <div class="icon">🏁</div>
-                <p>Hackathon archive compiling...</p>
-                <div class="hint">// records loading</div>
+
+            <div class="hackathon-card reveal">
+                <div class="hackathon-header">
+                    <div class="hackathon-date">Apr 2025</div>
+                    <div class="hackathon-place">3rd Place 🥉</div>
+                </div>
+                <h3>HELMo Industry 5.0 Hackathon</h3>
+                <div class="hackathon-meta">Weekend hackathon // Liege, Belgium // Organized by HELMo & Technifutur</div>
+                <p>Built a web application utilizing open data from multiple Belgian databases, including regional solar panel electricity production data. Users could input their region, list their household devices, and optionally specify per-device power consumption (we had average values as fallback for most common appliances). The app calculates exactly how many solar panels they need and how many would actually be worth the investment.</p>
+                <p>The theme was Industry 5.0 - putting humans at the center of technological processes. Presented the solution to the jury and placed 3rd overall.</p>
+                <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon banner" class="project-img">
+            </div>
+
+            <div class="hackathon-card reveal">
+                <div class="hackathon-header">
+                    <div class="hackathon-date">Nov 2025</div>
+                </div>
+                <h3>Phishaton 2025</h3>
+                <div class="hackathon-meta">6-hour hackathon // Organized by Outkept, powered by Savaco</div>
+                <p>A social engineering focused hackathon where teams were tasked with crafting phishing campaigns targeting an organization and a celebrity, as well as creating a deepfake phishing video of a public figure. A hands-on exercise in understanding the offensive side of social engineering to better defend against it.</p>
+                <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="project-img hackathon-photo">
+            </div>
+
+            <div class="hackathon-card reveal">
+                <div class="hackathon-header">
+                    <div class="hackathon-date">Nov 2025</div>
+                </div>
+                <h3>Hack The Future</h3>
+                <div class="hackathon-meta">Organized by Cronos Group // Antwerp, Belgium</div>
+                <p>Participated in one of Belgium's largest tech hackathons bringing together hundreds of students to tackle industry-sponsored challenges across various domains. A solid experience in working under pressure with unfamiliar tech stacks and tight time constraints.</p>
+                <img src="media/HTF.jpeg" alt="Hack The Future event" class="project-img hackathon-photo">
             </div>
         </div>
     </div>

@@ -665,7 +665,7 @@ nav a.active::after {
 /* PROJECT IMAGES & VIDEO */
 .project-card video {
     width: 100%;
-    max-width: 350px;
+    max-width: 280px;
     display: block;
     margin: 16px auto 0;
     border-radius: 6px;
@@ -700,6 +700,79 @@ nav a.active::after {
 
 .project-card p + p {
     margin-top: 10px;
+}
+
+/* HACKATHON CARDS */
+.hackathon-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.hackathon-card:hover {
+    border-color: var(--border-hover);
+}
+
+.hackathon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.hackathon-date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.hackathon-place {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    background: var(--accent-dim);
+    border: 1px solid rgba(204, 255, 0, 0.15);
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+.hackathon-card h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.hackathon-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.hackathon-card p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.hackathon-card p + p {
+    margin-top: 10px;
+}
+
+.hackathon-photo {
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ============================================
