@@ -3,46 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holo911 | Security & Robotics</title>
+    <title>HOLO911 | Cybersecurity & Robotics</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <h1>HOLO911</h1>
-        <p class="subtitle" id="line1">Cybersecurity Student @ Howest</p>
-        <p class="subtitle" id="line2">Robotics Intern @ Advantech</p>
-    </header>
+<!-- ======== BOOT SEQUENCE ======== -->
+<div id="boot-screen">
+    <div class="boot-container">
+        <div class="boot-line boot-header">HOLO911 SYSTEM v3.0.26</div>
+        <div class="boot-line"><span class="path">[kernel]</span> loading core modules.............. <span class="ok">OK</span></div>
+        <div class="boot-line"><span class="path">[auth]</span> verifying operator identity....... <span class="ok">AUTHENTICATED</span></div>
+        <div class="boot-line"><span class="path">[crypto]</span> initializing encryption layer.... <span class="ok">AES-256 ACTIVE</span></div>
+        <div class="boot-line"><span class="path">[net]</span> establishing secure tunnel......... <span class="ok">TLS 1.3 OK</span></div>
+        <div class="boot-line"><span class="path">[fw]</span> loading firewall rules.............. <span class="ok">1,247 RULES LOADED</span></div>
+        <div class="boot-line"><span class="path">[sec]</span> cybersecurity toolkit.............. <span class="ok">ARMED</span></div>
+        <div class="boot-line"><span class="path">[hw]</span> robotics interface................. <span class="ok">LINKED</span></div>
+        <div class="boot-line"><span class="path">[ai]</span> computer vision models............. <span class="ok">YOLO v8 LOADED</span></div>
+        <div class="boot-line"><span class="path">[gps]</span> acquiring position................</div>
+        <div class="boot-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; coordinates: <span class="info">35.6762°N, 139.6503°E</span></div>
+        <div class="boot-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolved: <span class="info">Tokyo, Japan</span> <span class="ok">- LOCKED</span></div>
+        <div class="boot-line"><span class="path">[role]</span> intern @ <span class="info">Advantech</span> - <span class="ok">ACTIVE</span></div>
+        <div class="boot-line"><span class="path">[edu]</span> Howest - Cybersecurity <span class="ok">■■■■■■■■■░</span> 92%</div>
+        <div class="boot-line"><span class="path">[init]</span> deploying portfolio............... <span class="ok">DONE</span></div>
+        <div class="boot-line boot-welcome">
+            <span class="ok">→ Welcome back, operator.</span><span class="boot-cursor"></span>
+        </div>
+    </div>
+</div>
 
-    <main>
-        <section id="about" class="card">
-            <h2>System Overview</h2>
-            <p>I specialize at the intersection of offensive security and hardware engineering. My core interests lie in pentesting and digital forensics, combined with a strong passion for integrating AI and computer vision into autonomous mobile robots (AMRs).</p>
-        </section>
+<!-- ======== MAIN SITE ======== -->
+<div id="main-site">
 
-        <section id="projects">
-            <h2>Featured Deployments</h2>
-            
-            <div class="project card">
-                <h3>Autonomous AI Drone Integration</h3>
-                <p class="tech-stack"><strong>Role:</strong> R&D Intern at Advantech (Feb - May 2026)</p>
-                <p>Designed and built a custom drone capable of autonomous flight. Wrote the underlying Python scripts for flight control and integrated computer vision for real-time object recognition and autonomous navigation.</p>
-                
-                <video width="100%" controls muted style="border-radius: 8px; margin-top: 15px; border: 1px solid #333;">
-                    <source src="drone-video.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <div class="window-controls">
+                <div class="window-dot red"></div>
+                <div class="window-dot yellow"></div>
+                <div class="window-dot green"></div>
+            </div>
+            <div class="top-bar-title"><span>holo911</span>@tokyo ~</div>
+            <nav>
+                <a href="#" data-page="home" class="active">home</a>
+                <a href="#" data-page="projects">projects</a>
+                <a href="#" data-page="hackathons">hackathons</a>
+                <a href="#" data-page="about">about</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ======== HOME PAGE ======== -->
+    <div class="page active" id="page-home">
+        <div class="shell-wrapper">
+            <div class="hero">
+                <div class="hero-prompt">
+                    <span class="prompt-symbol">$</span> cat /home/holo911/README.md
+                </div>
+
+                <h1 class="hero-name reveal">HOLO911<span class="accent-dot">.</span></h1>
+
+                <!-- TYPEWRITER LINES (text typed out by JS) -->
+                <div class="typewriter-block reveal">
+                    <p class="typewriter-line" id="line1">Cybersecurity Student @ Howest</p>
+                    <p class="typewriter-line" id="line2">AI & Robotics Intern @ Advantech</p>
+                </div>
+
+                <p class="hero-tagline reveal">
+                    Building at the intersection of <strong>offensive security</strong>,
+                    <strong>AI</strong>, and <strong>autonomous systems</strong> - currently
+                    based in Tokyo.
+                </p>
+
+                <div class="hero-stats reveal">
+                    <div class="stat-block">
+                        <div class="stat-label">Current Role</div>
+                        <div class="stat-value">Intern <span class="highlight">@ Advantech</span></div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-label">Degree</div>
+                        <div class="stat-value"><span class="highlight">Cybersecurity</span> BSc '26</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-label">Next</div>
+                        <div class="stat-value">MSc <span class="highlight">St. Pölten</span></div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-label">Based in</div>
+                        <div class="stat-value"><span class="highlight">Tokyo</span>, Japan</div>
+                    </div>
+                </div>
+
+                <div class="status-line reveal">
+                    <div class="status-item">
+                        <div class="status-dot"></div>
+                        <span>Available for opportunities - Jul 2026</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-dot blue"></div>
+                        <span>Graduating Jun 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== PROJECTS PAGE ======== -->
+    <div class="page" id="page-projects">
+        <div class="shell-wrapper">
+            <div class="section-header reveal">
+                <div class="prompt-line"><span>$</span> ls ~/projects --detailed</div>
+                <h2>Projects</h2>
+                <p>Security research, robotics, and everything in between.</p>
+            </div>
+            <div class="coming-soon reveal">
+                <div class="icon">⚡</div>
+                <p>Projects loading... content deploying soon.</p>
+                <div class="hint">// data incoming</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== HACKATHONS PAGE ======== -->
+    <div class="page" id="page-hackathons">
+        <div class="shell-wrapper">
+            <div class="section-header reveal">
+                <div class="prompt-line"><span>$</span> cat ~/hackathons/log.json</div>
+                <h2>Hackathons</h2>
+                <p>48-hour sprints and high-pressure problem solving.</p>
+            </div>
+            <div class="coming-soon reveal">
+                <div class="icon">🏁</div>
+                <p>Hackathon archive compiling...</p>
+                <div class="hint">// records loading</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== ABOUT PAGE ======== -->
+    <div class="page" id="page-about">
+        <div class="shell-wrapper">
+            <div class="section-header reveal">
+                <div class="prompt-line"><span>$</span> whoami --verbose</div>
+                <h2>About</h2>
             </div>
 
-            <div class="project card">
-                <h3>Real-World Penetration Testing</h3>
-                <p class="tech-stack"><strong>Focus:</strong> Network Security & Forensics Analysis</p>
-                <p>Conducted comprehensive security audits and penetration tests for local infrastructure, including a high school and a pharmacy. Focused on identifying vulnerabilities, analyzing potential exploit paths, and providing actionable remediation strategies.</p>
-            </div>
-        </section>
-    </main>
+            <div class="about-grid">
+                <div class="about-block reveal">
+                    <div class="about-block-header">▸ Origin Story</div>
+                    <p>Born and raised in Poland. Spent six years in music school alongside regular education - studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
+                    <p>At 18 I moved to Belgium alone to study cybersecurity at Howest - drawn by the program's reputation and the challenge of building an independent life in a new country. Now at 20, I'm interning at Advantech in Tokyo, building autonomous drones with AI-powered navigation.</p>
+                </div>
 
-    <script src="script.js"></script>
+                <div class="about-block reveal">
+                    <div class="about-block-header">▸ Journey</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">Sep 2026</div>
+                            <div class="timeline-title">MSc Cybersecurity & Resilience</div>
+                            <div class="timeline-desc">St. Pölten University of Applied Sciences, Austria</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">Feb - May 2026</div>
+                            <div class="timeline-title">AI & Robotics Intern @ Advantech</div>
+                            <div class="timeline-desc">Tokyo, Japan - Autonomous drones, computer vision, flight control</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2023 - 2026</div>
+                            <div class="timeline-title">BSc Applied Computer Science - Cybersecurity</div>
+                            <div class="timeline-desc">Howest University of Applied Sciences, Belgium</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2019 - 2023</div>
+                            <div class="timeline-title">High School</div>
+                            <div class="timeline-desc">Poland</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2012 - 2017</div>
+                            <div class="timeline-title">Music School</div>
+                            <div class="timeline-desc">Piano performance, music theory & history - Poland</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block reveal">
+                    <div class="about-block-header">▸ Skills & Tools</div>
+                    <div class="skills-grid">
+                        <div class="skill-tag">Pentesting</div>
+                        <div class="skill-tag">Digital Forensics</div>
+                        <div class="skill-tag">Network Security</div>
+                        <div class="skill-tag">Python</div>
+                        <div class="skill-tag">Linux</div>
+                        <div class="skill-tag">Computer Vision</div>
+                        <div class="skill-tag">Drone Systems</div>
+                        <div class="skill-tag">AI / ML</div>
+                        <div class="skill-tag">Wireshark</div>
+                        <div class="skill-tag">Burp Suite</div>
+                        <div class="skill-tag">Nmap</div>
+                        <div class="skill-tag">Git</div>
+                    </div>
+                </div>
+
+                <div class="about-block reveal">
+                    <div class="about-block-header">▸ Current Focus</div>
+                    <p>Designing and building autonomous drones with AI-powered navigation at Advantech Tokyo. Integrating computer vision for real-time object recognition and autonomous flight control. Preparing for my next chapter - a Master's in Cybersecurity & Resilience in Austria.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="shell-wrapper">
+            <span>holo911</span> // deployed 2026
+        </div>
+    </footer>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
