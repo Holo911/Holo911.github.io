@@ -644,6 +644,64 @@ nav a.active::after {
     line-height: 1.7;
 }
 
+/* CATEGORY LABELS */
+.category-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: lowercase;
+    letter-spacing: 1px;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+}
+
+.category-label:first-of-type {
+    margin-top: 0;
+}
+
+/* PROJECT IMAGES & VIDEO */
+.project-card video {
+    width: 100%;
+    max-width: 350px;
+    display: block;
+    margin: 16px auto 0;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #000;
+}
+
+.project-img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-top: 12px;
+    display: block;
+}
+
+.project-gallery {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.project-gallery .project-img {
+    margin-top: 0;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.project-gallery .project-img:hover {
+    border-color: var(--accent);
+}
+
+.project-card p + p {
+    margin-top: 10px;
+}
+
 /* ============================================
    SCROLL REVEAL
    ============================================ */

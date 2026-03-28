@@ -13,20 +13,13 @@
 <div id="boot-screen">
     <div class="boot-container">
         <div class="boot-line boot-header">HOLO911 SYSTEM v3.0.26</div>
-        <div class="boot-line"><span class="path">[kernel]</span> loading core modules.............. <span class="ok">OK</span></div>
-        <div class="boot-line"><span class="path">[auth]</span> verifying operator identity....... <span class="ok">AUTHENTICATED</span></div>
-        <div class="boot-line"><span class="path">[crypto]</span> initializing encryption layer.... <span class="ok">AES-256 ACTIVE</span></div>
-        <div class="boot-line"><span class="path">[net]</span> establishing secure tunnel......... <span class="ok">TLS 1.3 OK</span></div>
-        <div class="boot-line"><span class="path">[fw]</span> loading firewall rules.............. <span class="ok">1,247 RULES LOADED</span></div>
-        <div class="boot-line"><span class="path">[sec]</span> cybersecurity toolkit.............. <span class="ok">ARMED</span></div>
-        <div class="boot-line"><span class="path">[hw]</span> robotics interface................. <span class="ok">LINKED</span></div>
-        <div class="boot-line"><span class="path">[ai]</span> computer vision models............. <span class="ok">YOLO v8 LOADED</span></div>
-        <div class="boot-line"><span class="path">[gps]</span> acquiring position................</div>
-        <div class="boot-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; coordinates: <span class="info">35.6762°N, 139.6503°E</span></div>
-        <div class="boot-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolved: <span class="info">Tokyo, Japan</span> <span class="ok">- LOCKED</span></div>
-        <div class="boot-line"><span class="path">[role]</span> intern @ <span class="info">Advantech</span> - <span class="ok">ACTIVE</span></div>
-        <div class="boot-line"><span class="path">[edu]</span> Howest - Cybersecurity <span class="ok">■■■■■■■■■░</span> 92%</div>
-        <div class="boot-line"><span class="path">[init]</span> deploying portfolio............... <span class="ok">DONE</span></div>
+        <div class="boot-line"><span class="path">[auth]</span> verifying identity...... <span class="ok">AUTHENTICATED</span></div>
+        <div class="boot-line"><span class="path">[net]</span> secure tunnel........... <span class="ok">TLS 1.3 OK</span></div>
+        <div class="boot-line"><span class="path">[sec]</span> security toolkit........ <span class="ok">ARMED</span></div>
+        <div class="boot-line"><span class="path">[hw]</span> robotics interface...... <span class="ok">LINKED</span></div>
+        <div class="boot-line"><span class="path">[gps]</span> location: <span class="info">Tokyo, Japan</span> <span class="ok">LOCKED</span></div>
+        <div class="boot-line"><span class="path">[edu]</span> Howest Cybersecurity <span class="ok">■■■■■■■■■░</span> 92%</div>
+        <div class="boot-line"><span class="path">[init]</span> deploying portfolio.... <span class="ok">DONE</span></div>
         <div class="boot-line boot-welcome">
             <span class="ok">→ Welcome back, operator.</span><span class="boot-cursor"></span>
         </div>
@@ -117,10 +110,108 @@
                 <h2>Projects</h2>
                 <p>Security research, robotics, and everything in between.</p>
             </div>
-            <div class="coming-soon reveal">
-                <div class="icon">⚡</div>
-                <p>Projects loading... content deploying soon.</p>
-                <div class="hint">// data incoming</div>
+
+            <!-- CATEGORY: ROBOTICS & AI -->
+            <div class="category-label reveal">// robotics & ai</div>
+
+            <div class="project-card reveal">
+                <h3>Autonomous Drone - Object Tracking via YOLO</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">QUALCOMM RB5</span>
+                    <span class="tech-badge">YOLOv8</span>
+                    <span class="tech-badge">ROS2</span>
+                    <span class="tech-badge">MAVLink</span>
+                </div>
+                <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw commands to the motors so the drone follows the object while hovering at a fixed altitude.</p>
+                <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
+                <video width="100%" controls muted>
+                    <source src="drone-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="project-card reveal">
+                <h3>Autonomous Navigation Behavior Tree</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">ROS2</span>
+                    <span class="tech-badge">C++</span>
+                    <span class="tech-badge">Behavior Trees</span>
+                    <span class="tech-badge">Nav2</span>
+                </div>
+                <p>Engineered a custom ROS 2 Behavior Tree for the ROSMASTER X3 to handle autonomous navigation in tight, dynamic environments. Default navigation stacks try to aggressively replan around obstacles, which creates collision risks in spaces like warehouse aisles or restaurant dining areas.</p>
+                <p>Designed a "stop-and-wait" pipeline instead: when the robot detects a dynamic obstacle (like a person), it halts along its trajectory, waits for the path to clear, then resumes its original route. This guarantees predictable, collision-free operation and prevents the robot from dangerously swerving into walls or furniture.</p>
+            </div>
+
+            <div class="project-card reveal">
+                <h3>BIOS Flash Utility</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">C</span>
+                    <span class="tech-badge">POSIX</span>
+                    <span class="tech-badge">Linux</span>
+                </div>
+                <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
+                <img src="BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" class="project-img">
+            </div>
+
+            <!-- CATEGORY: SECURITY -->
+            <div class="category-label reveal">// security</div>
+
+            <div class="project-card reveal">
+                <h3>Real-World Penetration Testing</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">Nmap</span>
+                    <span class="tech-badge">Wireshark</span>
+                    <span class="tech-badge">Burp Suite</span>
+                    <span class="tech-badge">Reporting</span>
+                </div>
+                <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. Documented all findings, created a prioritized list of vulnerabilities with concrete mitigations, and presented the reports to both IT departments. Also wrote management summaries so leadership could quickly understand the risks without reading the full technical documents. Both clients were highly satisfied with the results.</p>
+            </div>
+
+            <div class="project-card reveal">
+                <h3>Honeypot & CTF Platform</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">Docker</span>
+                    <span class="tech-badge">Grafana</span>
+                    <span class="tech-badge">Linux</span>
+                    <span class="tech-badge">CTF</span>
+                </div>
+                <p>Built a website with an admin panel and integrated honeypot, monitored using the Grafana stack with custom dashboards. Created 3 CTF challenges for fellow students. In the second phase, the site was intentionally exposed for classmates to attack. No successful breach occurred: neither data nor the admin panel was compromised, and most attack attempts were logged and visualized on the dashboards.</p>
+            </div>
+
+            <!-- CATEGORY: SOFTWARE DEVELOPMENT -->
+            <div class="category-label reveal">// software development</div>
+
+            <div class="project-card reveal">
+                <h3>Labyrinth - Browser Board Game</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">HTML</span>
+                    <span class="tech-badge">CSS</span>
+                    <span class="tech-badge">JavaScript</span>
+                </div>
+                <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
+                <div class="project-gallery">
+                    <img src="Labyrinth1.png" alt="Labyrinth game board" class="project-img">
+                    <img src="Labyrinth2.png" alt="Labyrinth lobby and menu screens" class="project-img">
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <h3>BinBots - Drone Fleet Waste Management (2079)</h3>
+                <div class="tech-badges">
+                    <span class="tech-badge">Figma</span>
+                    <span class="tech-badge">UI/UX</span>
+                    <span class="tech-badge">HTML/CSS/JS</span>
+                    <span class="tech-badge">Concept</span>
+                </div>
+                <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
+                <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
+                <div class="project-gallery">
+                    <img src="BinBots1.png" alt="BinBots user app screens" class="project-img">
+                    <img src="BinBots2.png" alt="BinBots admin panel" class="project-img">
+                    <img src="BinBots3.png" alt="BinBots wireframe overview" class="project-img">
+                    <img src="BinBots4.png" alt="BinBots detailed screens" class="project-img">
+                </div>
             </div>
         </div>
     </div>

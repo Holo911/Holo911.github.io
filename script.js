@@ -9,14 +9,14 @@ let bootDelay = 300;
 
 bootLines.forEach((line, i) => {
     /* Stagger each line with slight randomness for realism */
-    const delay = bootDelay + i * 200 + Math.random() * 100;
+    const delay = bootDelay + i * 250 + Math.random() * 80;
     setTimeout(() => {
         line.classList.add('visible');
     }, delay);
 });
 
 /* After all lines have appeared, fade out boot & show site */
-const totalBootTime = bootDelay + bootLines.length * 250 + 1200;
+const totalBootTime = bootDelay + bootLines.length * 300 + 800;
 
 setTimeout(() => {
     bootScreen.classList.add('done');
