@@ -46,24 +46,6 @@ body {
 }
 
 /* ============================================
-   SCANLINE OVERLAY (subtle CRT feel)
-   ============================================ */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
-}
-
-/* ============================================
    BOOT SEQUENCE SCREEN
    ============================================ */
 #boot-screen {
@@ -448,22 +430,40 @@ nav a.active::after {
 
 .status-dot.blue { background: var(--blue); }
 
-/* Social links in status line */
-.social-link {
+/* LinkedIn button */
+.hero-linkedin {
     display: inline-flex;
     align-items: center;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.25s ease;
-}
-
-.social-link:hover {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(204, 255, 0, 0.15);
+    border-radius: 6px;
     color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.25s ease;
 }
 
-.social-link svg {
+.hero-linkedin:hover {
+    background: rgba(204, 255, 0, 0.12);
+    border-color: rgba(204, 255, 0, 0.35);
+    transform: translateY(-1px);
+}
+
+.hero-linkedin svg {
     flex-shrink: 0;
-    margin-right: 6px;
+    margin-right: 10px;
+}
+
+.hero-linkedin .arrow {
+    margin-left: 10px;
+    transition: transform 0.25s ease;
+}
+
+.hero-linkedin:hover .arrow {
+    transform: translateX(3px);
 }
 
 @keyframes pulse {
