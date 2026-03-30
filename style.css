@@ -388,6 +388,30 @@ nav a.active::after {
 .stat-value .highlight { color: var(--accent); }
 
 /* STATUS LINE */
+.current-focus {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+
+.focus-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: lowercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.current-focus p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
 .status-line {
     display: flex;
     flex-wrap: wrap;
@@ -414,6 +438,24 @@ nav a.active::after {
 }
 
 .status-dot.blue { background: var(--blue); }
+
+/* Social links in status line */
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+.social-link:hover {
+    color: var(--accent);
+}
+
+.social-link svg {
+    flex-shrink: 0;
+}
 
 @keyframes pulse {
     0%, 100% { opacity: 1; }
@@ -537,6 +579,64 @@ nav a.active::after {
     border-color: rgba(204, 255, 0, 0.3);
     color: var(--accent);
     background: rgba(204, 255, 0, 0.06);
+}
+
+/* LANGUAGES */
+.languages-list {
+    display: grid;
+    gap: 10px;
+}
+
+.language-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+.language-name {
+    font-size: 13px;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.language-level {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* CONTACT */
+.contact-links {
+    display: grid;
+    gap: 10px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.25s ease;
+}
+
+.contact-item:hover {
+    color: var(--accent);
+    border-color: var(--border-hover);
+}
+
+.contact-item svg {
+    flex-shrink: 0;
 }
 
 /* ============================================

@@ -59,8 +59,8 @@
 
                 <!-- TYPEWRITER LINES (text typed out by JS) -->
                 <div class="typewriter-block reveal">
-                    <p class="typewriter-line" id="line1">Cybersecurity Student @ Howest</p>
-                    <p class="typewriter-line" id="line2">AI & Robotics Intern @ Advantech</p>
+                    <p class="typewriter-line" id="line1">Cybersecurity Student @ Howest, Belgium</p>
+                    <p class="typewriter-line" id="line2">AI & Robotics Intern @ Advantech, Tokyo</p>
                 </div>
 
                 <p class="hero-tagline reveal">
@@ -71,21 +71,26 @@
 
                 <div class="hero-stats reveal">
                     <div class="stat-block">
-                        <div class="stat-label">Current Role</div>
-                        <div class="stat-value">Intern <span class="highlight">@ Advantech</span></div>
-                    </div>
-                    <div class="stat-block">
                         <div class="stat-label">Degree</div>
                         <div class="stat-value"><span class="highlight">Cybersecurity</span> BSc '26</div>
                     </div>
                     <div class="stat-block">
-                        <div class="stat-label">Next</div>
-                        <div class="stat-value">MSc <span class="highlight">St. Pölten</span></div>
+                        <div class="stat-label">Current Role</div>
+                        <div class="stat-value">Intern <span class="highlight">@ Advantech</span></div>
                     </div>
                     <div class="stat-block">
                         <div class="stat-label">Based in</div>
                         <div class="stat-value"><span class="highlight">Tokyo</span>, Japan</div>
                     </div>
+                    <div class="stat-block">
+                        <div class="stat-label">Next</div>
+                        <div class="stat-value">MSc <span class="highlight">St. Pölten</span>, AT</div>
+                    </div>
+                </div>
+
+                <div class="current-focus reveal">
+                    <div class="focus-label">// current focus</div>
+                    <p>Building autonomous drones with AI-powered navigation at Advantech Tokyo. Integrating computer vision for real-time object detection and autonomous flight control. Graduating in June, then starting a Master's in Cybersecurity & Resilience in Austria.</p>
                 </div>
 
                 <div class="status-line reveal">
@@ -96,6 +101,12 @@
                     <div class="status-item">
                         <div class="status-dot blue"></div>
                         <span>Graduating Jun 2026</span>
+                    </div>
+                    <div class="status-item">
+                        <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="social-link">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            <span>szymon-dudek</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -123,7 +134,7 @@
                     <span class="tech-badge">ROS2</span>
                     <span class="tech-badge">MAVLink</span>
                 </div>
-                <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw commands to the motors so the drone follows the object while hovering at a fixed altitude.</p>
+                <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw (horizontal rotation) commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
                 <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
                 <video width="100%" controls muted>
                     <source src="media/drone-video.mp4" type="video/mp4">
@@ -163,9 +174,10 @@
                     <span class="tech-badge">Nmap</span>
                     <span class="tech-badge">Wireshark</span>
                     <span class="tech-badge">Burp Suite</span>
+                    <span class="tech-badge">CVSS</span>
                     <span class="tech-badge">Reporting</span>
                 </div>
-                <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. Documented all findings, created a prioritized list of vulnerabilities with concrete mitigations, and presented the reports to both IT departments. Also wrote management summaries so leadership could quickly understand the risks without reading the full technical documents. Both clients were highly satisfied with the results.</p>
+                <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. All vulnerabilities were scored using the CVSS (Common Vulnerability Scoring System) framework to prioritize findings by severity. Documented everything with concrete mitigations, presented the reports to both IT departments, and wrote management summaries so leadership could quickly understand the risks. Both clients were highly satisfied with the results.</p>
             </div>
 
             <div class="project-card reveal">
@@ -191,8 +203,9 @@
                 </div>
                 <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
                 <div class="project-gallery">
-                    <img src="media/Labyrinth1.png" alt="Labyrinth game board" class="project-img">
-                    <img src="media/Labyrinth2.png" alt="Labyrinth lobby and menu screens" class="project-img">
+                    <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens" class="project-img">
+                    <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules" class="project-img">
+                    <img src="media/Labyrinth2.png" alt="Labyrinth game board in action" class="project-img">
                 </div>
             </div>
 
@@ -271,7 +284,7 @@
                 <div class="about-block reveal">
                     <div class="about-block-header">▸ Origin Story</div>
                     <p>Born and raised in Poland. Spent six years in music school alongside regular education - studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
-                    <p>At 18 I moved to Belgium alone to study cybersecurity at Howest - drawn by the program's reputation and the challenge of building an independent life in a new country. Now at 20, I'm interning at Advantech in Tokyo, building autonomous drones with AI-powered navigation.</p>
+                    <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge - drawn by the program's reputation and the challenge of building an independent life in a new country. Now at 20, I'm interning at Advantech in Tokyo, building autonomous drones with AI-powered navigation.</p>
                 </div>
 
                 <div class="about-block reveal">
@@ -290,7 +303,7 @@
                         <div class="timeline-item">
                             <div class="timeline-year">2023 - 2026</div>
                             <div class="timeline-title">BSc Applied Computer Science - Cybersecurity</div>
-                            <div class="timeline-desc">Howest University of Applied Sciences, Belgium</div>
+                            <div class="timeline-desc">Howest University of Applied Sciences, Brugge, Belgium</div>
                         </div>
                         <div class="timeline-item">
                             <div class="timeline-year">2019 - 2023</div>
@@ -324,8 +337,39 @@
                 </div>
 
                 <div class="about-block reveal">
-                    <div class="about-block-header">▸ Current Focus</div>
-                    <p>Designing and building autonomous drones with AI-powered navigation at Advantech Tokyo. Integrating computer vision for real-time object recognition and autonomous flight control. Preparing for my next chapter - a Master's in Cybersecurity & Resilience in Austria.</p>
+                    <div class="about-block-header">▸ Languages</div>
+                    <div class="languages-list">
+                        <div class="language-item">
+                            <span class="language-name">Polish</span>
+                            <span class="language-level">Native</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">English</span>
+                            <span class="language-level">C1 - CAE Certificate</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">German</span>
+                            <span class="language-level">Basic</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">Japanese</span>
+                            <span class="language-level">Beginner</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block reveal">
+                    <div class="about-block-header">▸ Contact</div>
+                    <div class="contact-links">
+                        <a href="mailto:szymond200555@gmail.com" class="contact-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                            <span>szymond200555@gmail.com</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="contact-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            <span>szymon-dudek</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
