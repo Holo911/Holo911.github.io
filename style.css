@@ -174,13 +174,16 @@ body::before {
     display: flex;
     align-items: center;
     height: 48px;
-    gap: 20px;
 }
 
 .window-controls {
     display: flex;
-    gap: 7px;
     flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.window-dot + .window-dot {
+    margin-left: 7px;
 }
 
 .window-dot {
@@ -208,7 +211,6 @@ body::before {
    ============================================ */
 nav {
     display: flex;
-    gap: 2px;
     margin-left: auto;
 }
 
@@ -271,7 +273,10 @@ nav a.active::after {
     margin-bottom: 28px;
     display: flex;
     align-items: center;
-    gap: 8px;
+}
+
+.hero-prompt .prompt-symbol {
+    margin-right: 8px;
 }
 
 .hero-prompt .prompt-symbol { color: var(--accent); }
@@ -415,7 +420,6 @@ nav a.active::after {
 .status-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
     font-size: 12px;
     color: var(--text-muted);
     padding-top: 24px;
@@ -425,7 +429,12 @@ nav a.active::after {
 .status-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    margin-right: 20px;
+    margin-bottom: 8px;
+}
+
+.status-item .status-dot {
+    margin-right: 6px;
 }
 
 .status-dot {
@@ -441,9 +450,8 @@ nav a.active::after {
 
 /* Social links in status line */
 .social-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
     color: var(--text-muted);
     text-decoration: none;
     transition: color 0.25s ease;
@@ -455,6 +463,7 @@ nav a.active::after {
 
 .social-link svg {
     flex-shrink: 0;
+    margin-right: 6px;
 }
 
 @keyframes pulse {
@@ -483,7 +492,6 @@ nav a.active::after {
 .about-block-header {
     display: flex;
     align-items: center;
-    gap: 10px;
     margin-bottom: 16px;
     font-size: 12px;
     text-transform: uppercase;
@@ -619,7 +627,6 @@ nav a.active::after {
 .contact-item {
     display: flex;
     align-items: center;
-    gap: 10px;
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 13px;
@@ -637,6 +644,7 @@ nav a.active::after {
 
 .contact-item svg {
     flex-shrink: 0;
+    margin-right: 10px;
 }
 
 /* ============================================
@@ -724,7 +732,6 @@ nav a.active::after {
 .project-card .tech-badges {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
     margin-bottom: 12px;
 }
 
@@ -736,6 +743,8 @@ nav a.active::after {
     color: var(--accent);
     border: 1px solid rgba(204, 255, 0, 0.1);
     letter-spacing: 0.5px;
+    margin-right: 6px;
+    margin-bottom: 6px;
 }
 
 .project-card p {
@@ -913,7 +922,10 @@ footer span { color: var(--accent); }
         flex-wrap: wrap;
         height: auto;
         padding: 10px 16px;
-        gap: 8px;
+    }
+
+    .window-controls {
+        margin-right: 0;
     }
 
     .top-bar-title { display: none; }
@@ -922,7 +934,6 @@ footer span { color: var(--accent); }
         margin-left: 0;
         width: 100%;
         order: 3;
-        gap: 0;
     }
 
     nav a {
@@ -945,8 +956,11 @@ footer span { color: var(--accent); }
     }
 
     .status-line {
-        gap: 12px;
         flex-direction: column;
+    }
+
+    .status-item {
+        margin-right: 0;
     }
 
     .skills-grid {
