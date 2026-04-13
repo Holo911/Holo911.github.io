@@ -12,7 +12,15 @@
 <!-- ======== BOOT SEQUENCE ======== -->
 <div id="boot-screen">
     <div class="boot-container">
-        <div class="boot-line boot-header">HOLO911 SYSTEM v3.0.26</div>
+        <pre class="boot-line boot-ascii">
+ ██╗  ██╗ ██████╗ ██╗      ██████╗  █████╗  ██╗ ██╗
+ ██║  ██║██╔═══██╗██║     ██╔═══██╗██╔══██╗███║███║
+ ███████║██║   ██║██║     ██║   ██║╚██████║╚██║╚██║
+ ██╔══██║██║   ██║██║     ██║   ██║ ╚═══██║ ██║ ██║
+ ██║  ██║╚██████╔╝███████╗╚██████╔╝ █████╔╝ ██║ ██║
+ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝  ╚════╝  ╚═╝ ╚═╝</pre>
+        <div class="boot-line boot-header">SYSTEM v3.0.26</div>
+        <div class="boot-spacer"></div>
         <div class="boot-line"><span class="path">[auth]</span> verifying identity...... <span class="ok">AUTHENTICATED</span></div>
         <div class="boot-line"><span class="path">[net]</span> secure tunnel........... <span class="ok">TLS 1.3 OK</span></div>
         <div class="boot-line"><span class="path">[sec]</span> security toolkit........ <span class="ok">ARMED</span></div>
@@ -32,12 +40,7 @@
     <!-- TOP BAR -->
     <div class="top-bar">
         <div class="top-bar-inner">
-            <div class="window-controls">
-                <div class="window-dot red"></div>
-                <div class="window-dot yellow"></div>
-                <div class="window-dot green"></div>
-            </div>
-            <div class="top-bar-title"><span>holo911</span>@tokyo ~</div>
+            <div class="top-bar-title"><span class="host">holo911</span><span class="at">@</span>tokyo<span class="bar-cursor">_</span></div>
             <nav>
                 <a href="#" data-page="home" class="active">home</a>
                 <a href="#" data-page="projects">projects</a>
@@ -57,7 +60,6 @@
 
                 <h1 class="hero-name reveal">HOLO911<span class="accent-dot">.</span></h1>
 
-                <!-- TYPEWRITER LINES (text typed out by JS) -->
                 <div class="typewriter-block reveal">
                     <p class="typewriter-line" id="line1">Cybersecurity Student @ Howest, Belgium</p>
                     <p class="typewriter-line" id="line2">AI & Robotics Intern @ Advantech, Tokyo</p>
@@ -121,109 +123,131 @@
                 <h2>Projects</h2>
                 <p>Security research, robotics, and everything in between.</p>
             </div>
+        </div>
 
-            <!-- CATEGORY: ROBOTICS & AI -->
-            <div class="category-label reveal">// robotics & ai</div>
-
-            <div class="project-card reveal">
-                <h3>Autonomous Drone - Object Tracking via YOLO</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">QUALCOMM RB5</span>
-                    <span class="tech-badge">YOLOv8</span>
-                    <span class="tech-badge">ROS2</span>
-                    <span class="tech-badge">MAVLink</span>
+        <div class="carousel-section reveal">
+            <div class="shell-wrapper"><div class="category-label">// robotics & ai</div></div>
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-card">
+                        <h3>Autonomous Drone - Object Tracking via YOLO</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">QUALCOMM RB5</span>
+                            <span class="tech-badge">YOLOv8</span>
+                            <span class="tech-badge">ROS2</span>
+                            <span class="tech-badge">MAVLink</span>
+                        </div>
+                        <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw (horizontal rotation) commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
+                        <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
+                        <video width="100%" controls muted>
+                            <source src="media/drone-video.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="carousel-card">
+                        <h3>Autonomous Navigation Behavior Tree</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">ROS2</span>
+                            <span class="tech-badge">C++</span>
+                            <span class="tech-badge">Behavior Trees</span>
+                            <span class="tech-badge">Nav2</span>
+                        </div>
+                        <p>Engineered a custom ROS 2 Behavior Tree for the ROSMASTER X3 to handle autonomous navigation in tight, dynamic environments. Default navigation stacks try to aggressively replan around obstacles, which creates collision risks in spaces like warehouse aisles or restaurant dining areas.</p>
+                        <p>Designed a "stop-and-wait" pipeline instead: when the robot detects a dynamic obstacle (like a person), it halts along its trajectory, waits for the path to clear, then resumes its original route. This guarantees predictable, collision-free operation and prevents the robot from dangerously swerving into walls or furniture.</p>
+                    </div>
+                    <div class="carousel-card">
+                        <h3>BIOS Flash Utility</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">C</span>
+                            <span class="tech-badge">POSIX</span>
+                            <span class="tech-badge">Linux</span>
+                        </div>
+                        <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
+                        <img src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" class="project-img">
+                    </div>
                 </div>
-                <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw (horizontal rotation) commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
-                <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
-                <video width="100%" controls muted>
-                    <source src="media/drone-video.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-
-            <div class="project-card reveal">
-                <h3>Autonomous Navigation Behavior Tree</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">ROS2</span>
-                    <span class="tech-badge">C++</span>
-                    <span class="tech-badge">Behavior Trees</span>
-                    <span class="tech-badge">Nav2</span>
-                </div>
-                <p>Engineered a custom ROS 2 Behavior Tree for the ROSMASTER X3 to handle autonomous navigation in tight, dynamic environments. Default navigation stacks try to aggressively replan around obstacles, which creates collision risks in spaces like warehouse aisles or restaurant dining areas.</p>
-                <p>Designed a "stop-and-wait" pipeline instead: when the robot detects a dynamic obstacle (like a person), it halts along its trajectory, waits for the path to clear, then resumes its original route. This guarantees predictable, collision-free operation and prevents the robot from dangerously swerving into walls or furniture.</p>
-            </div>
-
-            <div class="project-card reveal">
-                <h3>BIOS Flash Utility</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">C</span>
-                    <span class="tech-badge">POSIX</span>
-                    <span class="tech-badge">Linux</span>
-                </div>
-                <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
-                <img src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" class="project-img">
-            </div>
-
-            <!-- CATEGORY: SECURITY -->
-            <div class="category-label reveal">// security</div>
-
-            <div class="project-card reveal">
-                <h3>Real-World Penetration Testing</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">Nmap</span>
-                    <span class="tech-badge">Wireshark</span>
-                    <span class="tech-badge">Burp Suite</span>
-                    <span class="tech-badge">CVSS</span>
-                    <span class="tech-badge">Reporting</span>
-                </div>
-                <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. All vulnerabilities were scored using the CVSS (Common Vulnerability Scoring System) framework to prioritize findings by severity. Documented everything with concrete mitigations, presented the reports to both IT departments, and wrote management summaries so leadership could quickly understand the risks. Both clients were highly satisfied with the results.</p>
-            </div>
-
-            <div class="project-card reveal">
-                <h3>Honeypot & CTF Platform</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">Docker</span>
-                    <span class="tech-badge">Grafana</span>
-                    <span class="tech-badge">Linux</span>
-                    <span class="tech-badge">CTF</span>
-                </div>
-                <p>Built a website with an admin panel and integrated honeypot, monitored using the Grafana stack with custom dashboards. Created 3 CTF challenges for fellow students. In the second phase, the site was intentionally exposed for classmates to attack. No successful breach occurred: neither data nor the admin panel was compromised, and most attack attempts were logged and visualized on the dashboards.</p>
-            </div>
-
-            <!-- CATEGORY: SOFTWARE DEVELOPMENT -->
-            <div class="category-label reveal">// software development</div>
-
-            <div class="project-card reveal">
-                <h3>Labyrinth - Browser Board Game</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">HTML</span>
-                    <span class="tech-badge">CSS</span>
-                    <span class="tech-badge">JavaScript</span>
-                </div>
-                <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
-                <div class="project-gallery">
-                    <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens" class="project-img">
-                    <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules" class="project-img">
-                    <img src="media/Labyrinth2.png" alt="Labyrinth game board in action" class="project-img">
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                    <div class="carousel-dots"></div>
+                    <button class="carousel-btn next" aria-label="Next">›</button>
                 </div>
             </div>
+        </div>
 
-            <div class="project-card reveal">
-                <h3>BinBots - Drone Fleet Waste Management (2079)</h3>
-                <div class="tech-badges">
-                    <span class="tech-badge">Figma</span>
-                    <span class="tech-badge">UI/UX</span>
-                    <span class="tech-badge">VueJS</span>
-                    <span class="tech-badge">Concept</span>
+        <div class="carousel-section reveal">
+            <div class="shell-wrapper"><div class="category-label">// security</div></div>
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-card">
+                        <h3>Real-World Penetration Testing</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Nmap</span>
+                            <span class="tech-badge">Wireshark</span>
+                            <span class="tech-badge">Burp Suite</span>
+                            <span class="tech-badge">CVSS</span>
+                            <span class="tech-badge">Reporting</span>
+                        </div>
+                        <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. All vulnerabilities were scored using the CVSS (Common Vulnerability Scoring System) framework to prioritize findings by severity. Documented everything with concrete mitigations, presented the reports to both IT departments, and wrote management summaries so leadership could quickly understand the risks. Both clients were highly satisfied with the results.</p>
+                    </div>
+                    <div class="carousel-card">
+                        <h3>Honeypot & CTF Platform</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Docker</span>
+                            <span class="tech-badge">Grafana</span>
+                            <span class="tech-badge">Linux</span>
+                            <span class="tech-badge">CTF</span>
+                        </div>
+                        <p>Built a website with an admin panel and integrated honeypot, monitored using the Grafana stack with custom dashboards. Created 3 CTF challenges for fellow students. In the second phase, the site was intentionally exposed for classmates to attack. No successful breach occurred: neither data nor the admin panel was compromised, and most attack attempts were logged and visualized on the dashboards.</p>
+                    </div>
                 </div>
-                <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
-                <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
-                <div class="project-gallery">
-                    <img src="media/BinBots1.png" alt="BinBots user app screens" class="project-img">
-                    <img src="media/BinBots2.png" alt="BinBots admin panel" class="project-img">
-                    <img src="media/BinBots3.png" alt="BinBots wireframe overview" class="project-img">
-                    <img src="media/BinBots4.png" alt="BinBots detailed screens" class="project-img">
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                    <div class="carousel-dots"></div>
+                    <button class="carousel-btn next" aria-label="Next">›</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-section reveal">
+            <div class="shell-wrapper"><div class="category-label">// software development</div></div>
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-card">
+                        <h3>Labyrinth - Browser Board Game</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">HTML</span>
+                            <span class="tech-badge">CSS</span>
+                            <span class="tech-badge">JavaScript</span>
+                        </div>
+                        <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
+                        <div class="project-gallery">
+                            <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens" class="project-img">
+                            <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules" class="project-img">
+                            <img src="media/Labyrinth2.png" alt="Labyrinth game board in action" class="project-img">
+                        </div>
+                    </div>
+                    <div class="carousel-card">
+                        <h3>BinBots - Drone Fleet Waste Management (2079)</h3>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Figma</span>
+                            <span class="tech-badge">UI/UX</span>
+                            <span class="tech-badge">VueJS</span>
+                            <span class="tech-badge">Concept</span>
+                        </div>
+                        <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
+                        <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
+                        <div class="project-gallery">
+                            <img src="media/BinBots1.png" alt="BinBots user app screens" class="project-img">
+                            <img src="media/BinBots2.png" alt="BinBots admin panel" class="project-img">
+                            <img src="media/BinBots3.png" alt="BinBots wireframe overview" class="project-img">
+                            <img src="media/BinBots4.png" alt="BinBots detailed screens" class="project-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                    <div class="carousel-dots"></div>
+                    <button class="carousel-btn next" aria-label="Next">›</button>
                 </div>
             </div>
         </div>
@@ -237,37 +261,46 @@
                 <h2>Hackathons</h2>
                 <p>High-pressure problem solving under tight deadlines.</p>
             </div>
+        </div>
 
-            <div class="hackathon-card reveal">
-                <div class="hackathon-header">
-                    <div class="hackathon-date">Apr 2025</div>
-                    <div class="hackathon-place">3rd Place 🥉</div>
+        <div class="carousel-section reveal">
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-card hackathon-style">
+                        <div class="hackathon-header">
+                            <div class="hackathon-date">Apr 2025</div>
+                            <div class="hackathon-place">3rd Place 🥉</div>
+                        </div>
+                        <h3>HELMo Industry 5.0 Hackathon</h3>
+                        <div class="hackathon-meta">Weekend hackathon // Liege, Belgium // Organized by HELMo & Technifutur</div>
+                        <p>Built a web application utilizing open data from multiple Belgian databases, including regional solar panel electricity production data. Users could input their region, list their household devices, and optionally specify per-device power consumption (we had average values as fallback for most common appliances). The app calculates exactly how many solar panels they need and how many would actually be worth the investment.</p>
+                        <p>The theme was Industry 5.0 - putting humans at the center of technological processes. Presented the solution to the jury and placed 3rd overall.</p>
+                        <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon banner" class="project-img">
+                    </div>
+                    <div class="carousel-card hackathon-style">
+                        <div class="hackathon-header">
+                            <div class="hackathon-date">Nov 2025</div>
+                        </div>
+                        <h3>Phishaton 2025</h3>
+                        <div class="hackathon-meta">6-hour hackathon // Organized by Outkept, powered by Savaco</div>
+                        <p>A social engineering focused hackathon where teams were tasked with crafting phishing campaigns targeting an organization and a celebrity, as well as creating a deepfake phishing video of a public figure. A hands-on exercise in understanding the offensive side of social engineering to better defend against it.</p>
+                        <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="project-img hackathon-photo">
+                    </div>
+                    <div class="carousel-card hackathon-style">
+                        <div class="hackathon-header">
+                            <div class="hackathon-date">Nov 2025</div>
+                        </div>
+                        <h3>Hack The Future</h3>
+                        <div class="hackathon-meta">Organized by Cronos Group // Antwerp, Belgium</div>
+                        <p>Participated in one of Belgium's largest tech hackathons bringing together hundreds of students to tackle industry-sponsored challenges across various domains. A solid experience in working under pressure with unfamiliar tech stacks and tight time constraints.</p>
+                        <img src="media/HTF.jpeg" alt="Hack The Future event" class="project-img hackathon-photo">
+                    </div>
                 </div>
-                <h3>HELMo Industry 5.0 Hackathon</h3>
-                <div class="hackathon-meta">Weekend hackathon // Liege, Belgium // Organized by HELMo & Technifutur</div>
-                <p>Built a web application utilizing open data from multiple Belgian databases, including regional solar panel electricity production data. Users could input their region, list their household devices, and optionally specify per-device power consumption (we had average values as fallback for most common appliances). The app calculates exactly how many solar panels they need and how many would actually be worth the investment.</p>
-                <p>The theme was Industry 5.0 - putting humans at the center of technological processes. Presented the solution to the jury and placed 3rd overall.</p>
-                <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon banner" class="project-img">
-            </div>
-
-            <div class="hackathon-card reveal">
-                <div class="hackathon-header">
-                    <div class="hackathon-date">Nov 2025</div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                    <div class="carousel-dots"></div>
+                    <button class="carousel-btn next" aria-label="Next">›</button>
                 </div>
-                <h3>Phishaton 2025</h3>
-                <div class="hackathon-meta">6-hour hackathon // Organized by Outkept, powered by Savaco</div>
-                <p>A social engineering focused hackathon where teams were tasked with crafting phishing campaigns targeting an organization and a celebrity, as well as creating a deepfake phishing video of a public figure. A hands-on exercise in understanding the offensive side of social engineering to better defend against it.</p>
-                <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="project-img hackathon-photo">
-            </div>
-
-            <div class="hackathon-card reveal">
-                <div class="hackathon-header">
-                    <div class="hackathon-date">Nov 2025</div>
-                </div>
-                <h3>Hack The Future</h3>
-                <div class="hackathon-meta">Organized by Cronos Group // Antwerp, Belgium</div>
-                <p>Participated in one of Belgium's largest tech hackathons bringing together hundreds of students to tackle industry-sponsored challenges across various domains. A solid experience in working under pressure with unfamiliar tech stacks and tight time constraints.</p>
-                <img src="media/HTF.jpeg" alt="Hack The Future event" class="project-img hackathon-photo">
             </div>
         </div>
     </div>
@@ -339,22 +372,10 @@
                 <div class="about-block reveal">
                     <div class="about-block-header">▸ Languages</div>
                     <div class="languages-list">
-                        <div class="language-item">
-                            <span class="language-name">Polish</span>
-                            <span class="language-level">Native</span>
-                        </div>
-                        <div class="language-item">
-                            <span class="language-name">English</span>
-                            <span class="language-level">C1 - CAE Certificate</span>
-                        </div>
-                        <div class="language-item">
-                            <span class="language-name">German</span>
-                            <span class="language-level">Basic</span>
-                        </div>
-                        <div class="language-item">
-                            <span class="language-name">Japanese</span>
-                            <span class="language-level">Beginner</span>
-                        </div>
+                        <div class="language-item"><span class="language-name">Polish</span><span class="language-level">Native</span></div>
+                        <div class="language-item"><span class="language-name">English</span><span class="language-level">C1 - CAE Certificate</span></div>
+                        <div class="language-item"><span class="language-name">German</span><span class="language-level">Basic</span></div>
+                        <div class="language-item"><span class="language-name">Japanese</span><span class="language-level">Beginner</span></div>
                     </div>
                 </div>
 
@@ -375,13 +396,11 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer>
         <div class="shell-wrapper">
             <span>holo911</span> // deployed 2026
         </div>
     </footer>
-
 </div>
 
 <script src="script.js"></script>
