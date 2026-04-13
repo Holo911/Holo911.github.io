@@ -148,6 +148,15 @@ function initCarousels(container) {
 
         if (!cards.length) return;
 
+        /* Set track height to match current card */
+        function updateTrackHeight(index) {
+            var card = cards[index] || cards[0];
+            track.style.height = card.offsetHeight + 'px';
+        }
+
+        /* Initial height */
+        updateTrackHeight(0);
+
         /* Build dots */
         dotsContainer.innerHTML = '';
         cards.forEach((_, i) => {
@@ -164,6 +173,7 @@ function initCarousels(container) {
         function scrollToCard(index) {
             const card = cards[index];
             if (!card) return;
+            updateTrackHeight(index);
             track.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
             /* Scroll page so top of this carousel section is visible */
             var section = carousel.closest('.carousel-section');
@@ -216,6 +226,7 @@ function initCarousels(container) {
                 /* If card changed via swipe, scroll page to top of section */
                 if (current !== lastActive) {
                     lastActive = current;
+                    updateTrackHeight(current);
                     var section = carousel.closest('.carousel-section');
                     if (section) {
                         var topBar = document.querySelector('.top-bar');

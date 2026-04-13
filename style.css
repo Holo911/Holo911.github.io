@@ -398,6 +398,7 @@ nav a.active::after {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    transition: height 0.35s ease;
 }
 
 .carousel-track::-webkit-scrollbar { display: none; }
@@ -473,8 +474,8 @@ nav a.active::after {
 
 .carousel-btn {
     background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
+    border: 1px solid rgba(204, 255, 0, 0.3);
+    color: var(--accent);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -487,7 +488,10 @@ nav a.active::after {
     font-family: var(--font-mono);
 }
 
-.carousel-btn:hover { border-color: var(--accent); color: var(--accent); }
+.carousel-btn:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+}
 
 .carousel-dots {
     display: flex;
