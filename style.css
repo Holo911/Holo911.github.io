@@ -395,6 +395,7 @@ nav a.active::after {
     display: flex;
     align-items: flex-start;
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
