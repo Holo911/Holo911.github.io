@@ -151,11 +151,20 @@ function initCarousels(container) {
         /* Set track height to match current card */
         function updateTrackHeight(index) {
             var card = cards[index] || cards[0];
-            track.style.height = card.offsetHeight + 'px';
+            var h = card.scrollHeight;
+            if (h > 0) track.style.height = h + 'px';
         }
 
-        /* Initial height */
-        updateTrackHeight(0);
+        /* Initial height - delay slightly for layout, then recalc on image loads */
+        setTimeout(function() { updateTrackHeight(0); }, 100);
+
+        /* Recalculate when any image in this carousel loads */
+        carousel.querySelectorAll('img, video').forEach(function(media) {
+            media.addEventListener('load', function() { updateTrackHeight(lastActive || 0); });
+            media.addEventListener('loadedmetadata', function() { updateTrackHeight(lastActive || 0); });
+        });
+
+        var lastActive = 0;
 
         /* Build dots */
         dotsContainer.innerHTML = '';
@@ -217,7 +226,6 @@ function initCarousels(container) {
             if (current < cards.length - 1) scrollToCard(current + 1);
         });
 
-        var lastActive = 0;
         let scrollTimeout;
         track.addEventListener('scroll', () => {
             clearTimeout(scrollTimeout);
