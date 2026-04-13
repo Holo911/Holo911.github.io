@@ -155,16 +155,13 @@ function initCarousels(container) {
             if (h > 0) track.style.height = h + 'px';
         }
 
-        /* Initial height - delay slightly for layout, then recalc on image loads */
-        setTimeout(function() { updateTrackHeight(0); }, 100);
-
-        /* Recalculate when any image in this carousel loads */
-        carousel.querySelectorAll('img, video').forEach(function(media) {
-            media.addEventListener('load', function() { updateTrackHeight(lastActive || 0); });
-            media.addEventListener('loadedmetadata', function() { updateTrackHeight(lastActive || 0); });
-        });
-
         var lastActive = 0;
+
+        /* Use ResizeObserver to update height whenever card content changes */
+        var ro = new ResizeObserver(function() {
+            updateTrackHeight(lastActive);
+        });
+        cards.forEach(function(card) { ro.observe(card); });
 
         /* Build dots */
         dotsContainer.innerHTML = '';
