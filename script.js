@@ -160,7 +160,7 @@ function initCarousels(container) {
         function scrollToCard(index) {
             const card = cards[index];
             if (!card) return;
-            track.scrollTo({ left: card.offsetLeft - 24, behavior: 'smooth' });
+            track.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
         }
 
         function updateDots() {
@@ -169,7 +169,7 @@ function initCarousels(container) {
             let minDist = Infinity;
 
             cards.forEach((card, i) => {
-                const dist = Math.abs(card.offsetLeft - 24 - scrollLeft);
+                const dist = Math.abs(card.offsetLeft - scrollLeft);
                 if (dist < minDist) {
                     minDist = dist;
                     closest = i;
