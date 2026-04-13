@@ -71,12 +71,14 @@ body::after {
     color: var(--text-secondary);
 }
 
-.boot-ascii {
+.boot-name {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 12vw, 6rem);
+    font-weight: 700;
     color: var(--accent);
-    font-size: 8px;
-    line-height: 1.15;
+    letter-spacing: -3px;
+    line-height: 1;
     margin-bottom: 8px;
-    overflow: hidden;
 }
 
 .boot-header {
@@ -382,7 +384,12 @@ nav a.active::after {
     font-weight: 600;
 }
 
-.carousel { position: relative; }
+.carousel {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
 
 .carousel-track {
     display: flex;
@@ -390,24 +397,22 @@ nav a.active::after {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 0 24px 16px;
 }
 
 .carousel-track::-webkit-scrollbar { display: none; }
 
 .carousel-card {
-    flex: 0 0 calc(100% - 48px);
-    max-width: 880px;
+    flex: 0 0 100%;
     scroll-snap-align: start;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 32px;
-    margin-right: 16px;
+    margin-right: 20px;
     transition: border-color 0.3s ease;
 }
 
-.carousel-card:last-child { margin-right: 24px; }
+.carousel-card:last-child { margin-right: 0; }
 .carousel-card:hover { border-color: var(--border-hover); }
 
 .carousel-card h3 {
@@ -462,7 +467,7 @@ nav a.active::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 24px 0;
+    padding: 16px 0 0;
 }
 
 .carousel-btn {
@@ -640,16 +645,15 @@ footer span { color: var(--accent); }
     .hero-stats { grid-template-columns: repeat(2, 1fr); }
     .status-line { flex-direction: column; }
     .status-item { margin-right: 0; }
-    .carousel-track { padding: 0 16px 16px; }
-    .carousel-card { flex: 0 0 calc(100% - 32px); padding: 24px; }
-    .carousel-card:last-child { margin-right: 16px; }
+    .carousel { padding: 0 16px; }
+    .carousel-card { padding: 24px; }
     .skills-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
 }
 
 @media (max-width: 480px) {
     body { font-size: 13px; }
     .boot-container { font-size: 12px; width: 95%; }
-    .boot-ascii { font-size: 4.5px; line-height: 1.1; }
+    .boot-name { font-size: 2.5rem; letter-spacing: -2px; }
     .boot-header { font-size: 12px; }
     .boot-line { white-space: normal; word-break: break-all; }
     .hero { padding: 24px 0 20px; }
@@ -672,6 +676,5 @@ footer span { color: var(--accent); }
 @media (max-width: 360px) {
     .hero-stats { grid-template-columns: 1fr; }
     .hero-name { font-size: 2rem; }
-    .boot-ascii { font-size: 3.5px; }
     .typewriter-line { font-size: 11px; letter-spacing: 0.5px; }
 }
