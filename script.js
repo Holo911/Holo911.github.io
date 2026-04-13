@@ -144,6 +144,7 @@ function initCarousels(container) {
         const prevBtn = carousel.querySelector('.carousel-btn.prev');
         const nextBtn = carousel.querySelector('.carousel-btn.next');
         const dotsContainer = carousel.querySelector('.carousel-dots');
+        const counter = carousel.querySelector('.carousel-counter');
 
         if (!cards.length) return;
 
@@ -157,10 +158,21 @@ function initCarousels(container) {
             dotsContainer.appendChild(dot);
         });
 
+        /* Set initial counter */
+        if (counter) counter.textContent = '1 / ' + cards.length;
+
         function scrollToCard(index) {
             const card = cards[index];
             if (!card) return;
             track.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
+            /* Scroll page so top of this carousel section is visible */
+            var section = carousel.closest('.carousel-section');
+            if (section) {
+                var topBar = document.querySelector('.top-bar');
+                var offset = topBar ? topBar.offsetHeight + 12 : 60;
+                var sectionTop = section.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top: sectionTop, behavior: 'smooth' });
+            }
         }
 
         function updateDots() {
@@ -180,6 +192,8 @@ function initCarousels(container) {
                 dot.classList.toggle('active', i === closest);
             });
 
+            if (counter) counter.textContent = (closest + 1) + ' / ' + cards.length;
+
             return closest;
         }
 
@@ -193,10 +207,26 @@ function initCarousels(container) {
             if (current < cards.length - 1) scrollToCard(current + 1);
         });
 
+        var lastActive = 0;
         let scrollTimeout;
         track.addEventListener('scroll', () => {
             clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateDots, 50);
+            scrollTimeout = setTimeout(() => {
+                var current = updateDots();
+                /* If card changed via swipe, scroll page to top of section */
+                if (current !== lastActive) {
+                    lastActive = current;
+                    var section = carousel.closest('.carousel-section');
+                    if (section) {
+                        var topBar = document.querySelector('.top-bar');
+                        var offset = topBar ? topBar.offsetHeight + 12 : 60;
+                        var sectionTop = section.getBoundingClientRect().top + window.scrollY - offset;
+                        if (Math.abs(window.scrollY - sectionTop) > 80) {
+                            window.scrollTo({ top: sectionTop, behavior: 'smooth' });
+                        }
+                    }
+                }
+            }, 100);
         });
     });
 }
