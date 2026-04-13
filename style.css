@@ -393,6 +393,7 @@ nav a.active::after {
 
 .carousel-track {
     display: flex;
+    align-items: flex-start;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -402,13 +403,13 @@ nav a.active::after {
 .carousel-track::-webkit-scrollbar { display: none; }
 
 .carousel-card {
-    flex: 0 0 100%;
+    flex: 0 0 90%;
     scroll-snap-align: start;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 32px;
-    margin-right: 20px;
+    margin-right: 16px;
     transition: border-color 0.3s ease;
 }
 
@@ -504,6 +505,37 @@ nav a.active::after {
 }
 
 .carousel-dot.active { background: var(--accent); transform: scale(1.2); }
+
+.carousel-counter {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 12px;
+    letter-spacing: 1px;
+}
+
+/* Hackathon cards (vertical scroll) */
+.hackathon-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.hackathon-card:hover { border-color: var(--border-hover); }
+
+.hackathon-card h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.hackathon-card p { color: var(--text-secondary); font-size: 13px; line-height: 1.7; }
+.hackathon-card p + p { margin-top: 10px; }
 
 /* Hackathon specific */
 .hackathon-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -646,7 +678,7 @@ footer span { color: var(--accent); }
     .status-line { flex-direction: column; }
     .status-item { margin-right: 0; }
     .carousel { padding: 0 16px; }
-    .carousel-card { padding: 24px; }
+    .carousel-card { flex: 0 0 94%; padding: 24px; }
     .skills-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
 }
 
