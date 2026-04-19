@@ -400,13 +400,14 @@ nav a.active::after {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     transition: height 0.35s ease;
+    padding: 0 5%;
 }
 
 .carousel-track::-webkit-scrollbar { display: none; }
 
 .carousel-card {
     flex: 0 0 90%;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -415,7 +416,7 @@ nav a.active::after {
     transition: border-color 0.3s ease;
 }
 
-.carousel-card:last-child { margin-right: 0; }
+.carousel-card:last-child { margin-right: 16px; }
 .carousel-card:hover { border-color: var(--border-hover); }
 
 .carousel-card h3 {

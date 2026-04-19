@@ -180,7 +180,10 @@ function initCarousels(container) {
             const card = cards[index];
             if (!card) return;
             updateTrackHeight(index);
-            track.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
+            /* Scroll so card is centered - snap will handle the rest */
+            var cardCenter = card.offsetLeft + card.offsetWidth / 2;
+            var trackCenter = track.offsetWidth / 2;
+            track.scrollTo({ left: cardCenter - trackCenter, behavior: 'smooth' });
             /* Scroll page so top of this carousel section is visible */
             var section = carousel.closest('.carousel-section');
             if (section) {
@@ -192,12 +195,13 @@ function initCarousels(container) {
         }
 
         function updateDots() {
-            const scrollLeft = track.scrollLeft;
+            const scrollCenter = track.scrollLeft + track.offsetWidth / 2;
             let closest = 0;
             let minDist = Infinity;
 
             cards.forEach((card, i) => {
-                const dist = Math.abs(card.offsetLeft - scrollLeft);
+                const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                const dist = Math.abs(cardCenter - scrollCenter);
                 if (dist < minDist) {
                     minDist = dist;
                     closest = i;
