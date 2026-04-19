@@ -155,7 +155,21 @@ function initCarousels(container) {
             if (h > 0) track.style.height = h + 'px';
         }
 
-        var lastActive = 0;
+        /* Find which card is currently visible */
+        function getCurrentCard() {
+            var scrollCenter = track.scrollLeft + track.offsetWidth / 2;
+            var closest = 0;
+            var minDist = Infinity;
+            cards.forEach(function(card, i) {
+                var cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                var dist = Math.abs(cardCenter - scrollCenter);
+                if (dist < minDist) { minDist = dist; closest = i; }
+            });
+            return closest;
+        }
+
+        var currentIndex = getCurrentCard();
+        var lastActive = currentIndex;
 
         /* Use ResizeObserver to update height whenever card content changes */
         var ro = new ResizeObserver(function() {
@@ -168,13 +182,14 @@ function initCarousels(container) {
         cards.forEach((_, i) => {
             const dot = document.createElement('div');
             dot.classList.add('carousel-dot');
-            if (i === 0) dot.classList.add('active');
+            if (i === currentIndex) dot.classList.add('active');
             dot.addEventListener('click', () => scrollToCard(i));
             dotsContainer.appendChild(dot);
         });
 
-        /* Set initial counter */
-        if (counter) counter.textContent = '1 / ' + cards.length;
+        /* Set initial counter based on actual position */
+        if (counter) counter.textContent = (currentIndex + 1) + ' / ' + cards.length;
+        updateTrackHeight(currentIndex);
 
         function scrollToCard(index) {
             const card = cards[index];
