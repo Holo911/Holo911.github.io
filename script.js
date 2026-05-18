@@ -41,7 +41,6 @@ function completeLoader() {
         if (window.gsap && window.ScrollTrigger) initLenisAndGSAP();
         startHeroTypewriter();
         /* These don't need GSAP - run regardless */
-        initHeroGlow();
         initRevealOnScroll();
     }, 60);
 }
@@ -108,60 +107,6 @@ function initLenisAndGSAP() {
     initSectionIndicator();
     initTilesPin();
     initTileVideoAutoplay();
-}
-
-/* ============================================
-   HERO GLOW - viewport-wide lime spotlight
-   Desktop: follows the cursor while the hero is on screen.
-   Touch: drag a finger on the hero to position the glow, it stays put.
-   ============================================ */
-function initHeroGlow() {
-    const glow = document.getElementById('hero-glow');
-    const hero = document.querySelector('.hero');
-    if (!glow || !hero) return;
-
-    let inHero = false;
-
-    /* Only run the glow while the hero is on screen - no work during scroll past */
-    const obs = new IntersectionObserver(([entry]) => {
-        inHero = entry.isIntersecting;
-        if (!inHero) document.body.classList.remove('hero-glow-on');
-    }, { threshold: 0.2 });
-    obs.observe(hero);
-
-    function move(x, y) {
-        glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    }
-
-    if (isTouch || prefersReducedMotion) {
-        /* Touch: drag finger across the hero. Glow follows during the gesture
-           and stays at the last position after release. */
-        hero.addEventListener('touchstart', (e) => {
-            if (!inHero) return;
-            const t = e.touches[0];
-            move(t.clientX, t.clientY);
-            document.body.classList.add('hero-glow-on');
-        }, { passive: true });
-        hero.addEventListener('touchmove', (e) => {
-            if (!inHero) return;
-            const t = e.touches[0];
-            move(t.clientX, t.clientY);
-        }, { passive: true });
-        return;
-    }
-
-    /* Desktop: cursor-driven, instant follow (no rAF or smoothing) */
-    window.addEventListener('pointermove', (e) => {
-        if (!inHero) return;
-        move(e.clientX, e.clientY);
-        if (!document.body.classList.contains('hero-glow-on')) {
-            document.body.classList.add('hero-glow-on');
-        }
-    }, { passive: true });
-
-    window.addEventListener('mouseleave', () => {
-        document.body.classList.remove('hero-glow-on');
-    });
 }
 
 /* ============================================
