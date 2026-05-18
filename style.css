@@ -403,7 +403,7 @@ body.hero-glow-on #hero-glow { opacity: 1; }
 
 .hero-terminal-text {
     color: var(--text);
-    white-space: pre-wrap;
+    white-space: nowrap;
 }
 
 .hero-terminal-cursor {
@@ -493,7 +493,7 @@ body.hero-glow-on #hero-glow { opacity: 1; }
     display: flex;
     align-items: center;
     overflow: hidden;
-    cursor: none;
+    cursor: pointer;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     border-right: 1px solid var(--line);
@@ -688,7 +688,7 @@ body.no-cursor .tile { cursor: pointer; }
     border: 1px solid var(--line-2);
     border-radius: 100px;
     letter-spacing: 0.03em;
-    cursor: none;
+    cursor: pointer;
     transition:
         transform 0.35s var(--ease),
         color 0.35s var(--ease),
@@ -727,7 +727,7 @@ body.no-cursor .tile-tech span { cursor: default; }
     border: 1px solid var(--accent);
     border-radius: 100px;
     transition: all 0.3s var(--ease);
-    cursor: none;
+    cursor: pointer;
 }
 
 body.no-cursor .tile-open { cursor: pointer; }
@@ -1137,7 +1137,7 @@ body.no-cursor .tile-open { cursor: pointer; }
     padding: 0.625rem 0.5rem 0.625rem 1.25rem;
     background: transparent;
     border: none;
-    cursor: none;
+    cursor: pointer;
     color: var(--text-mute);
     font: inherit;
     border-radius: 1.5rem 0 0 1.5rem;
@@ -1407,7 +1407,16 @@ video.m-media { background: #000; }
         gap: 0.5rem;
     }
 
-    .hero-terminal { font-size: 0.85rem; flex-wrap: wrap; justify-content: center; padding: 0 1rem; }
+    .hero-terminal {
+        font-size: 0.72rem;
+        flex-wrap: nowrap;
+        justify-content: center;
+        padding: 0 1rem;
+        white-space: nowrap;
+        overflow-x: auto;
+        max-width: 95%;
+    }
+    .hero-terminal-text { white-space: nowrap; }
 
     /* Mobile: stack tiles vertically as full-screen sections so visitors can't
        skip them. They scroll through one by one to reach the next page section. */
@@ -1490,7 +1499,7 @@ video.m-media { background: #000; }
     .hero { padding: calc(var(--mast-h) + 1rem) 1rem 1.5rem; }
     .hero-corner { font-size: 0.625rem; }
     .hero-name { font-size: clamp(3.5rem, 18vw, 6rem); }
-    .hero-terminal { font-size: 0.78rem; gap: 0.35rem; }
+    .hero-terminal { font-size: 0.68rem; gap: 0.3rem; }
 
     .modal { padding: 0.75rem; }
     .modal-body { padding: 2.25rem 1.5rem 1.75rem; }
