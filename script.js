@@ -95,39 +95,17 @@ function startHeroTypewriter() {
 
 
 /* ============================================
-   LENIS + GSAP
+   GSAP (no Lenis - native scroll is smoother)
    ============================================ */
-let lenis = null;
+const lenis = null; /* kept for compatibility with code that checks `if (lenis)` */
 
 function initLenisAndGSAP() {
-    gsap.registerPlugin(ScrollTrigger);
-
-    if (window.Lenis && cinematicEnabled) {
-        lenis = new Lenis({
-            lerp: 0.35,           /* much snappier follow - less jitter, less perceived lag */
-            smoothWheel: true,
-            wheelMultiplier: 1.1,
-            syncTouch: false,
-        });
-
-        /* Allow native scroll inside the horizontal tile track AND inside modals.
-           Without this, the modal body cannot be scrolled with the wheel because
-           Lenis intercepts all wheel events globally. */
-        document.querySelectorAll('.tiles-track, .modal-body, .modal-shell').forEach((el) => {
-            el.setAttribute('data-lenis-prevent', '');
-        });
-
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => lenis.raf(time * 1000));
-        gsap.ticker.lagSmoothing(0);
-    }
-
+    if (window.gsap) gsap.registerPlugin(ScrollTrigger);
     initActiveNav();
     initSectionIndicator();
     initTilesPin();
     initRevealOnScroll();
     initTileVideoAutoplay();
-    /* Smoke is initialised in completeLoader so it works even if GSAP fails */
 }
 
 /* ============================================
@@ -172,12 +150,12 @@ function initTilesPin() {
         scrollTrigger: {
             trigger: section,
             pin: true,
-            scrub: 0.08,  /* very low smoothing - snappier response */
+            scrub: true,  /* direct 1:1 mapping - no smoothing layer, no jitter */
             snap: {
                 snapTo: 1 / (tiles.length - 1),
-                duration: { min: 0.12, max: 0.28 },  /* faster snap */
+                duration: { min: 0.15, max: 0.3 },
                 ease: 'power2.out',
-                delay: 0,
+                delay: 0.05,
             },
             start: 'top top',
             end: () => `+=${getPinLength()}`,
