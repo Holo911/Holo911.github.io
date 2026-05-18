@@ -104,7 +104,6 @@ function initLenisAndGSAP() {
     initActiveNav();
     initSectionIndicator();
     initTilesPin();
-    initRevealOnScroll();
     initTileVideoAutoplay();
 }
 
@@ -166,31 +165,6 @@ function initTilesPin() {
 
     window.addEventListener('load', () => ScrollTrigger.refresh());
     setTimeout(() => ScrollTrigger.refresh(), 400);
-}
-
-/* Subtle reveal-on-scroll for hackathon and profile blocks */
-function initRevealOnScroll() {
-    if (!window.gsap) return;
-    const els = document.querySelectorAll('.hk-card, .profile-row, .contact-card');
-    els.forEach((el) => {
-        gsap.from(el, {
-            opacity: 0,
-            y: 30,
-            duration: 0.9,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-        });
-    });
-
-    /* Tiles fade in as the section enters */
-    gsap.from('.tile', {
-        opacity: 0,
-        y: 40,
-        duration: 0.9,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: '.tiles-shell', start: 'top 80%' },
-    });
 }
 
 /* ============================================
@@ -262,12 +236,18 @@ function initSectionIndicator() {
         });
     });
 
-    /* Update on scroll. Hook into Lenis if present, else native. */
-    if (lenis) {
-        lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
-    }
+    /* Throttled native scroll listener - batch detection to one rAF tick
+       max so we never do more than one set of layout reads per frame. */
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+            requestAnimationFrame(() => {
+                update();
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }, { passive: true });
 
     update();
 }

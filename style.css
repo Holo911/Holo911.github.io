@@ -87,47 +87,8 @@ em { font-style: italic; }
     font-weight: 800;
 }
 
-/* ============================================
-   GRAIN OVERLAY
-   ============================================ */
-.grain {
-    position: fixed;
-    inset: 0;
-    z-index: 9000;
-    pointer-events: none;
-    opacity: 0.05;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ============================================
-   AMBIENT BLOBS
-   ============================================ */
-.ambient {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.ambient-blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(8rem);
-}
-
-.ambient-blob-1 {
-    width: 60vmax; height: 60vmax;
-    top: -20vmax; left: -15vmax;
-    background: rgba(204, 255, 0, 0.06);
-}
-
-.ambient-blob-2 {
-    width: 50vmax; height: 50vmax;
-    bottom: -15vmax; right: -10vmax;
-    background: rgba(204, 255, 0, 0.04);
-}
+/* Grain and ambient blobs removed - they were forcing per-frame GPU work
+   (mix-blend-mode + heavy blur filters) during scroll. */
 
 /* ============================================
    LOADER
@@ -213,9 +174,9 @@ em { font-style: italic; }
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    background: rgba(7, 7, 7, 0.55);
-    backdrop-filter: blur(1.25rem) saturate(140%);
-    -webkit-backdrop-filter: blur(1.25rem) saturate(140%);
+    /* Solid dark bg - backdrop-filter blur was re-blurring scrolling content
+       every frame on the GPU, killing scroll performance. */
+    background: rgba(7, 7, 7, 0.92);
     border-bottom: 1px solid var(--line);
 }
 
