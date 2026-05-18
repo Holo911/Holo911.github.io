@@ -28,70 +28,6 @@ console.log(
 );
 
 /* ============================================
-   CURSOR TRAIL
-   Soft lime dots spawn at cursor position and fade out. Only spawns
-   when mouse moves more than a few pixels so slow movement doesn't
-   produce a static blob. Skipped on touch / reduced motion.
-   ============================================ */
-(function initCursorTrail() {
-    if (isTouch || prefersReducedMotion) return;
-    const canvas = document.getElementById('cursor-trail');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let W = window.innerWidth, H = window.innerHeight;
-
-    function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const particles = [];
-    let lastX = -9999, lastY = -9999;
-
-    window.addEventListener('mousemove', (e) => {
-        const dx = e.clientX - lastX;
-        const dy = e.clientY - lastY;
-        const moved = Math.sqrt(dx * dx + dy * dy);
-        if (moved < 4) return; /* don't spawn for tiny jitter */
-        lastX = e.clientX;
-        lastY = e.clientY;
-        particles.push({
-            x: e.clientX,
-            y: e.clientY,
-            life: 1.0,
-            size: 5 + Math.random() * 3,
-        });
-        /* Cap particle count for safety */
-        if (particles.length > 80) particles.shift();
-    }, { passive: true });
-
-    function frame() {
-        ctx.clearRect(0, 0, W, H);
-        for (let i = particles.length - 1; i >= 0; i--) {
-            const p = particles[i];
-            p.life -= 0.06; /* ~250ms life */
-            if (p.life <= 0) { particles.splice(i, 1); continue; }
-            const alpha = p.life * p.life * 0.5; /* quadratic fade */
-            const radius = p.size * (0.6 + 0.4 * p.life);
-            const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
-            grad.addColorStop(0, 'rgba(204, 255, 0, ' + alpha.toFixed(3) + ')');
-            grad.addColorStop(1, 'rgba(204, 255, 0, 0)');
-            ctx.fillStyle = grad;
-            ctx.fillRect(p.x - radius, p.y - radius, radius * 2, radius * 2);
-        }
-        requestAnimationFrame(frame);
-    }
-    frame();
-})();
-
-/* ============================================
    LOADER
    ============================================ */
 const loader = document.getElementById('loader');
@@ -209,31 +145,18 @@ function startHeroTypewriter() {
     if (isTouch || prefersReducedMotion) return;
     const cursor = document.getElementById('cursor');
     const label = document.getElementById('cursor-label');
-    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    let cx = mx, cy = my;
 
+    /* Direct cursor follow - no lerp, no rAF loop. Snaps instantly to mouse position. */
     window.addEventListener('mousemove', (e) => {
-        mx = e.clientX;
-        my = e.clientY;
-    });
-
-    function loop() {
-        cx += (mx - cx) * 0.22;
-        cy += (my - cy) * 0.22;
-        cursor.style.transform = `translate(${cx}px, ${cy}px)`;
-        requestAnimationFrame(loop);
-    }
-    loop();
+        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    }, { passive: true });
 
     /* Hide cursor during middle-click auto-scroll (Chrome's auto-scroll causes drift) */
     window.addEventListener('mousedown', (e) => {
         if (e.button === 1) {
             cursor.style.opacity = '0';
             cursor.style.transition = 'opacity 0.15s';
-            setTimeout(() => {
-                cursor.style.opacity = '';
-                cx = mx; cy = my; /* snap to current mouse position */
-            }, 1500);
+            setTimeout(() => { cursor.style.opacity = ''; }, 1500);
         }
     });
 
@@ -276,9 +199,9 @@ function initLenisAndGSAP() {
 
     if (window.Lenis && cinematicEnabled) {
         lenis = new Lenis({
-            lerp: 0.1,
+            lerp: 0.18,           /* was 0.1 - faster follow, less perceived lag */
             smoothWheel: true,
-            wheelMultiplier: 1,
+            wheelMultiplier: 1.05,
             syncTouch: false,
         });
 
@@ -340,84 +263,94 @@ function initSmokeReveal() {
     const letters = stack.querySelectorAll('.hero-letter');
     if (letters.length === 0) return;
 
-    let gx = -9999, gy = -9999;
     let suppressedUntil = 0;
-    let time = 0;
 
-    window.addEventListener('mousemove', (e) => {
-        gx = e.clientX;
-        gy = e.clientY;
-    }, { passive: true });
+    /* Cache letter positions. Updated only on resize / scroll, not every frame.
+       Previously this used getBoundingClientRect() inside a rAF loop for 12
+       letters per frame = 13 forced layouts per frame = the source of the lag. */
+    let stackRect = null;
+    let letterPositions = [];
+
+    function recachePositions() {
+        stackRect = stack.getBoundingClientRect();
+        letterPositions = Array.from(letters).map((letter) => {
+            const r = letter.getBoundingClientRect();
+            return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        });
+    }
+    recachePositions();
+    window.addEventListener('resize', recachePositions, { passive: true });
+    window.addEventListener('scroll', recachePositions, { passive: true });
 
     window.addEventListener('mousedown', (e) => {
         if (e.button === 1) suppressedUntil = performance.now() + 1500;
     });
 
-    /* Touch / reduced-motion: gentle wave glow only, no cursor tracking */
+    /* Touch / reduced-motion: gentle slow ambient wave, throttled to 12fps */
     if (isTouch || prefersReducedMotion) {
-        function waveLoop() {
-            time += 0.025;
-            letters.forEach((letter, i) => {
-                const phase = time - i * 0.25;
-                const wave = Math.max(0, Math.sin(phase));
-                const g = 0.15 + 0.4 * wave * wave;
-                letter.style.setProperty('--g', g.toFixed(3));
-            });
-            requestAnimationFrame(waveLoop);
+        let wavePhase = 0;
+        function wave() {
+            wavePhase += 0.08;
+            for (let i = 0; i < letters.length; i++) {
+                const w = Math.max(0, Math.sin(wavePhase - i * 0.25));
+                letters[i].style.setProperty('--g', (0.15 + 0.4 * w * w).toFixed(3));
+            }
+            setTimeout(wave, 80);
         }
-        waveLoop();
+        wave();
         return;
     }
 
-    /* Desktop: cursor-driven glow + ambient pulse */
-    let glowX = 0, glowY = 0;
-    let cursorInside = false;
+    /* Desktop: cursor-driven, event-based (no rAF loop). */
+    let gx = -9999, gy = -9999;
+    let ambientPhase = 0;
 
-    function loop() {
-        time += 0.016;
-        const now = performance.now();
-        const middleClickActive = now < suppressedUntil;
-
-        /* Update spotlight position (smoothed) */
-        const stackRect = stack.getBoundingClientRect();
-        const targetX = gx - stackRect.left;
-        const targetY = gy - stackRect.top;
-        glowX += (targetX - glowX) * 0.2;
-        glowY += (targetY - glowY) * 0.2;
-        if (glow) glow.style.transform = `translate(${glowX}px, ${glowY}px)`;
-
-        cursorInside = !middleClickActive &&
-            gx >= stackRect.left - 100 && gx <= stackRect.right + 100 &&
-            gy >= stackRect.top - 100 && gy <= stackRect.bottom + 100;
-
-        stack.classList.toggle('glow-on', cursorInside);
-
-        /* Per-letter glow: ambient pulse + cursor proximity boost */
-        letters.forEach((letter, i) => {
-            const rect = letter.getBoundingClientRect();
-            const lx = rect.left + rect.width / 2;
-            const ly = rect.top + rect.height / 2;
-            const dx = gx - lx;
-            const dy = gy - ly;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            /* Ambient: subtle breathing, offset phase per letter */
-            const ambient = 0.16 + 0.07 * Math.sin(time * 0.9 + i * 0.4);
-
-            /* Cursor proximity (max effective distance ~280px) */
+    function applyLetters(cursorInside) {
+        for (let i = 0; i < letters.length; i++) {
+            const pos = letterPositions[i];
+            const ambient = 0.16 + 0.07 * Math.sin(ambientPhase + i * 0.4);
             let proximity = 0;
-            if (cursorInside) {
+            if (cursorInside && pos) {
+                const dx = gx - pos.x;
+                const dy = gy - pos.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
                 proximity = Math.max(0, 1 - dist / 260);
-                proximity = proximity * proximity; /* sharper falloff */
+                proximity *= proximity;
             }
-
             const g = Math.min(1.05, ambient + proximity * 1.1);
-            letter.style.setProperty('--g', g.toFixed(3));
-        });
-
-        requestAnimationFrame(loop);
+            letters[i].style.setProperty('--g', g.toFixed(3));
+        }
     }
-    loop();
+
+    function isInside() {
+        if (!stackRect) return false;
+        if (performance.now() < suppressedUntil) return false;
+        return gx >= stackRect.left - 100 && gx <= stackRect.right + 100 &&
+               gy >= stackRect.top - 100 && gy <= stackRect.bottom + 100;
+    }
+
+    window.addEventListener('mousemove', (e) => {
+        gx = e.clientX;
+        gy = e.clientY;
+        const inside = isInside();
+        if (inside) {
+            stack.classList.add('glow-on');
+            if (glow && stackRect) {
+                glow.style.transform = `translate(${gx - stackRect.left}px, ${gy - stackRect.top}px)`;
+            }
+        } else {
+            stack.classList.remove('glow-on');
+        }
+        applyLetters(inside);
+    }, { passive: true });
+
+    /* Ambient breathing: throttled to 12fps so it does not compete with cursor */
+    function ambient() {
+        ambientPhase += 0.07;
+        applyLetters(isInside());
+        setTimeout(ambient, 80);
+    }
+    ambient();
 }
 
 

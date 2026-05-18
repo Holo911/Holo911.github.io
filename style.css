@@ -5,6 +5,8 @@ html {
     font-size: clamp(13.5px, 0.45vw + 11.5px, 17px);
     scroll-behavior: auto;
     height: 100%;
+    /* Reserve scrollbar space so adding/removing scroll doesn't shift layout (CLS) */
+    scrollbar-gutter: stable;
 }
 
 :root {
@@ -204,15 +206,6 @@ em { font-style: italic; }
     will-change: transform;
 }
 
-#cursor-trail {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 9998;
-}
-body.no-cursor #cursor-trail { display: none; }
 
 #cursor-ring {
     position: absolute;
