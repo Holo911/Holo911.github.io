@@ -1675,6 +1675,89 @@ video.m-media { background: #000; }
 }
 
 /* ============================================
+   PORTRAIT PHONE - completely different layout
+   When viewport is taller than wide AND narrow (typical phone in portrait),
+   we use a purely vertical stack with no pinned scroll, no horizontal swipe,
+   no cursor effects. Pure mobile-first scroll. Works reliably on iOS Safari
+   where pinned scroll + 100vh is historically buggy.
+   ============================================ */
+@media (orientation: portrait) and (max-width: 50rem) {
+    /* Use dvh (dynamic viewport height) so tiles size correctly even as
+       Safari's URL bar collapses and expands during scroll. */
+    .tile {
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 4vh 1.25rem;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        scroll-snap-align: none;
+        scroll-snap-stop: normal;
+    }
+    .tile:last-child { border-bottom: none; }
+
+    .tiles-shell {
+        height: auto !important;
+        overflow: visible !important;
+    }
+    .tiles-track {
+        display: block !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        transform: none !important;
+        scroll-snap-type: none !important;
+        padding: 0 !important;
+        gap: 0 !important;
+    }
+
+    /* Make sure tile content actually fills the viewport */
+    .tile-inner {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+    }
+
+    .tile-main {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2vh;
+    }
+
+    .tile-media {
+        order: -1;
+        aspect-ratio: 16 / 10;
+        max-height: 30vh;
+        max-height: 30dvh;
+        width: 100%;
+    }
+
+    /* Hero uses dvh too so it sizes correctly */
+    .hero {
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding-top: calc(var(--mast-h) + 1rem);
+        padding-bottom: 2rem;
+    }
+
+    /* Hide the right-edge section indicator on phone - vertical scroll is obvious */
+    .section-indicator { display: none; }
+
+    /* Smaller name on phone so it fits comfortably without horizontal scroll */
+    .hero-name { font-size: clamp(3rem, 16vw, 5rem) !important; }
+    .display-xl { font-size: clamp(2rem, 9vw, 4rem) !important; }
+
+    /* Hide ambient hero blobs on phone for cleaner look */
+    .ambient { display: none; }
+}
+
+/* ============================================
    REDUCED MOTION
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
