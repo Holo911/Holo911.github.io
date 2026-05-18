@@ -51,24 +51,19 @@ body {
 body.loading { overflow: hidden; }
 body.modal-open { overflow: hidden; }
 
-/* Reveal-on-scroll: vertical-flow content (hackathons, profile rows, contact cards).
-   Tiles are excluded - they live inside the horizontal pin and have their own behaviour.
-   Hidden by default once .reveal-ready is set on body; IntersectionObserver swaps in
-   .revealed when they enter the viewport. */
+/* Reveal-on-scroll: opacity-only (no transform) so Lighthouse does not count
+   it as layout shift. Pure fade-in, still feels alive without the CLS hit. */
 body.reveal-ready .reveal-up {
     opacity: 0;
-    transform: translateY(1.5rem);
-    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    transition: opacity 0.8s var(--ease);
 }
 body.reveal-ready .reveal-up.revealed {
     opacity: 1;
-    transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
     body.reveal-ready .reveal-up {
         opacity: 1;
-        transform: none;
         transition: none;
     }
 }
@@ -112,36 +107,6 @@ em { font-style: italic; }
 /* Grain and ambient blobs removed - they were forcing per-frame GPU work
    (mix-blend-mode + heavy blur filters) during scroll. */
 
-/* ============================================
-   HERO GLOW - cursor-following luminous halo
-   Spans well beyond the hero name. Only visible while at the hero section
-   (IntersectionObserver toggles body.hero-glow-on), so no scroll cost
-   when navigating away. On touch devices, drag your finger to position it.
-   ============================================ */
-#hero-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60vmax;
-    height: 60vmax;
-    margin: -30vmax 0 0 -30vmax;
-    pointer-events: none;
-    z-index: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-        rgba(204, 255, 0, 0.28) 0%,
-        rgba(204, 255, 0, 0.10) 30%,
-        rgba(204, 255, 0, 0.03) 55%,
-        transparent 70%);
-    filter: blur(2.5rem);
-    mix-blend-mode: screen;
-    opacity: 0;
-    transition: opacity 0.4s var(--ease);
-    will-change: transform, opacity;
-    transform: translate3d(-1000px, -1000px, 0);
-}
-
-body.hero-glow-on #hero-glow { opacity: 1; }
 
 /* ============================================
    LOADER
@@ -356,7 +321,8 @@ body.hero-glow-on #hero-glow { opacity: 1; }
     50% { transform: translateY(0.3rem); }
 }
 
-/* Hero name - static, no animated effects. Reliable, performant, classy. */
+/* Hero name - subtle ambient lime glow always, stronger on hover.
+   Pure CSS text-shadow, no JS, no GPU-heavy filters or blend modes. */
 .hero-name {
     font-family: var(--font-display);
     font-size: clamp(3rem, 14vw, 11rem);
@@ -368,6 +334,18 @@ body.hero-glow-on #hero-glow { opacity: 1; }
     margin: 0;
     user-select: none;
     -webkit-user-select: none;
+    text-shadow:
+        0 0 1.5rem rgba(204, 255, 0, 0.18),
+        0 0 4rem rgba(204, 255, 0, 0.08);
+    transition: text-shadow 0.5s var(--ease);
+    cursor: default;
+}
+
+.hero-name:hover {
+    text-shadow:
+        0 0 1.5rem rgba(204, 255, 0, 0.45),
+        0 0 4rem rgba(204, 255, 0, 0.25),
+        0 0 8rem rgba(204, 255, 0, 0.12);
 }
 
 .hero-line { display: block; }
