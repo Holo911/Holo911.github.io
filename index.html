@@ -3,395 +3,729 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOLO911 | Cybersecurity & Robotics</title>
+    <title>Szymon Dudek / Cybersecurity &amp; Robotics</title>
+
+    <meta name="description" content="Szymon Dudek (holo911) is a cybersecurity student at Howest Belgium. Selected work in offensive security, AI, and autonomous systems.">
+    <meta name="author" content="Szymon Dudek">
+    <meta name="theme-color" content="#070707">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Szymon Dudek / Cybersecurity &amp; Robotics">
+    <meta property="og:description" content="Selected work in offensive security, AI, and autonomous systems.">
+    <meta property="og:image" content="media/H-Logo.png">
+    <meta property="og:url" content="https://holo911.github.io">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Szymon Dudek / Cybersecurity &amp; Robotics">
+    <meta name="twitter:description" content="Selected work in offensive security, AI, and autonomous systems.">
+    <meta name="twitter:image" content="media/H-Logo.png">
+
     <link rel="icon" type="image/png" href="media/H-Logo.png">
     <link rel="apple-touch-icon" href="media/H-Logo.png">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
 
-<!-- ======== BOOT SEQUENCE ======== -->
-<div id="boot-screen">
-    <div class="boot-container">
-        <div class="boot-line boot-name">HOLO911</div>
-        <div class="boot-line boot-header">SYSTEM v3.0.26</div>
-        <div class="boot-spacer"></div>
-        <div class="boot-line"><span class="path">[auth]</span> verifying identity...... <span class="ok">AUTHENTICATED</span></div>
-        <div class="boot-line"><span class="path">[net]</span> secure tunnel........... <span class="ok">TLS 1.3 OK</span></div>
-        <div class="boot-line"><span class="path">[sec]</span> security toolkit........ <span class="ok">ARMED</span></div>
-        <div class="boot-line"><span class="path">[hw]</span> robotics interface...... <span class="ok">LINKED</span></div>
-        <div class="boot-line"><span class="path">[gps]</span> location: <span class="info">Tokyo, Japan</span> <span class="ok">LOCKED</span></div>
-        <div class="boot-line"><span class="path">[edu]</span> Howest Cybersecurity <span class="ok">■■■■■■■■■░</span> 92%</div>
-        <div class="boot-line"><span class="path">[init]</span> deploying portfolio.... <span class="ok">DONE</span></div>
-        <div class="boot-line boot-welcome">
-            <span class="ok">→ Welcome back, operator.</span><span class="boot-cursor"></span>
-        </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Szymon Dudek",
+        "alternateName": "holo911",
+        "jobTitle": "Cybersecurity Student",
+        "description": "Building at the intersection of offensive security, AI, and autonomous systems.",
+        "url": "https://holo911.github.io",
+        "image": "https://holo911.github.io/media/H-Logo.png",
+        "email": "szymond200555@gmail.com",
+        "knowsAbout": [
+            "Cybersecurity",
+            "Penetration Testing",
+            "Network Security",
+            "Digital Forensics",
+            "Robotics",
+            "Computer Vision",
+            "Autonomous Systems",
+            "Drone Systems",
+            "Python",
+            "ROS2",
+            "Linux"
+        ],
+        "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "Howest University of Applied Sciences",
+            "url": "https://www.howest.be"
+        },
+        "knowsLanguage": ["Polish", "English", "German", "Japanese"],
+        "sameAs": [
+            "https://github.com/holo911",
+            "https://www.linkedin.com/in/szymon-dudek-968469355/"
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<body class="loading">
+
+<!-- ======== LOADER ======== -->
+<div id="loader" aria-hidden="true">
+    <div class="loader-mark">
+        <span class="loader-letters">SZYMON DUDEK</span>
+        <span class="loader-handle">/holo911</span>
     </div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
 
-<!-- ======== MAIN SITE ======== -->
-<div id="main-site">
+<!-- ======== GRAIN + AMBIENT GLOW ======== -->
+<div class="grain" aria-hidden="true"></div>
+<div class="ambient" aria-hidden="true">
+    <div class="ambient-blob ambient-blob-1"></div>
+    <div class="ambient-blob ambient-blob-2"></div>
+</div>
 
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        <div class="top-bar-inner">
-            <div class="top-bar-title"><span class="host">holo911</span><span class="at">@</span>tokyo<span class="bar-cursor">_</span></div>
-            <nav>
-                <a href="#" data-page="home" class="active">home</a>
-                <a href="#" data-page="projects">projects</a>
-                <a href="#" data-page="hackathons">hackathons</a>
-                <a href="#" data-page="about">about</a>
-            </nav>
-        </div>
+<!-- ======== CUSTOM CURSOR + TRAIL ======== -->
+<canvas id="cursor-trail" aria-hidden="true"></canvas>
+<div id="cursor" aria-hidden="true">
+    <div id="cursor-ring"></div>
+    <div id="cursor-dot"></div>
+    <span id="cursor-label"></span>
+</div>
+
+<!-- ======== MASTHEAD ======== -->
+<header class="mast">
+    <a href="#hero" class="brand mast-link">
+        <span class="brand-mark">SD</span>
+        <span class="brand-slash">/</span>
+        <span class="brand-handle">holo911</span>
+    </a>
+    <nav class="mast-nav">
+        <a href="#work" class="mast-link"><span class="num">01</span><span>work</span></a>
+        <a href="#hackathons" class="mast-link"><span class="num">02</span><span>hackathons</span></a>
+        <a href="#profile" class="mast-link"><span class="num">03</span><span>profile</span></a>
+        <a href="#contact" class="mast-link"><span class="num">04</span><span>contact</span></a>
+    </nav>
+    <div class="mast-status" title="Available July 2026">
+        <span class="status-dot"></span>
+    </div>
+</header>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="hero">
+    <div class="hero-corner hero-tl">
+        <div class="line muted">A portfolio by</div>
+        <div class="line">Szymon Dudek</div>
+        <div class="line muted">Cybersecurity × Robotics</div>
+    </div>
+    <div class="hero-corner hero-tr">
+        <div class="line muted">Selected work</div>
+        <div class="line">2024 / 2026</div>
     </div>
 
-    <!-- ======== HOME PAGE ======== -->
-    <div class="page active" id="page-home">
-        <div class="shell-wrapper">
-            <div class="hero">
-                <div class="hero-prompt">
-                    <span class="prompt-symbol">$</span> cat /home/holo911/README.md
-                </div>
-
-                <h1 class="hero-name reveal">HOLO911<span class="accent-dot">.</span></h1>
-
-                <div class="typewriter-block reveal">
-                    <p class="typewriter-line" id="line1">Cybersecurity Student @ Howest, Belgium</p>
-                    <p class="typewriter-line" id="line2">AI & Robotics Intern @ Advantech, Tokyo</p>
-                </div>
-
-                <p class="hero-tagline reveal">
-                    Building at the intersection of <strong>offensive security</strong>,
-                    <strong>AI</strong>, and <strong>autonomous systems</strong> - currently
-                    based in Tokyo.
-                </p>
-
-                <div class="hero-stats reveal">
-                    <div class="stat-block">
-                        <div class="stat-label">Degree</div>
-                        <div class="stat-value"><span class="highlight">Cybersecurity</span> BSc '26</div>
-                    </div>
-                    <div class="stat-block">
-                        <div class="stat-label">Current Role</div>
-                        <div class="stat-value">Intern <span class="highlight">@ Advantech</span></div>
-                    </div>
-                    <div class="stat-block">
-                        <div class="stat-label">Based in</div>
-                        <div class="stat-value"><span class="highlight">Tokyo</span>, Japan</div>
-                    </div>
-                    <div class="stat-block">
-                        <div class="stat-label">Next</div>
-                        <div class="stat-value">MSc <span class="highlight">St. Pölten</span>, AT</div>
-                    </div>
-                </div>
-
-                <div class="current-focus reveal">
-                    <div class="focus-label">// current focus</div>
-                    <p>Building autonomous drones with AI-powered navigation at Advantech Tokyo. Integrating computer vision for real-time object detection and autonomous flight control. Graduating in June, then starting a Master's in Cybersecurity & Resilience in Austria.</p>
-                </div>
-
-                <div class="status-line reveal">
-                    <div class="status-item">
-                        <div class="status-dot"></div>
-                        <span>Available for opportunities - Jul 2026</span>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-dot blue"></div>
-                        <span>Graduating Jun 2026</span>
-                    </div>
-                </div>
-
-                <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="hero-linkedin reveal">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    <span>Connect on LinkedIn</span>
-                    <span class="arrow">→</span>
-                </a>
-            </div>
-        </div>
+    <div class="hero-name-stack" id="hero-name-stack">
+        <div class="name-glow" id="name-glow" aria-hidden="true"></div>
+        <h1 class="hero-name" id="hero-name-front" aria-label="Szymon Dudek">
+            <span class="hero-line"><span class="word" data-split>Szymon</span></span>
+            <span class="hero-line"><em class="serif-italic" data-split>Dudek</em><span class="hero-dot">.</span></span>
+        </h1>
     </div>
 
-    <!-- ======== PROJECTS PAGE ======== -->
-    <div class="page" id="page-projects">
-        <div class="shell-wrapper">
-            <div class="section-header reveal">
-                <div class="prompt-line"><span>$</span> ls ~/projects --detailed</div>
-                <h2>Projects</h2>
-                <p>Security research, robotics, and everything in between.</p>
-            </div>
-        </div>
+    <div class="hero-terminal" aria-hidden="true">
+        <span class="hero-terminal-prompt">$</span>
+        <span class="hero-terminal-text" id="hero-typed"></span>
+        <span class="hero-terminal-cursor">_</span>
+    </div>
 
-        <div class="carousel-section reveal">
-            <div class="shell-wrapper"><div class="category-label">// robotics & ai</div></div>
-            <div class="carousel">
-                <div class="carousel-track">
-                    <div class="carousel-card">
-                        <h3>Autonomous Drone - Object Tracking via YOLO</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">QUALCOMM RB5</span>
-                            <span class="tech-badge">YOLOv8</span>
-                            <span class="tech-badge">ROS2</span>
-                            <span class="tech-badge">MAVLink</span>
+    <div class="hero-corner hero-bl">
+        <div class="scroll-cue">
+            <span class="scroll-cue-arrow">↓</span>
+            <span>Scroll to explore</span>
+        </div>
+    </div>
+</section>
+
+<!-- ======== WORK INTRO ======== -->
+<section class="section-intro" id="work">
+    <div class="intro-grid">
+        <div class="kicker">// 01 / selected work</div>
+        <h2 class="display-xl">Seven projects.<br><span class="accent-em">Click to expand.</span></h2>
+        <p class="intro-body">
+            Security research, robotics, autonomous systems, and software. Each tile opens its full case.
+        </p>
+    </div>
+</section>
+
+<!-- ======== TILE TRACK - one tile per viewport, mandatory snap ======== -->
+<div class="tiles-shell" id="tiles-shell">
+    <div class="tiles-track" id="tiles-track">
+
+        <!-- 01 Drone -->
+        <article class="tile" data-project-id="drone">
+            <span class="tile-bg-num" aria-hidden="true">01</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 01</span>
+                        <span class="tile-kicker-cat">robotics × ai</span>
+                    </span>
+                    <span class="tile-progress">01 / 07</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">Autonomous Drone <span class="accent-em">YOLO Tracking</span></h3>
+                            <p class="tile-teaser">Built from scratch. YOLO detects a target. Drone yaws audibly to follow it.</p>
+                            <div class="tile-tech">
+                                <span>Python</span><span>YOLOv8</span><span>ROS2</span><span>QUALCOMM RB5</span><span>MAVLink</span>
+                            </div>
                         </div>
-                        <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw (horizontal rotation) commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
-                        <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
-                        <video width="100%" controls muted>
-                            <source src="media/drone-video.mp4" type="video/mp4">
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media">
+                        <img src="media/drone-assembled.jpg" alt="" class="tile-media-img">
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 02 Behavior Tree -->
+        <article class="tile" data-project-id="bt">
+            <span class="tile-bg-num" aria-hidden="true">02</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 02</span>
+                        <span class="tile-kicker-cat">robotics × ai</span>
+                    </span>
+                    <span class="tile-progress">02 / 07</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">Autonomous <span class="accent-em">Behavior Tree</span></h3>
+                            <p class="tile-teaser">Custom ROS 2 stop-and-wait pipeline for safe operation in tight, dynamic environments.</p>
+                            <div class="tile-tech">
+                                <span>ROS2</span><span>C++</span><span>Behavior Trees</span><span>Nav2</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media">
+                        <video class="tile-media-video" muted loop playsinline preload="metadata">
+                            <source src="media/rosmaster-stop-demo.mp4" type="video/mp4">
                         </video>
                     </div>
-                    <div class="carousel-card">
-                        <h3>Autonomous Navigation Behavior Tree</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">ROS2</span>
-                            <span class="tech-badge">C++</span>
-                            <span class="tech-badge">Behavior Trees</span>
-                            <span class="tech-badge">Nav2</span>
-                        </div>
-                        <p>Engineered a custom ROS 2 Behavior Tree for the ROSMASTER X3 to handle autonomous navigation in tight, dynamic environments. Default navigation stacks try to aggressively replan around obstacles, which creates collision risks in spaces like warehouse aisles or restaurant dining areas.</p>
-                        <p>Designed a "stop-and-wait" pipeline instead: when the robot detects a dynamic obstacle (like a person), it halts along its trajectory, waits for the path to clear, then resumes its original route. This guarantees predictable, collision-free operation and prevents the robot from dangerously swerving into walls or furniture.</p>
-                    </div>
-                    <div class="carousel-card">
-                        <h3>BIOS Flash Utility</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">C</span>
-                            <span class="tech-badge">POSIX</span>
-                            <span class="tech-badge">Linux</span>
-                        </div>
-                        <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
-                        <img src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" class="project-img">
-                    </div>
-                </div>
-                <div class="carousel-nav"><div class="carousel-nav-row">
-                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
-                    <div class="carousel-dots"></div>
-                    <button class="carousel-btn next" aria-label="Next">›</button>
-                    </div><span class="carousel-counter"></span>
                 </div>
             </div>
-        </div>
+        </article>
 
-        <div class="carousel-section reveal">
-            <div class="shell-wrapper"><div class="category-label">// security</div></div>
-            <div class="carousel">
-                <div class="carousel-track">
-                    <div class="carousel-card">
-                        <h3>Real-World Penetration Testing</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">Nmap</span>
-                            <span class="tech-badge">Wireshark</span>
-                            <span class="tech-badge">Burp Suite</span>
-                            <span class="tech-badge">CVSS</span>
-                            <span class="tech-badge">Reporting</span>
-                        </div>
-                        <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. All vulnerabilities were scored using the CVSS (Common Vulnerability Scoring System) framework to prioritize findings by severity. Documented everything with concrete mitigations, presented the reports to both IT departments, and wrote management summaries so leadership could quickly understand the risks. Both clients were highly satisfied with the results.</p>
-                    </div>
-                    <div class="carousel-card">
-                        <h3>Honeypot & CTF Platform</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">Docker</span>
-                            <span class="tech-badge">Grafana</span>
-                            <span class="tech-badge">Linux</span>
-                            <span class="tech-badge">CTF</span>
-                        </div>
-                        <p>Built a website with an admin panel and integrated honeypot, monitored using the Grafana stack with custom dashboards. Created 3 CTF challenges for fellow students. In the second phase, the site was intentionally exposed for classmates to attack. No successful breach occurred: neither data nor the admin panel was compromised, and most attack attempts were logged and visualized on the dashboards.</p>
-                    </div>
+        <!-- 03 BIOS -->
+        <article class="tile" data-project-id="bios">
+            <span class="tile-bg-num" aria-hidden="true">03</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 03</span>
+                        <span class="tile-kicker-cat">systems × security</span>
+                    </span>
+                    <span class="tile-progress">03 / 07</span>
                 </div>
-                <div class="carousel-nav"><div class="carousel-nav-row">
-                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
-                    <div class="carousel-dots"></div>
-                    <button class="carousel-btn next" aria-label="Next">›</button>
-                    </div><span class="carousel-counter"></span>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">BIOS <span class="accent-em">Flash Utility</span></h3>
+                            <p class="tile-teaser">Hardened C tool with bounds-checking, allowlists, and POSIX process isolation. No shell injection surface.</p>
+                            <div class="tile-tech">
+                                <span>C</span><span>POSIX</span><span>Linux</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media">
+                        <img src="media/BIOSupdateTOOL.png" alt="" class="tile-media-img">
+                    </div>
                 </div>
             </div>
-        </div>
+        </article>
 
-        <div class="carousel-section reveal">
-            <div class="shell-wrapper"><div class="category-label">// software development</div></div>
-            <div class="carousel">
-                <div class="carousel-track">
-                    <div class="carousel-card">
-                        <h3>Labyrinth - Browser Board Game</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">HTML</span>
-                            <span class="tech-badge">CSS</span>
-                            <span class="tech-badge">JavaScript</span>
-                        </div>
-                        <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
-                        <div class="project-gallery">
-                            <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens" class="project-img">
-                            <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules" class="project-img">
-                            <img src="media/Labyrinth2.png" alt="Labyrinth game board in action" class="project-img">
-                        </div>
-                    </div>
-                    <div class="carousel-card">
-                        <h3>BinBots - Drone Fleet Waste Management (2079)</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge">Figma</span>
-                            <span class="tech-badge">UI/UX</span>
-                            <span class="tech-badge">VueJS</span>
-                            <span class="tech-badge">Concept</span>
-                        </div>
-                        <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
-                        <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
-                        <div class="project-gallery">
-                            <img src="media/BinBots1.png" alt="BinBots user app screens" class="project-img">
-                            <img src="media/BinBots2.png" alt="BinBots admin panel" class="project-img">
-                            <img src="media/BinBots3.png" alt="BinBots wireframe overview" class="project-img">
-                            <img src="media/BinBots4.png" alt="BinBots detailed screens" class="project-img">
-                        </div>
-                    </div>
+        <!-- 04 Pentest -->
+        <article class="tile" data-project-id="pentest">
+            <span class="tile-bg-num" aria-hidden="true">04</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 04</span>
+                        <span class="tile-kicker-cat">security</span>
+                    </span>
+                    <span class="tile-progress">04 / 07</span>
                 </div>
-                <div class="carousel-nav"><div class="carousel-nav-row">
-                    <button class="carousel-btn prev" aria-label="Previous">‹</button>
-                    <div class="carousel-dots"></div>
-                    <button class="carousel-btn next" aria-label="Next">›</button>
-                    </div><span class="carousel-counter"></span>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">Real-World <span class="accent-em">Penetration Testing</span></h3>
+                            <p class="tile-teaser">Full security audits with CVSS scoring for two real clients: a high school and a pharmacy. Both presented to leadership.</p>
+                            <div class="tile-tech">
+                                <span>Nmap</span><span>Wireshark</span><span>Burp Suite</span><span>CVSS</span><span>Reporting</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media tile-media-abstract">
+                        <svg viewBox="0 0 200 200" aria-hidden="true">
+                            <path d="M100 30 L160 56 L160 110 Q160 150 100 175 Q40 150 40 110 L40 56 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M76 102 L92 118 L124 84" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <text x="100" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="currentColor" opacity="0.5">CVSS · NMAP</text>
+                        </svg>
+                    </div>
                 </div>
             </div>
-        </div>
+        </article>
+
+        <!-- 05 Honeypot -->
+        <article class="tile" data-project-id="honeypot">
+            <span class="tile-bg-num" aria-hidden="true">05</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 05</span>
+                        <span class="tile-kicker-cat">security</span>
+                    </span>
+                    <span class="tile-progress">05 / 07</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">Honeypot <span class="accent-em">&amp; CTF Platform</span></h3>
+                            <p class="tile-teaser">Deliberately-exposed admin panel with Grafana monitoring. Survived classmate attacks unbreached.</p>
+                            <div class="tile-tech">
+                                <span>Docker</span><span>Grafana</span><span>Linux</span><span>CTF</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media tile-media-abstract">
+                        <svg viewBox="0 0 200 130" aria-hidden="true">
+                            <polyline points="10,100 30,80 50,86 70,60 90,72 110,38 130,52 150,28 170,42 190,18" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <polyline points="10,115 30,108 50,110 70,92 90,100 110,72 130,84 150,58 170,72 190,48" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+                            <text x="100" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="currentColor" opacity="0.5">ATTACK ATTEMPTS · LOGGED</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 06 Labyrinth -->
+        <article class="tile" data-project-id="labyrinth">
+            <span class="tile-bg-num" aria-hidden="true">06</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 06</span>
+                        <span class="tile-kicker-cat">software</span>
+                    </span>
+                    <span class="tile-progress">06 / 07</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">Labyrinth <span class="accent-em">Browser Game</span></h3>
+                            <p class="tile-teaser">Classic board game rebuilt in the browser. Full game logic, hand-drawn art, custom tile system. A first-year project that taught everything.</p>
+                            <div class="tile-tech">
+                                <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media">
+                        <img src="media/Labyrinth2.png" alt="" class="tile-media-img">
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 07 BinBots -->
+        <article class="tile" data-project-id="binbots">
+            <span class="tile-bg-num" aria-hidden="true">07</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 07</span>
+                        <span class="tile-kicker-cat">concept × ux</span>
+                    </span>
+                    <span class="tile-progress">07 / 07</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">BinBots <span class="accent-em">Drone Fleet · 2079</span></h3>
+                            <p class="tile-teaser">Speculative service for skyscraper waste collection in 2079. Full Figma + Vue concept, end-to-end app + admin + marketing site.</p>
+                            <div class="tile-tech">
+                                <span>Figma</span><span>VueJS</span><span>UI/UX</span><span>Concept</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-cursor="open" data-cursor-target>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media">
+                        <img src="media/BinBots1.png" alt="" class="tile-media-img">
+                    </div>
+                </div>
+            </div>
+        </article>
+
     </div>
-
-    <!-- ======== HACKATHONS PAGE ======== -->
-    <div class="page" id="page-hackathons">
-        <div class="shell-wrapper">
-            <div class="section-header reveal">
-                <div class="prompt-line"><span>$</span> cat ~/hackathons/log.json</div>
-                <h2>Hackathons</h2>
-                <p>High-pressure problem solving under tight deadlines.</p>
-            </div>
-
-            <div class="hackathon-card reveal">
-                <div class="hackathon-header">
-                    <div class="hackathon-date">Apr 2025</div>
-                    <div class="hackathon-place">3rd Place 🥉</div>
-                </div>
-                <h3>HELMo Industry 5.0 Hackathon</h3>
-                <div class="hackathon-meta">Weekend hackathon // Liege, Belgium // Organized by HELMo & Technifutur</div>
-                <p>Built a web application utilizing open data from multiple Belgian databases, including regional solar panel electricity production data. Users could input their region, list their household devices, and optionally specify per-device power consumption (we had average values as fallback for most common appliances). The app calculates exactly how many solar panels they need and how many would actually be worth the investment.</p>
-                <p>The theme was Industry 5.0 - putting humans at the center of technological processes. Presented the solution to the jury and placed 3rd overall.</p>
-                <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon banner" class="project-img">
-            </div>
-
-            <div class="hackathon-card reveal">
-                <div class="hackathon-header">
-                    <div class="hackathon-date">Nov 2025</div>
-                </div>
-                <h3>Phishaton 2025</h3>
-                <div class="hackathon-meta">6-hour hackathon // Organized by Outkept, powered by Savaco</div>
-                <p>A social engineering focused hackathon where teams were tasked with crafting phishing campaigns targeting an organization and a celebrity, as well as creating a deepfake phishing video of a public figure. A hands-on exercise in understanding the offensive side of social engineering to better defend against it.</p>
-                <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="project-img hackathon-photo">
-            </div>
-
-            <div class="hackathon-card reveal">
-                <div class="hackathon-header">
-                    <div class="hackathon-date">Nov 2025</div>
-                </div>
-                <h3>Hack The Future</h3>
-                <div class="hackathon-meta">Organized by Cronos Group // Antwerp, Belgium</div>
-                <p>Participated in one of Belgium's largest tech hackathons bringing together hundreds of students to tackle industry-sponsored challenges across various domains. A solid experience in working under pressure with unfamiliar tech stacks and tight time constraints.</p>
-                <img src="media/HTF.jpeg" alt="Hack The Future event" class="project-img hackathon-photo">
-            </div>
-        </div>
-    </div>
-
-    <!-- ======== ABOUT PAGE ======== -->
-    <div class="page" id="page-about">
-        <div class="shell-wrapper">
-            <div class="section-header reveal">
-                <div class="prompt-line"><span>$</span> whoami --verbose</div>
-                <h2>About</h2>
-            </div>
-
-            <div class="about-grid">
-                <div class="about-block reveal">
-                    <div class="about-block-header">▸ Origin Story</div>
-                    <p>Born and raised in Poland. Spent six years in music school alongside regular education - studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
-                    <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge - drawn by the program's reputation and the challenge of building an independent life in a new country. Now at 20, I'm interning at Advantech in Tokyo, building autonomous drones with AI-powered navigation.</p>
-                </div>
-
-                <div class="about-block reveal">
-                    <div class="about-block-header">▸ Journey</div>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-year">Sep 2026</div>
-                            <div class="timeline-title">MSc Cybersecurity & Resilience</div>
-                            <div class="timeline-desc">St. Pölten University of Applied Sciences, Austria</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-year">Feb - May 2026</div>
-                            <div class="timeline-title">AI & Robotics Intern @ Advantech</div>
-                            <div class="timeline-desc">Tokyo, Japan - Autonomous drones, computer vision, flight control</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-year">2023 - 2026</div>
-                            <div class="timeline-title">BSc Applied Computer Science - Cybersecurity</div>
-                            <div class="timeline-desc">Howest University of Applied Sciences, Brugge, Belgium</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-year">2019 - 2023</div>
-                            <div class="timeline-title">High School</div>
-                            <div class="timeline-desc">Poland</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-year">2012 - 2017</div>
-                            <div class="timeline-title">Music School</div>
-                            <div class="timeline-desc">Piano performance, music theory & history - Poland</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="about-block reveal">
-                    <div class="about-block-header">▸ Skills & Tools</div>
-                    <div class="skills-grid">
-                        <div class="skill-tag">Pentesting</div>
-                        <div class="skill-tag">Digital Forensics</div>
-                        <div class="skill-tag">Network Security</div>
-                        <div class="skill-tag">Python</div>
-                        <div class="skill-tag">Linux</div>
-                        <div class="skill-tag">Computer Vision</div>
-                        <div class="skill-tag">Drone Systems</div>
-                        <div class="skill-tag">AI / ML</div>
-                        <div class="skill-tag">Wireshark</div>
-                        <div class="skill-tag">Burp Suite</div>
-                        <div class="skill-tag">Nmap</div>
-                        <div class="skill-tag">Git</div>
-                    </div>
-                </div>
-
-                <div class="about-block reveal">
-                    <div class="about-block-header">▸ Languages</div>
-                    <div class="languages-list">
-                        <div class="language-item"><span class="language-name">Polish</span><span class="language-level">Native</span></div>
-                        <div class="language-item"><span class="language-name">English</span><span class="language-level">C1 - CAE Certificate</span></div>
-                        <div class="language-item"><span class="language-name">German</span><span class="language-level">Basic</span></div>
-                        <div class="language-item"><span class="language-name">Japanese</span><span class="language-level">Beginner</span></div>
-                    </div>
-                </div>
-
-                <div class="about-block reveal">
-                    <div class="about-block-header">▸ Contact</div>
-                    <div class="contact-links">
-                        <a href="mailto:szymond200555@gmail.com" class="contact-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
-                            <span>szymond200555@gmail.com</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="contact-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                            <span>szymon-dudek</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="shell-wrapper">
-            <span>holo911</span> // deployed 2026
-        </div>
-    </footer>
 </div>
+
+<!-- ======== HACKATHONS ======== -->
+<section class="section-intro" id="hackathons">
+    <div class="intro-grid">
+        <div class="kicker">// 02 / hackathons</div>
+        <h2 class="display-xl">High-pressure<br><span class="accent-em">problem solving.</span></h2>
+    </div>
+</section>
+
+<section class="hackathon-grid">
+    <article class="hk-card hk-featured">
+        <div class="hk-meta">
+            <span class="hk-date">Apr 2025</span>
+            <span class="hk-place">3rd Place 🥉</span>
+        </div>
+        <h3 class="hk-title">HELMo Industry 5.0 Hackathon</h3>
+        <div class="hk-loc">Liege, Belgium · HELMo &amp; Technifutur</div>
+        <p>Built a web application utilizing open data from multiple Belgian databases, including regional solar panel electricity production data. Users could input their region, list their household devices, and optionally specify per-device power consumption (we had average values as fallback for most common appliances). The app calculates exactly how many solar panels they need and how many would actually be worth the investment.</p>
+        <p>The theme was Industry 5.0 - putting humans at the center of technological processes. Presented the solution to the jury and placed 3rd overall.</p>
+        <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon" class="hk-img">
+    </article>
+
+    <article class="hk-card">
+        <div class="hk-meta">
+            <span class="hk-date">Nov 2025</span>
+        </div>
+        <h3 class="hk-title">Phishaton 2025</h3>
+        <div class="hk-loc">6h hackathon · Outkept · Savaco</div>
+        <p>A social engineering focused hackathon where teams were tasked with crafting phishing campaigns targeting an organization and a celebrity, as well as creating a deepfake phishing video of a public figure. A hands-on exercise in understanding the offensive side of social engineering to better defend against it.</p>
+        <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="hk-img">
+    </article>
+
+    <article class="hk-card">
+        <div class="hk-meta">
+            <span class="hk-date">Nov 2025</span>
+        </div>
+        <h3 class="hk-title">Hack The Future</h3>
+        <div class="hk-loc">Cronos Group · Antwerp, Belgium</div>
+        <p>Participated in one of Belgium's largest tech hackathons bringing together hundreds of students to tackle industry-sponsored challenges across various domains. A solid experience in working under pressure with unfamiliar tech stacks and tight time constraints.</p>
+        <img src="media/HTF.jpeg" alt="Hack The Future event" class="hk-img">
+    </article>
+</section>
+
+<!-- ======== PROFILE / ABOUT ======== -->
+<section class="section-intro" id="profile">
+    <div class="intro-grid">
+        <div class="kicker">// 03 / profile</div>
+        <h2 class="display-xl">The<br><span class="accent-em">story.</span></h2>
+    </div>
+</section>
+
+<section class="profile-shell">
+
+    <div class="profile-row">
+        <div class="profile-col profile-col-narrow">
+            <div class="profile-label">▸ Origin Story</div>
+        </div>
+        <div class="profile-col profile-col-wide">
+            <p>Born and raised in Poland. Spent six years in music school alongside regular education, studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
+            <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge, drawn by the program's reputation and the challenge of building an independent life in a new country. During Spring 2026 I interned at Advantech in Tokyo, building autonomous drones with AI-powered navigation.</p>
+        </div>
+    </div>
+
+    <div class="profile-row">
+        <div class="profile-col profile-col-narrow">
+            <div class="profile-label">▸ Journey</div>
+        </div>
+        <div class="profile-col profile-col-wide">
+            <div class="journey">
+                <div class="journey-row">
+                    <div class="journey-when">Sep 2026</div>
+                    <div class="journey-what">
+                        <div class="journey-title">MSc Cybersecurity &amp; Resilience</div>
+                        <div class="journey-where">St. Pölten University of Applied Sciences, Austria</div>
+                    </div>
+                </div>
+                <div class="journey-row">
+                    <div class="journey-when">Feb–May 2026</div>
+                    <div class="journey-what">
+                        <div class="journey-title">AI &amp; Robotics Intern @ Advantech</div>
+                        <div class="journey-where">Tokyo, Japan. Autonomous drones, computer vision, flight control.</div>
+                    </div>
+                </div>
+                <div class="journey-row">
+                    <div class="journey-when">2023–2026</div>
+                    <div class="journey-what">
+                        <div class="journey-title">BSc Applied Computer Science, Cybersecurity</div>
+                        <div class="journey-where">Howest University of Applied Sciences, Brugge, Belgium</div>
+                    </div>
+                </div>
+                <div class="journey-row">
+                    <div class="journey-when">2019–2023</div>
+                    <div class="journey-what">
+                        <div class="journey-title">High School</div>
+                        <div class="journey-where">Poland</div>
+                    </div>
+                </div>
+                <div class="journey-row">
+                    <div class="journey-when">2012–2017</div>
+                    <div class="journey-what">
+                        <div class="journey-title">Music School</div>
+                        <div class="journey-where">Piano performance, music theory &amp; history. Poland.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-row">
+        <div class="profile-col profile-col-narrow">
+            <div class="profile-label">▸ Skills &amp; Tools</div>
+        </div>
+        <div class="profile-col profile-col-wide">
+            <div class="skill-cloud">
+                <span>Pentesting</span><span>Digital Forensics</span><span>Network Security</span><span>Python</span><span>Linux</span><span>Computer Vision</span><span>Drone Systems</span><span>AI / ML</span><span>Wireshark</span><span>Burp Suite</span><span>Nmap</span><span>Git</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-row">
+        <div class="profile-col profile-col-narrow">
+            <div class="profile-label">▸ Languages</div>
+        </div>
+        <div class="profile-col profile-col-wide">
+            <div class="lang-list">
+                <div><span class="lang-name">Polish</span><span class="lang-level">Native</span></div>
+                <div><span class="lang-name">English</span><span class="lang-level">C1 / CAE Certificate</span></div>
+                <div><span class="lang-name">German</span><span class="lang-level">Basic</span></div>
+                <div><span class="lang-name">Japanese</span><span class="lang-level">Beginner</span></div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- ======== CONTACT ======== -->
+<section class="contact" id="contact">
+    <div class="contact-meta">
+        <div class="kicker">// 04 / contact</div>
+    </div>
+    <h2 class="contact-cta">
+        <span class="contact-line">Let's build</span>
+        <span class="contact-line">something <span class="accent-em">good</span>.</span>
+    </h2>
+    <div class="contact-cards">
+        <a href="mailto:szymond200555@gmail.com" class="contact-card" data-cursor="email" data-cursor-target>
+            <span class="contact-label">Email</span>
+            <span class="contact-value">szymond200555@gmail.com</span>
+            <span class="contact-arrow">→</span>
+        </a>
+        <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="contact-card" data-cursor="visit" data-cursor-target>
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-value">linkedin.com/in/szymon-dudek</span>
+            <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://github.com/holo911" target="_blank" rel="noopener" class="contact-card" data-cursor="visit" data-cursor-target>
+            <span class="contact-label">GitHub</span>
+            <span class="contact-value">github.com/holo911</span>
+            <span class="contact-arrow">↗</span>
+        </a>
+    </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer class="foot">
+    <div class="foot-row">
+        <div class="foot-block">
+            <div class="muted">Szymon Dudek</div>
+            <div>holo911</div>
+        </div>
+    </div>
+    <div class="foot-mark">SD ✕ HOLO911</div>
+</footer>
+
+<!-- ======== SECTION INDICATOR (right edge) ======== -->
+<nav class="section-indicator" aria-label="Section navigation">
+    <button class="indicator-dot" data-target="hero" type="button">
+        <span class="dot-label">00 / index</span>
+        <span class="dot-mark"></span>
+    </button>
+    <button class="indicator-dot" data-target="work" type="button">
+        <span class="dot-label">01 / work</span>
+        <span class="dot-mark"></span>
+    </button>
+    <button class="indicator-dot" data-target="hackathons" type="button">
+        <span class="dot-label">02 / hackathons</span>
+        <span class="dot-mark"></span>
+    </button>
+    <button class="indicator-dot" data-target="profile" type="button">
+        <span class="dot-label">03 / profile</span>
+        <span class="dot-mark"></span>
+    </button>
+    <button class="indicator-dot" data-target="contact" type="button">
+        <span class="dot-label">04 / contact</span>
+        <span class="dot-mark"></span>
+    </button>
+</nav>
+
+
+<!-- ======== PROJECT MODAL ======== -->
+<div id="project-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-shell" role="dialog" aria-modal="true">
+        <button class="modal-close" type="button" data-modal-close aria-label="Close" data-cursor-target>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="modal-body" id="modal-body"></div>
+    </div>
+</div>
+
+<!-- ======== PROJECT TEMPLATES ======== -->
+<template id="project-data-drone">
+    <div class="m-meta"><span class="m-num">01</span><span class="m-cat">robotics × ai</span></div>
+    <h3 class="m-title">Autonomous Drone <span class="accent-em">YOLO Object Tracking</span></h3>
+    <div class="m-tech"><span>Python</span><span>QUALCOMM RB5</span><span>YOLOv8</span><span>ROS2</span><span>MAVLink</span><span>RTAB-Map</span></div>
+    <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw (horizontal rotation) commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
+    <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
+    <p>In parallel, built a real-time SLAM pipeline with RTAB-Map for 3D environment reconstruction, laying the groundwork for fully spatially-aware drone navigation.</p>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// hardware</div>
+        <img class="m-media" src="media/drone-assembled.jpg" alt="Two drones assembled from scratch">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// desk demo / YOLO detection + audible yaw response</div>
+        <video class="m-media" controls muted preload="metadata" playsinline>
+            <source src="media/drone-desk-demo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// real-time SLAM with RTAB-Map</div>
+        <video class="m-media" controls muted preload="metadata" playsinline>
+            <source src="media/drone-rtab-map.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// flight footage</div>
+        <video class="m-media m-media-compact" controls muted preload="metadata" playsinline>
+            <source src="media/drone-video.mp4" type="video/mp4">
+        </video>
+    </div>
+</template>
+
+<template id="project-data-bt">
+    <div class="m-meta"><span class="m-num">02</span><span class="m-cat">robotics × ai</span></div>
+    <h3 class="m-title">Autonomous Navigation <span class="accent-em">Behavior Tree</span></h3>
+    <div class="m-tech"><span>ROS2</span><span>C++</span><span>Behavior Trees</span><span>Nav2</span></div>
+    <p>Engineered a custom ROS 2 Behavior Tree for the ROSMASTER X3 to handle autonomous navigation in tight, dynamic environments. Default navigation stacks try to aggressively replan around obstacles, which creates collision risks in spaces like warehouse aisles or restaurant dining areas.</p>
+    <p>Designed a "stop-and-wait" pipeline instead: when the robot detects a dynamic obstacle (like a person), it halts along its trajectory, waits for the path to clear, then resumes its original route. This guarantees predictable, collision-free operation and prevents the robot from dangerously swerving into walls or furniture.</p>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// stop-on-obstacle in action</div>
+        <video class="m-media" controls muted preload="metadata" playsinline>
+            <source src="media/rosmaster-stop-demo.mp4" type="video/mp4">
+        </video>
+    </div>
+</template>
+
+<template id="project-data-bios">
+    <div class="m-meta"><span class="m-num">03</span><span class="m-cat">systems × security</span></div>
+    <h3 class="m-title">BIOS <span class="accent-em">Flash Utility</span></h3>
+    <div class="m-tech"><span>C</span><span>POSIX</span><span>Linux</span></div>
+    <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
+    <img class="m-media" src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output">
+</template>
+
+<template id="project-data-pentest">
+    <div class="m-meta"><span class="m-num">04</span><span class="m-cat">security</span></div>
+    <h3 class="m-title">Real-World <span class="accent-em">Penetration Testing</span></h3>
+    <div class="m-tech"><span>Nmap</span><span>Wireshark</span><span>Burp Suite</span><span>CVSS</span><span>Reporting</span></div>
+    <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. All vulnerabilities were scored using the CVSS (Common Vulnerability Scoring System) framework to prioritize findings by severity. Documented everything with concrete mitigations, presented the reports to both IT departments, and wrote management summaries so leadership could quickly understand the risks. Both clients were highly satisfied with the results.</p>
+</template>
+
+<template id="project-data-honeypot">
+    <div class="m-meta"><span class="m-num">05</span><span class="m-cat">security</span></div>
+    <h3 class="m-title">Honeypot <span class="accent-em">&amp; CTF Platform</span></h3>
+    <div class="m-tech"><span>Docker</span><span>Grafana</span><span>Linux</span><span>CTF</span></div>
+    <p>Built a website with an admin panel and integrated honeypot, monitored using the Grafana stack with custom dashboards. Created 3 CTF challenges for fellow students. In the second phase, the site was intentionally exposed for classmates to attack. No successful breach occurred: neither data nor the admin panel was compromised, and most attack attempts were logged and visualized on the dashboards.</p>
+</template>
+
+<template id="project-data-labyrinth">
+    <div class="m-meta"><span class="m-num">06</span><span class="m-cat">software</span></div>
+    <h3 class="m-title">Labyrinth <span class="accent-em">Browser Board Game</span></h3>
+    <div class="m-tech"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+    <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
+    <img class="m-media" src="media/Labyrinth2.png" alt="Labyrinth game board in action">
+    <div class="m-gallery">
+        <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens">
+        <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules">
+    </div>
+</template>
+
+<template id="project-data-binbots">
+    <div class="m-meta"><span class="m-num">07</span><span class="m-cat">concept × ux</span></div>
+    <h3 class="m-title">BinBots <span class="accent-em">Drone Fleet · 2079</span></h3>
+    <div class="m-tech"><span>Figma</span><span>UI/UX</span><span>VueJS</span><span>Concept</span></div>
+    <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
+    <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
+    <div class="m-gallery">
+        <img src="media/BinBots1.png" alt="BinBots user app screens">
+        <img src="media/BinBots2.png" alt="BinBots admin panel">
+        <img src="media/BinBots3.png" alt="BinBots wireframe overview">
+        <img src="media/BinBots4.png" alt="BinBots detailed screens">
+    </div>
+</template>
+
+<!-- GSAP + ScrollTrigger + Lenis -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+        integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"
+        integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"
+        integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed"
+        crossorigin="anonymous"></script>
 
 <script src="script.js"></script>
 </body>
