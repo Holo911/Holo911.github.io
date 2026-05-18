@@ -44,15 +44,12 @@ body {
     font-size: 1rem;
     line-height: 1.6;
     overflow-x: hidden;
-    cursor: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 body.loading { overflow: hidden; }
 body.modal-open { overflow: hidden; }
-body.no-cursor { cursor: auto; }
-body.no-cursor #cursor { display: none; }
 
 ::selection { background: var(--accent); color: #000; }
 
@@ -63,10 +60,8 @@ button {
     border: none;
     font: inherit;
     color: inherit;
-    cursor: none;
+    cursor: pointer;
 }
-
-body.no-cursor button, body.no-cursor a { cursor: pointer; }
 
 img, video { display: block; max-width: 100%; }
 
@@ -205,74 +200,6 @@ em { font-style: italic; }
 }
 
 #loader.starting .loader-bar-fill { width: 100%; }
-
-/* ============================================
-   CUSTOM CURSOR
-   ============================================ */
-#cursor {
-    position: fixed;
-    top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    will-change: transform;
-}
-
-
-#cursor-ring {
-    position: absolute;
-    top: 0; left: 0;
-    width: 2.5rem; height: 2.5rem;
-    margin: -1.25rem 0 0 -1.25rem;
-    border: 1px solid rgba(204, 255, 0, 0.5);
-    border-radius: 50%;
-    transition: width 0.3s var(--ease), height 0.3s var(--ease), margin 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
-}
-
-#cursor-dot {
-    position: absolute;
-    top: 0; left: 0;
-    width: 0.3rem; height: 0.3rem;
-    margin: -0.15rem 0 0 -0.15rem;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 0.5rem var(--accent-glow);
-    transition: opacity 0.2s var(--ease);
-}
-
-#cursor-label {
-    position: absolute;
-    top: 0; left: 0;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    color: #000;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 700;
-    opacity: 0;
-    pointer-events: none;
-    white-space: nowrap;
-    transition: opacity 0.2s var(--ease);
-}
-
-body.cursor-target #cursor-ring {
-    width: 4.5rem; height: 4.5rem;
-    margin: -2.25rem 0 0 -2.25rem;
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-body.cursor-target #cursor-dot { opacity: 0; }
-body.cursor-target #cursor-label { opacity: 1; }
-
-body.cursor-link #cursor-ring {
-    width: 1.5rem; height: 1.5rem;
-    margin: -0.75rem 0 0 -0.75rem;
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-body.cursor-link #cursor-dot { opacity: 0; }
 
 /* ============================================
    MASTHEAD
@@ -415,134 +342,31 @@ body.cursor-link #cursor-dot { opacity: 0; }
     50% { transform: translateY(0.3rem); }
 }
 
-/* Hero name stack - text only. Lime cursor-following glow + per-letter shadow. */
-.hero-name-stack {
-    position: relative;
-    display: inline-block;
-    isolation: isolate;
-    padding: 1.5rem 2.5rem;
-}
-
-/* Cursor-following lime spotlight - a soft luminous halo that follows the mouse.
-   Uses mix-blend-mode: screen so it feels like actual light bleeding through.
-   Hidden by default; reveals smoothly when the cursor enters the name area. */
-.name-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 36rem;
-    height: 36rem;
-    margin: -18rem 0 0 -18rem;
-    pointer-events: none;
-    z-index: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-        rgba(204, 255, 0, 0.35) 0%,
-        rgba(204, 255, 0, 0.18) 25%,
-        rgba(204, 255, 0, 0.05) 55%,
-        transparent 75%);
-    filter: blur(2rem);
-    mix-blend-mode: screen;
-    opacity: 0;
-    transition: opacity 0.4s var(--ease);
-    will-change: transform, opacity;
-}
-
-.hero-name-stack:hover .name-glow,
-.hero-name-stack.glow-on .name-glow { opacity: 1; }
-
-/* Ambient atmospheric backdrop - extremely subtle so the name area isn't
-   just floating in pure void, but no visible box anywhere */
-.hero-name-stack::before {
-    content: '';
-    position: absolute;
-    inset: -4rem -3rem;
-    background: radial-gradient(ellipse at center,
-        rgba(204, 255, 0, 0.045) 0%,
-        rgba(204, 255, 0, 0.015) 35%,
-        transparent 70%);
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 50%;
-}
-
+/* Hero name - static, no animated effects. Reliable, performant, classy. */
 .hero-name {
-    position: relative;
-    z-index: 2;
     font-family: var(--font-display);
-    font-size: clamp(4rem, 17vw, 14rem);
+    font-size: clamp(3rem, 14vw, 11rem);
     font-weight: 800;
     line-height: 0.92;
     letter-spacing: -0.06em;
     color: var(--text);
     text-align: center;
     margin: 0;
-    mix-blend-mode: normal;
-    /* Prevent the browser's text I-beam cursor (blue vertical line) from showing
-       when the custom cursor is over the name. Also blocks accidental text-select. */
-    cursor: none;
     user-select: none;
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
-
-.hero-name, .hero-name * { cursor: none; }
-body.no-cursor .hero-name, body.no-cursor .hero-name * { cursor: default; }
-
-.name-hint {
-    position: absolute;
-    bottom: -1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    color: var(--text-mute);
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 0.5s var(--ease) 0.8s;
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-.hero-name-stack.ready .name-hint { opacity: 1; }
-.hero-name-stack.touched .name-hint { opacity: 0; transition-delay: 0s; }
 
 .hero-line { display: block; }
 
 .hero-line .serif-italic {
     font-weight: 400;
     color: var(--accent);
-    /* Serif italic balances optically - slight size adjustment */
     font-size: 0.95em;
     line-height: 0.9;
     margin-right: 0.05em;
 }
 
 .hero-dot { color: var(--accent); }
-
-.word { display: inline-block; }
-
-.hero-letter {
-    display: inline-block;
-    transform-origin: 50% 100%;
-    will-change: transform, opacity, text-shadow;
-    --g: 0.18; /* glow intensity 0–1, set per-letter by JS based on cursor proximity */
-    text-shadow:
-        0 0 calc(0.5rem * var(--g)) rgba(204, 255, 0, calc(0.95 * var(--g))),
-        0 0 calc(1.5rem * var(--g)) rgba(204, 255, 0, calc(0.6 * var(--g))),
-        0 0 calc(3.5rem * var(--g)) rgba(204, 255, 0, calc(0.35 * var(--g)));
-    transition: text-shadow 0.1s linear;
-}
-
-.hero-dot {
-    color: var(--accent);
-    text-shadow:
-        0 0 1rem rgba(204, 255, 0, 0.7),
-        0 0 2.5rem rgba(204, 255, 0, 0.4);
-}
 
 .hero-terminal {
     margin-top: 1.75rem;
@@ -743,6 +567,13 @@ body.no-cursor .tile { cursor: pointer; }
     height: 100%;
     object-fit: cover;
     display: block;
+}
+
+/* For images that must show their full width (text screenshots, code, etc.) */
+.tile-media-contain {
+    object-fit: contain !important;
+    background: #000;
+    padding: 0.5rem;
 }
 
 .tile-media-abstract {

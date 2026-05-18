@@ -4,11 +4,8 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const isMobile = window.matchMedia('(max-width: 48rem)').matches;
-const cinematicEnabled = !prefersReducedMotion && !isMobile;
-
-if (isTouch || prefersReducedMotion) {
-    document.body.classList.add('no-cursor');
-}
+const isPortraitPhone = window.matchMedia('(orientation: portrait) and (max-width: 50rem)').matches;
+const cinematicEnabled = !prefersReducedMotion && !isMobile && !isPortraitPhone;
 
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
@@ -42,10 +39,7 @@ function completeLoader() {
     initHeroEntrance();
     setTimeout(() => {
         if (window.gsap && window.ScrollTrigger) initLenisAndGSAP();
-        initCursorTargets();
         startHeroTypewriter();
-        /* Smoke runs independently of GSAP/Lenis - pure WebGL */
-        initSmokeReveal();
     }, 60);
 }
 
@@ -61,53 +55,14 @@ setTimeout(() => {
     }
 }, 200);
 
-/* ============================================
-   HERO LETTER SPLIT
-   ============================================ */
-function splitWords() {
-    document.querySelectorAll('[data-split]').forEach((el) => {
-        const text = el.textContent;
-        el.textContent = '';
-        [...text].forEach((char) => {
-            const span = document.createElement('span');
-            span.classList.add('hero-letter');
-            span.textContent = char === ' ' ? ' ' : char;
-            el.appendChild(span);
-        });
-    });
-}
-splitWords();
-
 function initHeroEntrance() {
-    if (!window.gsap) return;
-    if (prefersReducedMotion) {
-        gsap.set('.hero-letter', { opacity: 1, y: 0, rotateX: 0 });
-        return;
-    }
-    gsap.from('.hero-letter', {
+    if (!window.gsap || prefersReducedMotion) return;
+    gsap.from(['.hero-name', '.hero-corner', '.scroll-cue'], {
         opacity: 0,
-        y: 100,
-        rotateX: -90,
-        stagger: 0.045,
-        duration: 1.1,
-        ease: 'power3.out',
-        delay: 0.1,
-    });
-
-    gsap.from('.hero-line .serif-italic', {
-        opacity: 0,
-        y: 40,
-        duration: 1.2,
-        ease: 'power3.out',
-        delay: 0.7,
-    });
-
-    gsap.from(['.hero-corner', '.scroll-cue'], {
-        opacity: 0,
-        y: 12,
+        y: 16,
         duration: 0.9,
         stagger: 0.08,
-        delay: 0.6,
+        delay: 0.2,
         ease: 'power2.out',
     });
 }
@@ -138,59 +93,6 @@ function startHeroTypewriter() {
     setTimeout(tick, 900);
 }
 
-/* ============================================
-   CUSTOM CURSOR
-   ============================================ */
-(function setupCursor() {
-    if (isTouch || prefersReducedMotion) return;
-    const cursor = document.getElementById('cursor');
-    const label = document.getElementById('cursor-label');
-
-    /* Direct cursor follow using pointermove (more accurate timing than mousemove)
-       and translate3d to force a GPU-composited layer for instant repaint. */
-    function moveCursor(x, y) {
-        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    }
-    window.addEventListener('pointermove', (e) => moveCursor(e.clientX, e.clientY), { passive: true });
-    window.addEventListener('mousemove', (e) => moveCursor(e.clientX, e.clientY), { passive: true });
-
-    /* Hide cursor during middle-click auto-scroll (Chrome's auto-scroll causes drift) */
-    window.addEventListener('mousedown', (e) => {
-        if (e.button === 1) {
-            cursor.style.opacity = '0';
-            cursor.style.transition = 'opacity 0.15s';
-            setTimeout(() => { cursor.style.opacity = ''; }, 1500);
-        }
-    });
-
-    document.addEventListener('mouseover', (e) => {
-        const target = e.target.closest && e.target.closest('[data-cursor], [data-cursor-target]');
-        if (!target) return;
-        const text = target.dataset.cursor;
-        if (text) {
-            label.textContent = text.toUpperCase();
-            document.body.classList.add('cursor-target');
-            document.body.classList.remove('cursor-link');
-        } else {
-            document.body.classList.add('cursor-link');
-            document.body.classList.remove('cursor-target');
-        }
-    });
-    document.addEventListener('mouseout', (e) => {
-        const target = e.target.closest && e.target.closest('[data-cursor], [data-cursor-target]');
-        if (!target) return;
-        document.body.classList.remove('cursor-target', 'cursor-link');
-    });
-})();
-
-function initCursorTargets() {
-    if (isTouch || prefersReducedMotion) return;
-    document.querySelectorAll('a, button').forEach((el) => {
-        if (!el.hasAttribute('data-cursor') && !el.hasAttribute('data-cursor-target')) {
-            el.setAttribute('data-cursor-target', '');
-        }
-    });
-}
 
 /* ============================================
    LENIS + GSAP
@@ -249,113 +151,6 @@ function initTileVideoAutoplay() {
 
     videos.forEach((v) => obs.observe(v));
 }
-
-/* ============================================
-   HERO NAME GLOW
-   - Per-letter text-shadow modulated by cursor distance (letters light up
-     as the cursor approaches them).
-   - A soft lime spotlight follows the cursor (mix-blend-mode: screen).
-   - Ambient breathing pulse on letters so the area feels alive without input.
-   - On touch / reduced-motion: just a gentle ambient wave across letters.
-   ============================================ */
-function initSmokeReveal() {
-    const stack = document.getElementById('hero-name-stack');
-    const glow = document.getElementById('name-glow');
-    if (!stack) return;
-
-    const letters = stack.querySelectorAll('.hero-letter');
-    if (letters.length === 0) return;
-
-    let suppressedUntil = 0;
-
-    /* Cache letter positions. Updated only on resize / scroll, not every frame.
-       Previously this used getBoundingClientRect() inside a rAF loop for 12
-       letters per frame = 13 forced layouts per frame = the source of the lag. */
-    let stackRect = null;
-    let letterPositions = [];
-
-    function recachePositions() {
-        stackRect = stack.getBoundingClientRect();
-        letterPositions = Array.from(letters).map((letter) => {
-            const r = letter.getBoundingClientRect();
-            return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-        });
-    }
-    recachePositions();
-    window.addEventListener('resize', recachePositions, { passive: true });
-    window.addEventListener('scroll', recachePositions, { passive: true });
-
-    window.addEventListener('mousedown', (e) => {
-        if (e.button === 1) suppressedUntil = performance.now() + 1500;
-    });
-
-    /* Touch / reduced-motion: gentle slow ambient wave, throttled to 12fps */
-    if (isTouch || prefersReducedMotion) {
-        let wavePhase = 0;
-        function wave() {
-            wavePhase += 0.08;
-            for (let i = 0; i < letters.length; i++) {
-                const w = Math.max(0, Math.sin(wavePhase - i * 0.25));
-                letters[i].style.setProperty('--g', (0.15 + 0.4 * w * w).toFixed(3));
-            }
-            setTimeout(wave, 80);
-        }
-        wave();
-        return;
-    }
-
-    /* Desktop: cursor-driven, event-based (no rAF loop). */
-    let gx = -9999, gy = -9999;
-    let ambientPhase = 0;
-
-    function applyLetters(cursorInside) {
-        for (let i = 0; i < letters.length; i++) {
-            const pos = letterPositions[i];
-            const ambient = 0.16 + 0.07 * Math.sin(ambientPhase + i * 0.4);
-            let proximity = 0;
-            if (cursorInside && pos) {
-                const dx = gx - pos.x;
-                const dy = gy - pos.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                proximity = Math.max(0, 1 - dist / 260);
-                proximity *= proximity;
-            }
-            const g = Math.min(1.05, ambient + proximity * 1.1);
-            letters[i].style.setProperty('--g', g.toFixed(3));
-        }
-    }
-
-    function isInside() {
-        if (!stackRect) return false;
-        if (performance.now() < suppressedUntil) return false;
-        return gx >= stackRect.left - 100 && gx <= stackRect.right + 100 &&
-               gy >= stackRect.top - 100 && gy <= stackRect.bottom + 100;
-    }
-
-    window.addEventListener('mousemove', (e) => {
-        gx = e.clientX;
-        gy = e.clientY;
-        const inside = isInside();
-        if (inside) {
-            stack.classList.add('glow-on');
-            if (glow && stackRect) {
-                glow.style.transform = `translate(${gx - stackRect.left}px, ${gy - stackRect.top}px)`;
-            }
-        } else {
-            stack.classList.remove('glow-on');
-        }
-        applyLetters(inside);
-    }, { passive: true });
-
-    /* Ambient breathing: throttled to 12fps so it does not compete with cursor */
-    function ambient() {
-        ambientPhase += 0.07;
-        applyLetters(isInside());
-        setTimeout(ambient, 80);
-    }
-    ambient();
-}
-
 
 /* Mandatory horizontal pin: vertical scroll advances through tiles one-by-one.
    Snap is locked - user can't get stuck between tiles. */
