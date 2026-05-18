@@ -1563,29 +1563,28 @@ video.m-media { background: #000; }
 
     .hero-terminal { font-size: 0.85rem; flex-wrap: wrap; justify-content: center; padding: 0 1rem; }
 
-    /* Mobile: drop GSAP pin, use native horizontal overflow with mandatory snap.
-       Each tile still fills 100vw × screen height - one project per swipe. */
+    /* Mobile: stack tiles vertically as full-screen sections so visitors can't
+       skip them. They scroll through one by one to reach the next page section. */
     .tiles-shell {
         height: auto;
+        overflow: visible;
     }
     .tiles-track {
-        overflow-x: auto;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        width: auto;
+        display: block;
+        overflow: visible;
+        width: 100%;
         transform: none !important;
     }
-    .tiles-track::-webkit-scrollbar { display: none; }
 
     .tile {
-        flex: 0 0 100vw;
-        width: 100vw;
-        min-height: calc(100vh - var(--mast-h));
-        min-height: calc(100svh - var(--mast-h));
+        flex: 0 0 auto;
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100svh;
         padding: 3vh 1.25rem;
+        border-bottom: 1px solid var(--line);
     }
+    .tile:last-child { border-bottom: none; }
     .tile-inner {
         height: auto;
         max-width: 100%;

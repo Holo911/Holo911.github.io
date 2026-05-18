@@ -367,8 +367,9 @@ function initTilesPin() {
     if (!section || !track || tiles.length === 0) return;
 
     const getDistance = () => track.scrollWidth - window.innerWidth;
-
-    /* Lenis must let GSAP do its thing on the section - no scroll prevention here */
+    /* Less vertical scroll required to traverse all tiles - 0.55x ratio means
+       roughly half as many wheel ticks needed to go through all 7 projects. */
+    const getPinLength = () => getDistance() * 0.55;
 
     gsap.to(track, {
         x: () => -getDistance(),
@@ -376,14 +377,15 @@ function initTilesPin() {
         scrollTrigger: {
             trigger: section,
             pin: true,
-            scrub: 0.2,
+            scrub: 0.08,  /* very low smoothing - snappier response */
             snap: {
                 snapTo: 1 / (tiles.length - 1),
-                duration: { min: 0.25, max: 0.55 },
-                ease: 'power2.inOut',
+                duration: { min: 0.12, max: 0.28 },  /* faster snap */
+                ease: 'power2.out',
+                delay: 0,
             },
             start: 'top top',
-            end: () => `+=${getDistance()}`,
+            end: () => `+=${getPinLength()}`,
             invalidateOnRefresh: true,
             anticipatePin: 1,
         },
