@@ -146,10 +146,13 @@ function startHeroTypewriter() {
     const cursor = document.getElementById('cursor');
     const label = document.getElementById('cursor-label');
 
-    /* Direct cursor follow - no lerp, no rAF loop. Snaps instantly to mouse position. */
-    window.addEventListener('mousemove', (e) => {
-        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    }, { passive: true });
+    /* Direct cursor follow using pointermove (more accurate timing than mousemove)
+       and translate3d to force a GPU-composited layer for instant repaint. */
+    function moveCursor(x, y) {
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+    window.addEventListener('pointermove', (e) => moveCursor(e.clientX, e.clientY), { passive: true });
+    window.addEventListener('mousemove', (e) => moveCursor(e.clientX, e.clientY), { passive: true });
 
     /* Hide cursor during middle-click auto-scroll (Chrome's auto-scroll causes drift) */
     window.addEventListener('mousedown', (e) => {
@@ -199,9 +202,9 @@ function initLenisAndGSAP() {
 
     if (window.Lenis && cinematicEnabled) {
         lenis = new Lenis({
-            lerp: 0.18,           /* was 0.1 - faster follow, less perceived lag */
+            lerp: 0.35,           /* much snappier follow - less jitter, less perceived lag */
             smoothWheel: true,
-            wheelMultiplier: 1.05,
+            wheelMultiplier: 1.1,
             syncTouch: false,
         });
 
@@ -373,7 +376,7 @@ function initTilesPin() {
         scrollTrigger: {
             trigger: section,
             pin: true,
-            scrub: 0.5,
+            scrub: 0.2,
             snap: {
                 snapTo: 1 / (tiles.length - 1),
                 duration: { min: 0.25, max: 0.55 },

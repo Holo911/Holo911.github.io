@@ -35,8 +35,11 @@ html {
 html, body { height: 100%; }
 
 body {
+    background: #070707; /* explicit fallback before var resolves */
     background: var(--bg);
+    color: #f4f4f6;
     color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Outfit', 'Space Grotesk', sans-serif;
     font-family: var(--font-display);
     font-size: 1rem;
     line-height: 1.6;
@@ -138,6 +141,7 @@ em { font-style: italic; }
     position: fixed;
     inset: 0;
     z-index: 5000;
+    background: #070707; /* explicit hex fallback so it works even if CSS vars fail */
     background: var(--bg);
     display: flex;
     flex-direction: column;
@@ -145,6 +149,13 @@ em { font-style: italic; }
     justify-content: center;
     gap: 2rem;
     transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
+    /* CSS-only safety fade-out: if JS fails to call completeLoader(), the loader
+       still disappears after 4 seconds so visitors see the page. */
+    animation: loaderSafetyFade 0.8s 4s forwards;
+}
+
+@keyframes loaderSafetyFade {
+    to { opacity: 0; visibility: hidden; pointer-events: none; }
 }
 
 #loader.done {
