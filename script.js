@@ -77,7 +77,7 @@ function startHeroTypewriter() {
     const target = document.getElementById('hero-typed');
     if (!target) return;
 
-    const phrase = "./holo911 --offensive_security --ai --robots";
+    const phrase = "./holo911 sec / ai / robots";
     const speed = prefersReducedMotion ? 0 : 28;
 
     if (prefersReducedMotion) {
