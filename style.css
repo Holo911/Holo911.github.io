@@ -84,6 +84,16 @@ img, video { display: block; max-width: 100%; }
 
 em { font-style: italic; }
 
+/* Keyboard focus: visible lime ring, only for keyboard navigation */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* Anchored sections stop below the fixed masthead instead of under it */
+section[id] { scroll-margin-top: var(--mast-h); }
+
 /* The signature italic - reserved for ONE place only: the hero name "Dudek" */
 .serif-italic {
     font-family: var(--font-serif);
@@ -196,10 +206,16 @@ em { font-style: italic; }
        every frame on the GPU, killing scroll performance. */
     background: rgba(7, 7, 7, 0.92);
     border-bottom: 1px solid var(--line);
+    transition: transform 0.45s var(--ease);
 }
+
+/* GTA-VI style: bar tucks away on scroll down, returns on scroll up.
+   The hamburger stays visible - it lives outside the mast. */
+.mast.mast-hidden { transform: translateY(-100%); }
 
 .brand {
     display: flex;
+    justify-self: start; /* clickable area = text only, not the whole grid cell */
     align-items: baseline;
     gap: 0.5rem;
     font-family: var(--font-display);
@@ -218,40 +234,44 @@ em { font-style: italic; }
 .brand-slash { color: var(--text-mute); font-weight: 300; }
 .brand-handle { color: var(--text-soft); font-weight: 500; font-family: var(--font-mono); font-size: 0.8rem; }
 
+/* Big clear round pill buttons (GTA-VI style primary nav) */
 .mast-nav {
     display: flex;
-    gap: 2rem;
+    gap: 0.5rem;
     justify-self: center;
 }
 
 .mast-nav a {
     display: inline-flex;
-    align-items: baseline;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-mute);
-    text-transform: lowercase;
-    letter-spacing: 0.05em;
-    transition: color 0.2s var(--ease);
-    position: relative;
-}
-
-.mast-nav a .num {
-    color: var(--text-mute);
-    font-size: 0.6rem;
-    font-weight: 500;
-    transition: color 0.2s var(--ease);
-}
-
-.mast-nav a:hover, .mast-nav a.active { color: var(--text); }
-.mast-nav a:hover .num, .mast-nav a.active .num { color: var(--accent); }
-
-.mast-status {
-    justify-self: end;
-    display: inline-flex;
     align-items: center;
-    padding: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-soft);
+    text-transform: lowercase;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1.35rem;
+    border: 1px solid var(--line-2);
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.02);
+    transition:
+        color 0.25s var(--ease),
+        border-color 0.25s var(--ease),
+        background 0.25s var(--ease);
+}
+
+.mast-nav a:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+}
+
+/* Active section = filled lime pill, black text */
+.mast-nav a.active {
+    color: #000;
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 600;
 }
 
 .status-dot {
@@ -275,6 +295,191 @@ em { font-style: italic; }
 }
 
 /* ============================================
+   MENU TOGGLE (hamburger "=" that morphs into "X")
+   Fixed top-right, above the side menu, always reachable.
+   ============================================ */
+.menu-toggle {
+    position: fixed;
+    top: calc((var(--mast-h) - 2.75rem) / 2);
+    right: 1.25rem;
+    z-index: 300;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    background: rgba(12, 12, 14, 0.85);
+    cursor: pointer;
+    transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.menu-toggle:hover { border-color: var(--accent); }
+
+.menu-toggle-bar {
+    display: block;
+    width: 1.1rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+    transition: transform 0.35s var(--ease-power), background 0.3s var(--ease);
+}
+
+/* "=" → "X": each bar travels to center (gap/2 + half bar height) and rotates */
+body.menu-open .menu-toggle { border-color: var(--accent); }
+body.menu-open .menu-toggle-bar { background: var(--accent); }
+body.menu-open .menu-toggle-bar:nth-child(1) { transform: translateY(calc(0.2rem + 1px)) rotate(45deg); }
+body.menu-open .menu-toggle-bar:nth-child(2) { transform: translateY(calc(-0.2rem - 1px)) rotate(-45deg); }
+
+/* ============================================
+   SIDE MENU (right pane, GTA-VI style)
+   ============================================ */
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 240;
+    background: rgba(3, 3, 4, 0.6);
+    backdrop-filter: blur(0.4rem);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
+}
+
+body.menu-open .menu-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.menu-open { overflow: hidden; }
+
+.side-menu {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    z-index: 250;
+    width: min(24rem, 92vw);
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--mast-h) + 1rem) 2rem 2rem;
+    background: var(--bg-2);
+    border-left: 1px solid var(--line);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.5s var(--ease-power), visibility 0.5s;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-2) transparent;
+}
+
+body.menu-open .side-menu {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.side-menu-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.side-menu-nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.25rem;
+}
+
+.side-menu-link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0.25rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-soft);
+    opacity: 0;
+    transform: translateX(1.25rem);
+    /* delays below stagger opacity/transform on open; color/padding are hover */
+    transition:
+        opacity 0.45s var(--ease),
+        transform 0.45s var(--ease),
+        color 0.25s var(--ease),
+        padding-left 0.3s var(--ease);
+}
+
+body.menu-open .side-menu-link { opacity: 1; transform: translateX(0); }
+body.menu-open .side-menu-link:nth-child(1) { transition-delay: 0.10s, 0.10s, 0s, 0s; }
+body.menu-open .side-menu-link:nth-child(2) { transition-delay: 0.16s, 0.16s, 0s, 0s; }
+body.menu-open .side-menu-link:nth-child(3) { transition-delay: 0.22s, 0.22s, 0s, 0s; }
+body.menu-open .side-menu-link:nth-child(4) { transition-delay: 0.28s, 0.28s, 0s, 0s; }
+body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s, 0s; }
+
+.side-menu-link:hover {
+    color: var(--text);
+    padding-left: 0.75rem;
+}
+
+.side-menu-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+}
+
+.side-menu-arrow {
+    margin-left: auto;
+    color: var(--accent);
+    font-size: 1.1rem;
+    opacity: 0;
+    transform: translateX(-0.4rem);
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.side-menu-link:hover .side-menu-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.side-menu-foot {
+    margin-top: auto;
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.side-menu-status {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.side-menu-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+}
+
+.side-menu-social a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-mute);
+    letter-spacing: 0.05em;
+    transition: color 0.25s var(--ease);
+}
+
+.side-menu-social a:hover { color: var(--accent); }
+
+/* ============================================
    HERO
    ============================================ */
 .hero {
@@ -287,28 +492,64 @@ em { font-style: italic; }
     justify-content: center;
     align-items: center;
     text-align: center;
+    overflow: hidden;
 }
 
-.hero-corner {
+/* Generative contour field - drawn by JS (initHeroCanvas), sits behind everything */
+.hero-canvas {
     position: absolute;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    line-height: 1.5;
-    color: var(--text-soft);
-    letter-spacing: 0.04em;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.hero-corner .muted { color: var(--text-mute); }
-.hero-tl { top: calc(var(--mast-h) + 1.25rem); left: 1.5rem; text-align: left; }
-.hero-tr { top: calc(var(--mast-h) + 1.25rem); right: 1.5rem; text-align: right; }
-.hero-bl { bottom: 1.5rem; left: 1.5rem; text-align: left; }
-.hero-br { bottom: 1.5rem; right: 1.5rem; text-align: right; }
+/* Always-on breathing lime glow behind the name. Pre-blurred radial gradient
+   with an opacity animation only - compositor-friendly, no per-frame repaints
+   of the giant text like an animated text-shadow would cause. */
+.hero-glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 74vmin;
+    height: 74vmin;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(204, 255, 0, 0.07) 0%,
+        rgba(204, 255, 0, 0.025) 45%,
+        transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    animation: heroBreathe 5.5s ease-in-out infinite;
+}
+
+@keyframes heroBreathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.hero-name,
+.hero-terminal {
+    position: relative;
+    z-index: 1;
+}
 
 .scroll-cue {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
     color: var(--text-soft);
+    white-space: nowrap;
 }
 
 .scroll-cue-arrow {
@@ -477,7 +718,6 @@ em { font-style: italic; }
     border-right: 1px solid var(--line);
 }
 
-body.no-cursor .tile { cursor: pointer; }
 .tile:last-child { border-right: none; }
 
 /* Giant ghost number - visual identity */
@@ -674,8 +914,6 @@ body.no-cursor .tile { cursor: pointer; }
         background 0.35s var(--ease);
 }
 
-body.no-cursor .tile-tech span { cursor: default; }
-
 .tile-tech span:hover {
     transform: translateY(-0.2rem);
     color: var(--accent);
@@ -708,8 +946,6 @@ body.no-cursor .tile-tech span { cursor: default; }
     cursor: pointer;
 }
 
-body.no-cursor .tile-open { cursor: pointer; }
-
 .tile-open:hover {
     background: var(--accent);
     color: #000;
@@ -724,8 +960,38 @@ body.no-cursor .tile-open { cursor: pointer; }
     transform: translateX(0.4rem);
 }
 
-.desktop-only { display: inline; }
-.mobile-only { display: none; }
+/* ============================================
+   TILES FALLBACK - vertical stack
+   Applied when the pinned horizontal scroll cannot run:
+   - JS adds body.tiles-stacked (touch device, reduced motion, GSAP absent)
+   - html.no-js covers JS completely disabled
+   Guarantees no project is ever trapped off-screen in a frozen track.
+   ============================================ */
+body.tiles-stacked .tiles-shell,
+html.no-js .tiles-shell {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+body.tiles-stacked .tiles-track,
+html.no-js .tiles-track {
+    display: block !important;
+    width: 100% !important;
+    transform: none !important;
+}
+
+body.tiles-stacked .tile,
+html.no-js .tile {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+}
+
+body.tiles-stacked .tile:last-child,
+html.no-js .tile:last-child {
+    border-bottom: none;
+}
 
 /* ============================================
    HACKATHON GRID
@@ -1090,78 +1356,6 @@ body.no-cursor .tile-open { cursor: pointer; }
 }
 
 /* ============================================
-   SECTION INDICATOR (right edge)
-   Each item is a generous click target (full row, padded).
-   Labels are hidden by default; group hover reveals them all so
-   visitors see the menu instead of fishing for tiny dots.
-   ============================================ */
-.section-indicator {
-    position: fixed;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-    z-index: 80;
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-    align-items: flex-end;
-}
-
-.indicator-dot {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.875rem;
-    padding: 0.625rem 0.5rem 0.625rem 1.25rem;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text-mute);
-    font: inherit;
-    border-radius: 1.5rem 0 0 1.5rem;
-    transition: color 0.3s var(--ease), background 0.3s var(--ease);
-}
-
-body.no-cursor .indicator-dot { cursor: pointer; }
-
-.dot-mark {
-    width: 0.45rem;
-    height: 0.45rem;
-    background: currentColor;
-    border-radius: 50%;
-    flex-shrink: 0;
-    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-}
-
-.dot-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(0.5rem);
-    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
-    pointer-events: none;
-}
-
-.section-indicator:hover .indicator-dot { color: var(--text-soft); }
-.section-indicator:hover .dot-label { opacity: 1; transform: translateX(0); }
-
-.indicator-dot:hover { color: var(--text); background: rgba(255, 255, 255, 0.03); }
-.indicator-dot:hover .dot-mark { transform: scale(1.5); }
-
-.indicator-dot.active { color: var(--accent); }
-.indicator-dot.active .dot-mark {
-    transform: scale(1.65);
-    box-shadow: 0 0 0.5rem rgba(204, 255, 0, 0.45);
-}
-.indicator-dot.active .dot-label {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* ============================================
    MODAL
    ============================================ */
 .modal {
@@ -1354,32 +1548,14 @@ video.m-media { background: #000; }
    RESPONSIVE - tablet (≤900px)
    ============================================ */
 @media (max-width: 56.25rem) {
+    /* Pills hide on tablet/phone - the hamburger menu takes over navigation.
+       Mast stays one compact row: brand left, burger (fixed) right. */
     .mast {
         grid-template-columns: 1fr auto;
-        height: auto;
-        padding: 0.75rem 1rem;
-        gap: 0.75rem;
+        padding: 0 4rem 0 1rem; /* right space reserved for the fixed burger */
     }
-    .mast-status { display: none; }
-    .mast-nav {
-        grid-column: 1 / -1;
-        justify-self: stretch;
-        justify-content: space-between;
-        gap: 0.5rem;
-    }
-    .mast-nav a .num { display: none; }
+    .mast-nav { display: none; }
 
-    :root { --mast-h: 5rem; }
-
-    .hero-corner { font-size: 0.65rem; }
-    .hero-tl, .hero-tr { top: calc(var(--mast-h) + 0.5rem); }
-
-    .hero-tr, .hero-br { display: none; }
-    .hero-tl, .hero-bl {
-        position: static;
-        text-align: center;
-        margin: 0.5rem 0;
-    }
     .hero {
         padding-top: calc(var(--mast-h) + 1rem);
         gap: 0.5rem;
@@ -1457,25 +1633,13 @@ video.m-media { background: #000; }
     .contact-cards { grid-template-columns: 1fr; }
 
     .foot-row { grid-template-columns: repeat(2, 1fr); }
-
-    .section-indicator { right: 0.5rem; gap: 0.125rem; }
-    .indicator-dot { padding: 0.625rem 0.4rem; }
-    .dot-label { display: none; } /* touch / tablet: no hover, no labels needed */
-    .indicator-dot.active .dot-label { display: none; }
-
-    .desktop-only { display: none; }
-    .mobile-only { display: inline; }
 }
 
 /* ============================================
    RESPONSIVE - phone (≤768px)
    ============================================ */
 @media (max-width: 48rem) {
-    body { cursor: auto; }
-    #cursor { display: none; }
-
     .hero { padding: calc(var(--mast-h) + 1rem) 1rem 1.5rem; }
-    .hero-corner { font-size: 0.625rem; }
     .hero-name { font-size: clamp(3.5rem, 18vw, 6rem); }
     .hero-terminal { font-size: 0.68rem; gap: 0.3rem; }
 
@@ -1483,16 +1647,13 @@ video.m-media { background: #000; }
     .modal-body { padding: 2.25rem 1.5rem 1.75rem; }
     .m-gallery { grid-template-columns: 1fr; }
 
-    .mast-nav { gap: 0.25rem; }
-    .mast-nav a { font-size: 0.7rem; }
-
+    .side-menu { padding: calc(var(--mast-h) + 0.5rem) 1.5rem 1.5rem; }
 }
 
 /* ============================================
    RESPONSIVE - small phone (≤480px)
    ============================================ */
 @media (max-width: 30rem) {
-    .hero-corner { display: none; }
     .hero { justify-content: center; padding: var(--mast-h) 1rem 5rem; }
 
     .tile { padding: 4vh 1rem; }
@@ -1579,15 +1740,9 @@ video.m-media { background: #000; }
         padding-bottom: 2rem;
     }
 
-    /* Hide the right-edge section indicator on phone - vertical scroll is obvious */
-    .section-indicator { display: none; }
-
     /* Smaller name on phone so it fits comfortably without horizontal scroll */
     .hero-name { font-size: clamp(3rem, 16vw, 5rem) !important; }
     .display-xl { font-size: clamp(2rem, 9vw, 4rem) !important; }
-
-    /* Hide ambient hero blobs on phone for cleaner look */
-    .ambient { display: none; }
 }
 
 /* ============================================
@@ -1599,8 +1754,6 @@ video.m-media { background: #000; }
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-    body { cursor: auto; }
-    #cursor { display: none; }
     .scroll-cue-arrow { animation: none; }
     .hero-terminal-cursor { animation: none; }
     /* No pin on reduced motion - fall back to native horizontal scroll */
