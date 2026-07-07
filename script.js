@@ -5,7 +5,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const isMobile = window.matchMedia('(max-width: 48rem)').matches;
 const isPortraitPhone = window.matchMedia('(orientation: portrait) and (max-width: 50rem)').matches;
-const cinematicEnabled = !prefersReducedMotion && !isMobile && !isPortraitPhone;
 
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
@@ -38,9 +37,14 @@ function completeLoader() {
     window.scrollTo(0, 0);
     initHeroEntrance();
     setTimeout(() => {
-        if (window.gsap && window.ScrollTrigger) initLenisAndGSAP();
+        if (window.gsap && window.ScrollTrigger) {
+            initGsapFeatures();
+        } else {
+            /* CDN blocked / offline: no pin possible, stack tiles vertically */
+            ensureTilesStacked();
+        }
+        runHeroScramble();
         startHeroTypewriter();
-        /* These don't need GSAP - run regardless */
         initRevealOnScroll();
     }, 60);
 }
@@ -59,7 +63,7 @@ setTimeout(() => {
 
 function initHeroEntrance() {
     if (!window.gsap || prefersReducedMotion) return;
-    gsap.from(['.hero-name', '.hero-corner', '.scroll-cue'], {
+    gsap.from(['.hero-name', '.hero-terminal', '.scroll-cue'], {
         opacity: 0,
         y: 16,
         duration: 0.9,
@@ -70,43 +74,195 @@ function initHeroEntrance() {
 }
 
 /* ============================================
-   HERO TYPEWRITER
+   HERO NAME - SCRAMBLE / DECODE
+   On load the full name resolves out of random glyphs as one staggered
+   composition (runs for everyone - unlike the old hover-only glow).
+   After that, each word re-scrambles independently: hover a word on
+   desktop, tap the name on touch. No time cooldown - a scramble simply
+   won't restart while it's already running on that element, so every
+   deliberate hover/tap gets a response (no confusing "dead" hovers).
+   ============================================ */
+const SCRAMBLE_GLYPHS = '!<>-_\\/[]{}=+*^?#$%&@01';
+
+function scrambleTo(el, finalText, duration) {
+    if (prefersReducedMotion) {
+        el.textContent = finalText;
+        return;
+    }
+    if (el._scrambling) return; /* let the current run finish */
+    el._scrambling = true;
+    const start = performance.now();
+    function frame(now) {
+        const t = (now - start) / duration;
+        if (t >= 1) {
+            el.textContent = finalText;
+            el._scrambling = false;
+            return;
+        }
+        let out = '';
+        for (let i = 0; i < finalText.length; i++) {
+            /* chars lock in left-to-right across the animation */
+            const lockAt = 0.2 + (i / finalText.length) * 0.75;
+            out += t >= lockAt
+                ? finalText[i]
+                : SCRAMBLE_GLYPHS[(Math.random() * SCRAMBLE_GLYPHS.length) | 0];
+        }
+        el.textContent = out;
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+}
+
+function runHeroScramble() {
+    document.querySelectorAll('.scramble-text').forEach((el, idx) => {
+        const finalText = el.dataset.final || el.textContent;
+        setTimeout(() => scrambleTo(el, finalText, 950), idx * 200);
+    });
+}
+
+function initHeroScrambleTriggers() {
+    const parts = document.querySelectorAll('.scramble-text');
+    const name = document.querySelector('.hero-name');
+    if (!parts.length || !name || prefersReducedMotion) return;
+
+    if (isTouch) {
+        /* phones/tablets: tapping the name replays the full decode */
+        name.addEventListener('click', runHeroScramble);
+        return;
+    }
+
+    /* desktop: only the hovered word scrambles, slightly snappier than load */
+    parts.forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+            scrambleTo(el, el.dataset.final || el.textContent, 700);
+        });
+    });
+}
+
+/* ============================================
+   HERO TYPEWRITER - cycles through phrases
    ============================================ */
 function startHeroTypewriter() {
     const target = document.getElementById('hero-typed');
     if (!target) return;
 
-    const phrase = "./holo911 sec / ai / robots";
-    const speed = prefersReducedMotion ? 0 : 28;
+    const phrases = [
+        './holo911 sec / ai / robots',
+        'nmap -sV holo911.github.io',
+        'ros2 run drone follow_target',
+        'ctf{curiosity_never_stops}',
+    ];
 
     if (prefersReducedMotion) {
-        target.textContent = phrase;
+        target.textContent = phrases[0];
         return;
     }
 
-    let i = 0;
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
+
     function tick() {
-        if (i < phrase.length) {
-            target.textContent += phrase.charAt(i);
-            i++;
-            setTimeout(tick, speed + Math.random() * 25);
+        const phrase = phrases[phraseIdx];
+        if (!deleting) {
+            charIdx++;
+            target.textContent = phrase.slice(0, charIdx);
+            if (charIdx === phrase.length) {
+                deleting = true;
+                setTimeout(tick, 3400); /* hold the finished phrase */
+                return;
+            }
+            setTimeout(tick, 28 + Math.random() * 25);
+        } else {
+            charIdx--;
+            target.textContent = phrase.slice(0, charIdx);
+            if (charIdx === 0) {
+                deleting = false;
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                setTimeout(tick, 500);
+                return;
+            }
+            setTimeout(tick, 12);
         }
     }
     setTimeout(tick, 900);
 }
 
+/* ============================================
+   GSAP + LENIS
+   Lenis provides the momentum "glide" scroll on desktop pointer devices.
+   Touch devices keep native scrolling (already momentum-based, and Lenis
+   touch smoothing fights the OS). GSAP ticker drives Lenis's rAF.
+   ============================================ */
+let lenis = null;
+
+function initGsapFeatures() {
+    gsap.registerPlugin(ScrollTrigger);
+    initSmoothScroll();
+    initTilesPin();
+}
+
+function initSmoothScroll() {
+    if (typeof Lenis === 'undefined') return;
+    if (prefersReducedMotion || isTouch || isMobile || isPortraitPhone) return;
+
+    lenis = new Lenis({
+        lerp: 0.09,       /* lower = longer glide after the wheel stops */
+        smoothWheel: true,
+    });
+
+    /* Keep ScrollTrigger in sync with Lenis-driven scroll */
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+}
 
 /* ============================================
-   GSAP (no Lenis - native scroll is smoother)
+   TILES - pinned horizontal scroll (desktop only)
+   Vertical scroll advances through tiles one-by-one, snap locked.
+   Every environment that can't run the pin gets the vertical stack
+   fallback so no tile is ever trapped off-screen (see ensureTilesStacked).
    ============================================ */
-const lenis = null; /* kept for compatibility with code that checks `if (lenis)` */
+function ensureTilesStacked() {
+    document.body.classList.add('tiles-stacked');
+}
 
-function initLenisAndGSAP() {
-    if (window.gsap) gsap.registerPlugin(ScrollTrigger);
-    initActiveNav();
-    initSectionIndicator();
-    initTilesPin();
-    initTileVideoAutoplay();
+function initTilesPin() {
+    if (isMobile || isTouch || prefersReducedMotion) {
+        ensureTilesStacked();
+        return;
+    }
+    const section = document.getElementById('tiles-shell');
+    const track = document.getElementById('tiles-track');
+    const tiles = document.querySelectorAll('.tile');
+    if (!section || !track || tiles.length === 0) return;
+
+    const getDistance = () => track.scrollWidth - window.innerWidth;
+    /* Less vertical scroll required to traverse all tiles - 0.55x ratio means
+       roughly half as many wheel ticks needed to go through all 7 projects. */
+    const getPinLength = () => getDistance() * 0.55;
+
+    gsap.to(track, {
+        x: () => -getDistance(),
+        ease: 'none',
+        scrollTrigger: {
+            trigger: section,
+            pin: true,
+            scrub: true,
+            snap: {
+                snapTo: 1 / (tiles.length - 1),
+                duration: { min: 0.15, max: 0.3 },
+                ease: 'power2.out',
+                delay: 0.05,
+            },
+            start: 'top top',
+            end: () => `+=${getPinLength()}`,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+        },
+    });
+
+    setTimeout(() => ScrollTrigger.refresh(), 400);
 }
 
 /* ============================================
@@ -156,74 +312,170 @@ function initTileVideoAutoplay() {
     videos.forEach((v) => obs.observe(v));
 }
 
-/* Mandatory horizontal pin: vertical scroll advances through tiles one-by-one.
-   Snap is locked - user can't get stuck between tiles. */
-function initTilesPin() {
-    if (isMobile || isTouch || prefersReducedMotion) return;
-    const section = document.getElementById('tiles-shell');
-    const track = document.getElementById('tiles-track');
-    const tiles = document.querySelectorAll('.tile');
-    if (!section || !track || tiles.length === 0) return;
+/* ============================================
+   HERO BACKGROUND - generative contour field
+   Layered-sine "terrain" lines drawn on a <canvas>. No assets, no libs.
+   Reacts to the page: scroll position shifts the wave phase (the background
+   visibly flows as you scroll), scroll velocity pumps energy into the wave
+   amplitude, and on desktop the field leans slightly toward the pointer.
+   A slow scanning band sweeps vertically and brightens lines it passes.
+   Perf guards: DPR capped at 1.5, fewer/coarser lines on mobile, animation
+   paused whenever the hero is off-screen, static single frame for
+   prefers-reduced-motion.
+   ============================================ */
+function initHeroCanvas() {
+    const canvas = document.getElementById('hero-canvas');
+    const hero = document.getElementById('hero');
+    if (!canvas || !hero) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const getDistance = () => track.scrollWidth - window.innerWidth;
-    /* Less vertical scroll required to traverse all tiles - 0.55x ratio means
-       roughly half as many wheel ticks needed to go through all 7 projects. */
-    const getPinLength = () => getDistance() * 0.55;
+    const lite = isMobile || isPortraitPhone;
+    const ROWS = lite ? 26 : 42;
+    const STEP = lite ? 22 : 14;
 
-    gsap.to(track, {
-        x: () => -getDistance(),
-        ease: 'none',
-        scrollTrigger: {
-            trigger: section,
-            pin: true,
-            scrub: true,  /* direct 1:1 mapping - no smoothing layer, no jitter */
-            snap: {
-                snapTo: 1 / (tiles.length - 1),
-                duration: { min: 0.15, max: 0.3 },
-                ease: 'power2.out',
-                delay: 0.05,
-            },
-            start: 'top top',
-            end: () => `+=${getPinLength()}`,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-        },
+    let w = 0, h = 0;
+    let running = false;
+    let rafId = null;
+
+    const phase = Math.random() * 100; /* different opening frame every visit */
+    let energy = 0;
+    let lastScrollY = window.scrollY;
+    let pointerX = 0.5, pointerY = 0.5;
+    let targetPX = 0.5, targetPY = 0.5;
+
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        w = canvas.clientWidth;
+        h = canvas.clientHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    /* Three incommensurate sine octaves; per-row phase offsets kill visible
+       repetition. Cheap stand-in for real noise - good enough at these alphas. */
+    function wave(x, row, t) {
+        return (
+            Math.sin(x * 0.0042 + row * 0.65 + t) +
+            Math.sin(x * 0.0091 - row * 1.31 + t * 1.7) * 0.45 +
+            Math.sin(x * 0.0177 + row * 2.42 - t * 0.8) * 0.22
+        );
+    }
+
+    function draw(now) {
+        const t = now * 0.00022 + phase;
+
+        /* scroll → flow + energy */
+        const sy = window.scrollY;
+        const dy = sy - lastScrollY;
+        lastScrollY = sy;
+        energy = Math.min((energy + Math.min(Math.abs(dy), 60) * 0.012) * 0.94, 1.6);
+        const scrollPhase = sy * 0.0022;
+
+        pointerX += (targetPX - pointerX) * 0.04;
+        pointerY += (targetPY - pointerY) * 0.04;
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.lineWidth = 1;
+
+        const scanY = (Math.sin(t * 0.9) * 0.5 + 0.5) * h; /* sweeping band */
+
+        for (let r = 0; r < ROWS; r++) {
+            const rowT = r / (ROWS - 1);
+            const baseY = h * (0.06 + rowT * 0.9);
+
+            /* amplitude grows toward the bottom (terrain feel) + scroll energy */
+            const amp = h * 0.028 * (0.45 + rowT) * (1 + energy)
+                      * (1 + (pointerY - 0.5) * 0.35);
+
+            /* fade rows near vertical center so the name stays readable */
+            const centerFade = 0.35 + 0.65 * Math.min(1, Math.abs(rowT - 0.5) * 2.6);
+            const scanBoost = Math.max(0, 1 - Math.abs(baseY - scanY) / (h * 0.13));
+
+            const isAccent = r % 7 === 3;
+            const alpha = (isAccent ? 0.11 : 0.07) * centerFade + scanBoost * 0.06;
+            ctx.strokeStyle = isAccent
+                ? 'rgba(204, 255, 0, ' + alpha.toFixed(3) + ')'
+                : 'rgba(160, 165, 175, ' + alpha.toFixed(3) + ')';
+
+            ctx.beginPath();
+            for (let x = -STEP; x <= w + STEP; x += STEP) {
+                const n = wave(x + (pointerX - 0.5) * 60 * rowT, r, t * 4 + scrollPhase);
+                const yy = baseY + n * amp;
+                if (x === -STEP) ctx.moveTo(x, yy);
+                else ctx.lineTo(x, yy);
+            }
+            ctx.stroke();
+        }
+    }
+
+    function loop(now) {
+        if (!running) return;
+        draw(now);
+        rafId = requestAnimationFrame(loop);
+    }
+
+    resize();
+    window.addEventListener('resize', () => {
+        resize();
+        if (!running) draw(performance.now());
     });
 
-    window.addEventListener('load', () => ScrollTrigger.refresh());
-    setTimeout(() => ScrollTrigger.refresh(), 400);
+    if (prefersReducedMotion) {
+        draw(0); /* one static frame, no animation */
+        return;
+    }
+
+    if (!isTouch) {
+        window.addEventListener('pointermove', (e) => {
+            targetPX = e.clientX / window.innerWidth;
+            targetPY = e.clientY / window.innerHeight;
+        }, { passive: true });
+    }
+
+    /* only burn frames while the hero is actually on screen */
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                if (!running) {
+                    running = true;
+                    lastScrollY = window.scrollY; /* don't count off-screen travel as energy */
+                    rafId = requestAnimationFrame(loop);
+                }
+            } else {
+                running = false;
+                if (rafId) cancelAnimationFrame(rafId);
+            }
+        });
+    }, { threshold: 0.02 });
+    obs.observe(hero);
 }
 
 /* ============================================
-   ACTIVE NAV + SECTION INDICATOR
-   Single scroll-based active state for both the masthead nav links and
-   right-edge indicator dots. Previously two separate ScrollTrigger
-   pipelines could race and end up showing the wrong section as active
-   (e.g. clicking dot 3 landed at section 3 but marked section 5 active).
+   NAVIGATION
+   One place owns: anchor smooth-scrolling, active-pill tracking, and the
+   masthead auto-hide (GTA-VI style: bar tucks away scrolling down, returns
+   scrolling up; the hamburger stays fixed and always reachable).
    ============================================ */
-function initActiveNav() {
-    /* Combined initialization happens in initSectionIndicator now */
-}
-
-function initSectionIndicator() {
-    const dots = document.querySelectorAll('.indicator-dot');
+function initNavTracking() {
+    const mast = document.getElementById('mast');
     const navLinks = document.querySelectorAll('.mast-nav a[href^="#"]');
     const sectionIds = ['hero', 'work', 'hackathons', 'profile', 'contact'];
     let lockedActive = null;
     let lockTimer = null;
+    let lastY = window.scrollY;
 
     function setActive(id) {
-        dots.forEach((d) => d.classList.toggle('active', d.dataset.target === id));
         navLinks.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
     }
 
     /* Find the LAST section whose top has crossed the viewport center.
        The section IDs point to small intro headings, not full content blocks
        (e.g. #profile is just the "The story." heading, then .profile-shell
-       has the actual content with no ID). So "is center inside this element"
-       fails for everything when you land mid-content and defaults to first.
-       Instead, treat each ID as a marker that "this section's territory
-       starts here" and pick the most recently crossed one. */
+       has the actual content with no ID). So each ID is treated as a marker
+       that "this section's territory starts here" - pick the most recently
+       crossed one. */
     function detectActive() {
         if (lockedActive) return lockedActive;
         const center = window.innerHeight / 2;
@@ -239,32 +491,54 @@ function initSectionIndicator() {
         return active;
     }
 
-    function update() { setActive(detectActive()); }
+    function updateMast() {
+        if (!mast) return;
+        const y = window.scrollY;
+        if (y < 120) {
+            mast.classList.remove('mast-hidden');
+        } else if (y > lastY + 4) {
+            mast.classList.add('mast-hidden');
+        } else if (y < lastY - 4) {
+            mast.classList.remove('mast-hidden');
+        }
+        lastY = y;
+    }
 
-    /* Click handler: immediate visual feedback + lock the active state during the
-       scroll animation so passing-through sections don't briefly flicker active.
-       Without the lock, scrolling fast past sections 2-3-4 to land at 5 caused
-       transient active states ending on the wrong one. */
-    dots.forEach((dot) => {
-        dot.addEventListener('click', () => {
-            const id = dot.dataset.target;
-            const target = document.getElementById(id);
-            if (!target) return;
+    function update() {
+        setActive(detectActive());
+        updateMast();
+    }
 
+    /* Anchor navigation: smooth scroll (Lenis glide on desktop, native smooth
+       elsewhere) + lock the active state during the animation so sections
+       passed on the way don't flicker active. */
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href || href === '#' || href.length < 2) return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+
+        const id = href.slice(1);
+        if (sectionIds.includes(id)) {
             lockedActive = id;
             setActive(id);
             if (lockTimer) clearTimeout(lockTimer);
-
-            if (lenis) lenis.scrollTo(target, { duration: 1.4, lock: true });
-            else target.scrollIntoView({ behavior: 'smooth' });
-
-            /* Release lock after scroll likely settled */
             lockTimer = setTimeout(() => { lockedActive = null; update(); }, 1700);
-        });
+        }
+
+        if (lenis) {
+            /* Land just below the fixed masthead (scroll-margin-top does the
+               same for the native path) */
+            lenis.scrollTo(target, { duration: 1.4, offset: -(mast ? mast.offsetHeight : 0) });
+        } else {
+            target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+        }
     });
 
-    /* Throttled native scroll listener - batch detection to one rAF tick
-       max so we never do more than one set of layout reads per frame. */
+    /* Throttled scroll listener - batch all detection to one rAF tick max */
     let scrollTicking = false;
     window.addEventListener('scroll', () => {
         if (!scrollTicking) {
@@ -280,19 +554,49 @@ function initSectionIndicator() {
 }
 
 /* ============================================
-   ANCHOR NAV
+   SIDE MENU (right pane)
+   Hamburger toggles body.menu-open; CSS handles the = → X morph, the
+   pane slide-in and the staggered link reveal.
    ============================================ */
-document.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href^="#"]');
-    if (!link) return;
-    const href = link.getAttribute('href');
-    if (!href || href === '#' || href.length < 2) return;
-    const target = document.querySelector(href);
-    if (!target) return;
-    e.preventDefault();
-    if (lenis) lenis.scrollTo(target, { duration: 1.4 });
-    else target.scrollIntoView({ behavior: 'smooth' });
-});
+function initMenu() {
+    const toggle = document.getElementById('menu-toggle');
+    const overlay = document.getElementById('menu-overlay');
+    const menu = document.getElementById('side-menu');
+    if (!toggle || !overlay || !menu) return;
+
+    const isOpen = () => document.body.classList.contains('menu-open');
+
+    function openMenu() {
+        document.body.classList.add('menu-open');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+        menu.setAttribute('aria-hidden', 'false');
+        overlay.setAttribute('aria-hidden', 'false');
+        if (lenis) lenis.stop();
+    }
+
+    function closeMenu() {
+        document.body.classList.remove('menu-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        menu.setAttribute('aria-hidden', 'true');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (lenis) lenis.start();
+    }
+
+    toggle.addEventListener('click', () => (isOpen() ? closeMenu() : openMenu()));
+    overlay.addEventListener('click', closeMenu);
+
+    /* Menu link clicks close the pane first, then the document-level anchor
+       handler (bubble phase) performs the smooth scroll with Lenis restarted. */
+    menu.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen()) closeMenu();
+    });
+}
 
 /* ============================================
    PROJECT MODAL
@@ -352,3 +656,12 @@ modal.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modal.hidden) closeModal();
 });
+
+/* ============================================
+   BOOT - things that don't depend on GSAP/loader
+   ============================================ */
+initMenu();
+initNavTracking();
+initTileVideoAutoplay();
+initHeroCanvas();
+initHeroScrambleTriggers();
