@@ -73,21 +73,6 @@ function onScroll(fn) { scrollSubs.push(fn); }
 const loader = document.getElementById('loader');
 let loaderDone = false;
 
-/* How long the loader holds before handing over. This gates the Largest
-   Contentful Paint - the hero name cannot paint until the overlay clears - so
-   it is kept short deliberately. Must stay >= the .loader-bar-fill transition
-   in CSS, or the bar never finishes filling. */
-const LOADER_HOLD = 620;
-
-function whenGsapReady(cb, timeout = 5000) {
-    const start = performance.now();
-    (function check() {
-        if (window.gsap && window.ScrollTrigger) return cb(true);
-        if (performance.now() - start > timeout) return cb(false);
-        setTimeout(check, 50);
-    })();
-}
-
 function completeLoader() {
     if (loaderDone) return;
     loaderDone = true;
@@ -101,10 +86,12 @@ function completeLoader() {
 
     initHeroEntrance();
     setTimeout(() => {
-        /* Poll rather than test once: the loader no longer stalls long enough
-           to guarantee the CDN has answered, and a single miss would strand
-           desktop visitors in the stacked-tile fallback for the whole session. */
-        whenGsapReady((ok) => (ok ? initGsapFeatures() : ensureTilesStacked()));
+        if (window.gsap && window.ScrollTrigger) {
+            initGsapFeatures();
+        } else {
+            /* CDN blocked / offline: no pin possible, stack tiles vertically */
+            ensureTilesStacked();
+        }
         runHeroScramble();
         startHeroTypewriter();
         initRevealOnScroll();
