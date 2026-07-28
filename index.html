@@ -6,23 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Szymon Dudek / Cybersecurity &amp; Robotics</title>
 
-    <meta name="description" content="Szymon Dudek (holo911) is a cybersecurity student at Howest Belgium. Selected work in offensive security, AI, and autonomous systems.">
+    <meta name="description" content="Szymon Dudek (holo911) — BSc Applied Computer Science, cum laude, Howest Belgium. Edge AI on drones, autonomous systems, and offensive security. MSc Cyber Security &amp; Resilience from September 2026.">
     <meta name="author" content="Szymon Dudek">
     <meta name="theme-color" content="#070707">
+    <link rel="canonical" href="https://holo911.github.io/">
 
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Szymon Dudek">
     <meta property="og:title" content="Szymon Dudek / Cybersecurity &amp; Robotics">
-    <meta property="og:description" content="Selected work in offensive security, AI, and autonomous systems.">
-    <meta property="og:image" content="media/H-Logo.png">
-    <meta property="og:url" content="https://holo911.github.io">
+    <meta property="og:description" content="YOLO object detection on a drone companion computer at 110.3 FPS — 85× the same board's CPU. Selected work in edge AI, autonomous systems, and offensive security.">
+    <meta property="og:image" content="https://holo911.github.io/media/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Szymon Dudek — cybersecurity and robotics portfolio">
+    <meta property="og:url" content="https://holo911.github.io/">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Szymon Dudek / Cybersecurity &amp; Robotics">
-    <meta name="twitter:description" content="Selected work in offensive security, AI, and autonomous systems.">
-    <meta name="twitter:image" content="media/H-Logo.png">
+    <meta name="twitter:description" content="YOLO object detection on a drone companion computer at 110.3 FPS — 85× the same board's CPU.">
+    <meta name="twitter:image" content="https://holo911.github.io/media/og-card.png">
 
-    <link rel="icon" type="image/png" href="media/H-Logo.png">
-    <link rel="apple-touch-icon" href="media/H-Logo.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="media/icon-96.png">
+    <link rel="apple-touch-icon" href="media/icon-180.png">
     <link rel="stylesheet" href="style.css">
 
     <script type="application/ld+json">
@@ -31,10 +36,10 @@
         "@type": "Person",
         "name": "Szymon Dudek",
         "alternateName": "holo911",
-        "jobTitle": "Cybersecurity Student",
-        "description": "Building at the intersection of offensive security, AI, and autonomous systems.",
+        "jobTitle": "Cybersecurity & Edge AI Engineer",
+        "description": "BSc Applied Computer Science (cum laude). Building at the intersection of offensive security, edge AI, and autonomous systems.",
         "url": "https://holo911.github.io",
-        "image": "https://holo911.github.io/media/H-Logo.png",
+        "image": "https://holo911.github.io/media/og-card.png",
         "email": "szymond200555@gmail.com",
         "knowsAbout": [
             "Cybersecurity",
@@ -43,6 +48,8 @@
             "Digital Forensics",
             "Robotics",
             "Computer Vision",
+            "Edge AI",
+            "Neural Processing Units",
             "Autonomous Systems",
             "Drone Systems",
             "Python",
@@ -50,10 +57,33 @@
             "Linux"
         ],
         "alumniOf": {
-            "@type": "EducationalOrganization",
+            "@type": "CollegeOrUniversity",
             "name": "Howest University of Applied Sciences",
             "url": "https://www.howest.be"
         },
+        "hasCredential": [
+            {
+                "@type": "EducationalOccupationalCredential",
+                "name": "Bachelor of Applied Computer Science (cum laude)",
+                "credentialCategory": "degree",
+                "educationalLevel": "EQF level 6",
+                "recognizedBy": { "@type": "CollegeOrUniversity", "name": "Howest University of Applied Sciences" },
+                "dateCreated": "2026-06-26"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "name": "Cisco CyberOps Associate",
+                "credentialCategory": "certificate",
+                "recognizedBy": { "@type": "Organization", "name": "Cisco Networking Academy" },
+                "dateCreated": "2026-07-01"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "name": "Cambridge C1 Advanced (CAE)",
+                "credentialCategory": "certificate",
+                "recognizedBy": { "@type": "Organization", "name": "Cambridge Assessment English" }
+            }
+        ],
         "knowsLanguage": ["Polish", "English", "German", "Japanese"],
         "sameAs": [
             "https://github.com/holo911",
@@ -77,34 +107,56 @@
     <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
 
+<!-- ======== CURSOR RETICLE (desktop pointer devices; activated by JS) ========
+     Two parts on purpose: the brackets snap to whatever is under the pointer,
+     while .cursor-dot stays pinned to the exact pointer position at all times.
+     Without that separate dot, locking onto a target hid the only precise
+     indicator of where the pointer actually was - which made aiming at a
+     button inside a locked card impossible. -->
+<div id="reticle" class="reticle" aria-hidden="true">
+    <span class="reticle-corner reticle-tl"></span>
+    <span class="reticle-corner reticle-tr"></span>
+    <span class="reticle-corner reticle-bl"></span>
+    <span class="reticle-corner reticle-br"></span>
+    <span class="reticle-label" id="reticle-label"></span>
+</div>
+<div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
 
+<!-- ======== SCROLL RAIL (desktop; fill + section ticks driven by JS) ======== -->
+<div class="rail" id="rail" aria-hidden="true">
+    <span class="rail-pct" id="rail-pct">00</span>
+    <span class="rail-track"><span class="rail-fill" id="rail-fill"></span></span>
+    <span class="rail-section" id="rail-section">index</span>
+</div>
 
 <!-- ======== MASTHEAD ======== -->
 <header class="mast" id="mast">
-    <a href="#hero" class="brand">
+    <a href="#hero" class="brand" data-magnetic>
         <span class="brand-mark">SD</span>
         <span class="brand-slash">/</span>
         <span class="brand-handle">holo911</span>
     </a>
     <nav class="mast-nav" aria-label="Primary">
-        <a href="#work">work</a>
-        <a href="#hackathons">hackathons</a>
-        <a href="#profile">profile</a>
-        <a href="#contact">contact</a>
+        <a href="#work" data-magnetic>work</a>
+        <a href="#research" data-magnetic>research</a>
+        <a href="#hackathons" data-magnetic>hackathons</a>
+        <a href="#credentials" data-magnetic>credentials</a>
+        <a href="#profile" data-magnetic>profile</a>
+        <a href="#contact" data-magnetic>contact</a>
     </nav>
 </header>
 
 <!-- Hamburger: two bars morph into an X when the menu opens. Fixed outside
      the masthead so it stays visible even when the mast auto-hides on scroll. -->
-<button class="menu-toggle" id="menu-toggle" type="button"
+<button class="menu-toggle" id="menu-toggle" type="button" data-magnetic
         aria-label="Open menu" aria-expanded="false" aria-controls="side-menu">
     <span class="menu-toggle-bar"></span>
     <span class="menu-toggle-bar"></span>
 </button>
 
 <!-- ======== HERO ======== -->
-<!-- One focal point, zero chrome: generative canvas behind, giant name with
-     decode animation, one terminal line, scroll cue. Nothing else. -->
+<!-- One focal point, zero chrome: generative detection field behind, giant name
+     with decode animation, one terminal line, scroll cue. Nothing else. -->
 <section class="hero" id="hero">
     <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-glow" aria-hidden="true"></div>
@@ -120,6 +172,12 @@
         <span class="hero-terminal-cursor">_</span>
     </div>
 
+    <p class="hero-sub">
+        BSc Applied Computer Science, <span class="accent-em">cum laude</span>
+        <span class="hero-sub-sep">·</span> edge AI on drones
+        <span class="hero-sub-sep">·</span> offensive security
+    </p>
+
     <div class="scroll-cue">
         <span class="scroll-cue-arrow">↓</span>
         <span>Scroll to explore</span>
@@ -130,7 +188,7 @@
 <section class="section-intro" id="work">
     <div class="intro-grid">
         <div class="kicker">// 01 / selected work</div>
-        <h2 class="display-xl">Seven projects.<br><span class="accent-em">Click to expand.</span></h2>
+        <h2 class="display-xl split-reveal">Seven projects.<br><span class="accent-em">Click to expand.</span></h2>
         <p class="intro-body">
             Security research, robotics, autonomous systems, and software. Each tile opens its full case.
         </p>
@@ -156,20 +214,20 @@
                     <div class="tile-text">
                         <div class="tile-content">
                             <h3 class="tile-title">Autonomous Drone <span class="accent-em">YOLO Tracking</span></h3>
-                            <p class="tile-teaser">Built from scratch. YOLO detects a target. Drone yaws audibly to follow it.</p>
+                            <p class="tile-teaser">Built from scratch in Tokyo. YOLO detects a target, the drone yaws to follow it. Shipped as a live demo at Japan IT Week.</p>
                             <div class="tile-tech">
-                                <span>Python</span><span>YOLOv8</span><span>ROS2</span><span>QUALCOMM RB5</span><span>MAVLink</span>
+                                <span>Python</span><span>YOLOv8</span><span>ROS2</span><span>ASR-D501</span><span>MAVLink</span>
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
                         </div>
                     </div>
                     <div class="tile-media">
-                        <img src="media/drone-assembled.jpg" alt="" class="tile-media-img">
+                        <img src="media/drone-assembled.jpg" alt="" class="tile-media-img" width="1200" height="900" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -196,7 +254,7 @@
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
@@ -232,14 +290,14 @@
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
                         </div>
                     </div>
                     <div class="tile-media">
-                        <img src="media/BIOSupdateTOOL.png" alt="" class="tile-media-img tile-media-contain">
+                        <img src="media/BIOSupdateTOOL.png" alt="" class="tile-media-img tile-media-contain" width="1200" height="800" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -266,7 +324,7 @@
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
@@ -304,7 +362,7 @@
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
@@ -342,14 +400,14 @@
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
                         </div>
                     </div>
                     <div class="tile-media">
-                        <img src="media/Labyrinth2.png" alt="" class="tile-media-img">
+                        <img src="media/Labyrinth2.png" alt="" class="tile-media-img" width="1200" height="900" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -376,14 +434,14 @@
                             </div>
                         </div>
                         <div class="tile-bottom">
-                            <button class="tile-open" type="button">
+                            <button class="tile-open" type="button" data-magnetic>
                                 <span class="tile-open-text">Open case</span>
                                 <span class="tile-arrow">→</span>
                             </button>
                         </div>
                     </div>
                     <div class="tile-media">
-                        <img src="media/BinBots1.png" alt="" class="tile-media-img">
+                        <img src="media/BinBots1.png" alt="" class="tile-media-img" width="1200" height="900" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -392,16 +450,165 @@
     </div>
 </div>
 
+<!-- ======== RESEARCH / THESIS ======== -->
+<section class="section-intro" id="research">
+    <div class="intro-grid">
+        <div class="kicker">// 02 / research</div>
+        <h2 class="display-xl split-reveal">Eighty-five times<br><span class="accent-em">faster.</span></h2>
+        <p class="intro-body">
+            Bachelor thesis, written during my internship at Advantech in Tokyo.
+            The question: is a Neural Processing Unit actually worth it on a drone-sized board?
+        </p>
+    </div>
+</section>
+
+<section class="research">
+
+    <div class="research-head">
+        <div class="research-titleblock">
+            <h3 class="research-title">Object Detection on an Embedded <span class="accent-em">Drone Companion Computer</span></h3>
+            <p class="research-subtitle">Comparing Inference Hardware Approaches</p>
+            <div class="research-meta">
+                <span>Howest University of Applied Sciences</span>
+                <span>Advantech Co., Ltd. — Tokyo</span>
+                <span>2025 / 2026</span>
+            </div>
+        </div>
+        <p class="research-abstract">
+            One YOLOv8 detector, deployed twice on the same Advantech ASR-D501 board — once on the ARM CPU,
+            once offloaded to the Qualcomm QCS6490's Hexagon NPU. Same model, same camera, same drone, same
+            motor-control loop. Only the silicon doing the inference changes.
+        </p>
+        <p class="research-abstract">
+            The NPU build runs YOLOv8n at <strong>110.3 frames per second</strong> while drawing roughly ten
+            percent <em>less</em> total board power. The thesis documents the whole deployment path — PyTorch
+            through ONNX to INT8 TFLite, moving the vendor's Yocto pipeline onto Ubuntu, handling camera input
+            across sensor types — plus a benchmark sweep over eight YOLO variants to characterise how NPU
+            throughput scales with model size.
+        </p>
+    </div>
+
+    <!-- Headline numbers, counted up on scroll -->
+    <div class="stat-row">
+        <div class="stat">
+            <div class="stat-value"><span data-count-to="110.3" data-decimals="1">110.3</span><span class="stat-unit">FPS</span></div>
+            <div class="stat-label">YOLOv8n on the Hexagon NPU</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value"><span data-count-to="85" data-decimals="0">85</span><span class="stat-unit">×</span></div>
+            <div class="stat-label">throughput vs. the same board's CPU</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value"><span data-count-to="67" data-decimals="0">67</span><span class="stat-unit">×</span></div>
+            <div class="stat-label">better inference performance per watt</div>
+        </div>
+    </div>
+
+    <!-- Chart 1: one model, three targets -->
+    <figure class="chart" role="img"
+            aria-label="Chart: same model, three targets. YOLOv8n inference throughput in frames per second — Advantech ASR-D501 NPU 110.3, ASR-D501 CPU 1.3, Raspberry Pi 5 1.1. The NPU is roughly 85 times faster than the CPU on the same board.">
+        <figcaption class="chart-head">
+            <span class="chart-title">Same model, three targets</span>
+            <span class="chart-unit">YOLOv8n · frames per second</span>
+        </figcaption>
+        <ul class="chart-rows" data-chart>
+            <li class="chart-row is-hero">
+                <span class="chart-label">ASR-D501 NPU</span>
+                <span class="chart-bar"><i style="--pct:100%"></i></span>
+                <span class="chart-val">110.3</span>
+            </li>
+            <li class="chart-row">
+                <span class="chart-label">ASR-D501 CPU</span>
+                <span class="chart-bar"><i style="--pct:1.18%"></i></span>
+                <span class="chart-val">1.3</span>
+            </li>
+            <li class="chart-row">
+                <span class="chart-label">Raspberry Pi 5</span>
+                <span class="chart-bar"><i style="--pct:1%"></i></span>
+                <span class="chart-val">1.1</span>
+            </li>
+        </ul>
+    </figure>
+
+    <!-- Chart 2: throughput scaling across model sizes -->
+    <figure class="chart" role="img"
+            aria-label="Chart: how throughput scales with model size. NPU throughput by model, INT8 quantized on the ASR-D501, in frames per second — YOLOv8n 110.3, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3, YOLOv11n 103.5, YOLOv11s 82.6, YOLOv11m 40.2.">
+        <figcaption class="chart-head">
+            <span class="chart-title">How throughput scales with model size</span>
+            <span class="chart-unit">eight variants · INT8 · ASR-D501 NPU</span>
+        </figcaption>
+        <ul class="chart-rows chart-rows-dense" data-chart>
+            <li class="chart-row"><span class="chart-label">YOLOv8n</span><span class="chart-bar"><i style="--pct:100%"></i></span><span class="chart-val">110.3</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv8s</span><span class="chart-bar"><i style="--pct:81.5%"></i></span><span class="chart-val">89.9</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv8m</span><span class="chart-bar"><i style="--pct:38.6%"></i></span><span class="chart-val">42.6</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv8l</span><span class="chart-bar"><i style="--pct:27.9%"></i></span><span class="chart-val">30.8</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv8x</span><span class="chart-bar"><i style="--pct:18.4%"></i></span><span class="chart-val">20.3</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv11n</span><span class="chart-bar"><i style="--pct:93.8%"></i></span><span class="chart-val">103.5</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv11s</span><span class="chart-bar"><i style="--pct:74.9%"></i></span><span class="chart-val">82.6</span></li>
+            <li class="chart-row"><span class="chart-label">YOLOv11m</span><span class="chart-bar"><i style="--pct:36.4%"></i></span><span class="chart-val">40.2</span></li>
+        </ul>
+    </figure>
+
+    <!-- Poster + thesis link -->
+    <div class="research-artifacts">
+        <button class="poster-card" type="button" data-lightbox="media/thesis-poster.png"
+                data-lightbox-caption="Thesis poster — Object Detection on an Embedded Drone Companion Computer">
+            <img src="media/thesis-poster.png" alt="Thesis poster: Object Detection on a Drone, showing NPU throughput charts and the assembled drone" width="1240" height="1754" loading="lazy" decoding="async">
+            <span class="poster-card-hint"><span class="poster-card-icon">⤢</span> View poster</span>
+        </button>
+        <div class="research-links">
+            <div class="research-links-kicker">// artifacts</div>
+            <a class="btn-primary" data-magnetic
+               href="https://drive.google.com/file/d/1ORBefG_7pYTAcOtzEbaA5s2RVjvB2m2V/view"
+               target="_blank" rel="noopener">
+                <span>Read the full thesis</span><span class="btn-arrow">↗</span>
+            </a>
+            <p class="research-links-note">
+                65 pages, IEEE-cited. Covers the literature on CPU / GPU / NPU inference, the quantization
+                pipeline, the full benchmark methodology, and the power measurements behind the numbers above.
+            </p>
+            <div class="research-keywords">
+                <span>NPU</span><span>edge AI</span><span>YOLOv8</span><span>YOLOv11</span><span>QCS6490</span><span>Hexagon</span><span>TFLite</span><span>quantization</span><span>GStreamer</span><span>ROS 2</span><span>MAVROS</span><span>ArduPilot</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Japan IT Week payoff -->
+    <div class="expo">
+        <div class="expo-head">
+            <div class="expo-kicker">// shipped</div>
+            <h3 class="expo-title">Japan IT Week — <span class="accent-em">Tokyo Big Sight</span></h3>
+            <p class="expo-body">
+                The build did not stop at the report. It ran on the show floor for the duration of the expo,
+                demonstrating the Advantech ASR-D501 and the Qualcomm QCS6490 NPU as a companion computer for
+                drone applications. I stood at the booth and explained the pipeline to visitors: camera in,
+                detection on the NPU, yaw commands out to the flight controller, all onboard.
+            </p>
+        </div>
+        <div class="expo-shots">
+            <figure class="expo-shot">
+                <img src="media/tokyo-booth.jpg" alt="Szymon Dudek at the Advantech booth at Japan IT Week, Tokyo Big Sight, beside the demo drone" width="1200" height="1150" loading="lazy" decoding="async">
+                <figcaption>At the booth, Tokyo Big Sight</figcaption>
+            </figure>
+            <figure class="expo-shot">
+                <img src="media/tokyo-station.jpg" alt="The demo drone and ASR-D501 companion computer running live SLAM on the expo floor" width="1200" height="1277" loading="lazy" decoding="async">
+                <figcaption>The demo station — live detection and RTAB-Map SLAM</figcaption>
+            </figure>
+        </div>
+    </div>
+
+</section>
+
 <!-- ======== HACKATHONS ======== -->
 <section class="section-intro" id="hackathons">
     <div class="intro-grid">
-        <div class="kicker">// 02 / hackathons</div>
-        <h2 class="display-xl">High-pressure<br><span class="accent-em">problem solving.</span></h2>
+        <div class="kicker">// 03 / hackathons</div>
+        <h2 class="display-xl split-reveal">High-pressure<br><span class="accent-em">problem solving.</span></h2>
     </div>
 </section>
 
 <section class="hackathon-grid">
-    <article class="hk-card hk-featured">
+    <article class="hk-card hk-featured" data-spotlight>
         <div class="hk-meta">
             <span class="hk-date">Apr 2025</span>
             <span class="hk-place">3rd Place 🥉</span>
@@ -410,35 +617,109 @@
         <div class="hk-loc">Liege, Belgium · HELMo &amp; Technifutur</div>
         <p>Built a web application utilizing open data from multiple Belgian databases, including regional solar panel electricity production data. Users could input their region, list their household devices, and optionally specify per-device power consumption (we had average values as fallback for most common appliances). The app calculates exactly how many solar panels they need and how many would actually be worth the investment.</p>
         <p>The theme was Industry 5.0 - putting humans at the center of technological processes. Presented the solution to the jury and placed 3rd overall.</p>
-        <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon" class="hk-img" loading="lazy">
+        <img src="media/HELMO.jpeg" alt="HELMo Industry 5.0 Hackathon" class="hk-img" width="1200" height="800" loading="lazy" decoding="async">
     </article>
 
-    <article class="hk-card">
+    <article class="hk-card" data-spotlight>
         <div class="hk-meta">
             <span class="hk-date">Nov 2025</span>
         </div>
         <h3 class="hk-title">Phishaton 2025</h3>
         <div class="hk-loc">6h hackathon · Outkept · Savaco</div>
         <p>A social engineering focused hackathon where teams were tasked with crafting phishing campaigns targeting an organization and a celebrity, as well as creating a deepfake phishing video of a public figure. A hands-on exercise in understanding the offensive side of social engineering to better defend against it.</p>
-        <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="hk-img" loading="lazy">
+        <img src="media/phishaton.jpeg" alt="Phishaton 2025 event" class="hk-img" width="1200" height="800" loading="lazy" decoding="async">
     </article>
 
-    <article class="hk-card">
+    <article class="hk-card" data-spotlight>
         <div class="hk-meta">
             <span class="hk-date">Nov 2025</span>
         </div>
         <h3 class="hk-title">Hack The Future</h3>
         <div class="hk-loc">Cronos Group · Antwerp, Belgium</div>
         <p>Participated in one of Belgium's largest tech hackathons bringing together hundreds of students to tackle industry-sponsored challenges across various domains. A solid experience in working under pressure with unfamiliar tech stacks and tight time constraints.</p>
-        <img src="media/HTF.jpeg" alt="Hack The Future event" class="hk-img" loading="lazy">
+        <img src="media/HTF.jpeg" alt="Hack The Future event" class="hk-img" width="1200" height="800" loading="lazy" decoding="async">
     </article>
+</section>
+
+<!-- ======== CREDENTIALS ======== -->
+<section class="section-intro" id="credentials">
+    <div class="intro-grid">
+        <div class="kicker">// 04 / credentials</div>
+        <h2 class="display-xl split-reveal">Signed,<br><span class="accent-em">sealed.</span></h2>
+    </div>
+</section>
+
+<section class="cred-grid">
+
+    <article class="cred-card" data-spotlight>
+        <div class="cred-visual">
+            <img src="media/cyberops-badge.png" alt="Cisco Networking Academy CyberOps Associate verified badge" width="600" height="600" loading="lazy" decoding="async">
+        </div>
+        <div class="cred-body">
+            <div class="cred-issuer">Cisco Networking Academy</div>
+            <h3 class="cred-title">CyberOps Associate</h3>
+            <p class="cred-desc">
+                Security operations centre track: monitoring tooling, protocol and endpoint analysis,
+                cryptography's impact on network monitoring, intrusion data analysis, alert evaluation,
+                and incident response models.
+            </p>
+            <div class="cred-foot">
+                <span class="cred-date">Issued Jul 2026</span>
+                <button class="cred-link" type="button" data-lightbox="media/cyberops-certificate.png"
+                        data-lightbox-caption="Cisco Networking Academy — CyberOps Associate, issued 1 July 2026">
+                    View certificate <span aria-hidden="true">⤢</span>
+                </button>
+            </div>
+        </div>
+    </article>
+
+    <article class="cred-card" data-spotlight>
+        <div class="cred-visual cred-visual-mark">
+            <span class="cred-mark">Ba</span>
+            <span class="cred-mark-sub">cum laude</span>
+        </div>
+        <div class="cred-body">
+            <div class="cred-issuer">Howest University of Applied Sciences</div>
+            <h3 class="cred-title">BSc Applied Computer Science</h3>
+            <p class="cred-desc">
+                Three-year bachelor in the Cybersecurity track — 180 credits, EQF level 6.
+                Graduated <strong>cum laude</strong> with the drone inference thesis as final work.
+            </p>
+            <div class="cred-foot">
+                <span class="cred-date">Conferred 26 Jun 2026</span>
+                <button class="cred-link" type="button" data-lightbox="media/howest-degree.png"
+                        data-lightbox-caption="Howest — Provisional certificate, Bachelor of Applied Computer Science, cum laude (personal data redacted)">
+                    View certificate <span aria-hidden="true">⤢</span>
+                </button>
+            </div>
+        </div>
+    </article>
+
+    <article class="cred-card" data-spotlight>
+        <div class="cred-visual cred-visual-mark">
+            <span class="cred-mark">C1</span>
+            <span class="cred-mark-sub">english</span>
+        </div>
+        <div class="cred-body">
+            <div class="cred-issuer">Cambridge Assessment English</div>
+            <h3 class="cred-title">C1 Advanced (CAE)</h3>
+            <p class="cred-desc">
+                Certified C1 proficiency. Three years of study delivered entirely in English in Belgium,
+                plus a full internship and thesis defence conducted in English in Japan.
+            </p>
+            <div class="cred-foot">
+                <span class="cred-date">Cambridge English</span>
+            </div>
+        </div>
+    </article>
+
 </section>
 
 <!-- ======== PROFILE / ABOUT ======== -->
 <section class="section-intro" id="profile">
     <div class="intro-grid">
-        <div class="kicker">// 03 / profile</div>
-        <h2 class="display-xl">The<br><span class="accent-em">story.</span></h2>
+        <div class="kicker">// 05 / profile</div>
+        <h2 class="display-xl split-reveal">The<br><span class="accent-em">story.</span></h2>
     </div>
 </section>
 
@@ -448,9 +729,16 @@
         <div class="profile-col profile-col-narrow">
             <div class="profile-label">▸ Origin Story</div>
         </div>
-        <div class="profile-col profile-col-wide">
-            <p>Born and raised in Poland. Spent six years in music school alongside regular education, studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
-            <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge, drawn by the program's reputation and the challenge of building an independent life in a new country. During Spring 2026 I interned at Advantech in Tokyo, building autonomous drones with AI-powered navigation.</p>
+        <div class="profile-col profile-col-wide profile-intro">
+            <figure class="profile-portrait">
+                <img src="media/portrait-advantech.jpg" alt="Szymon Dudek at the Advantech office in Tokyo" width="1200" height="1118" loading="lazy" decoding="async">
+                <figcaption>Advantech, Tokyo — Spring 2026</figcaption>
+            </figure>
+            <div class="profile-prose">
+                <p>Born and raised in Poland. Spent six years in music school alongside regular education, studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
+                <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge, drawn by the program's reputation and the challenge of building an independent life in a new country. I graduated <em>cum laude</em> in June 2026, after a spring in Tokyo interning at Advantech — building autonomous drones with AI-powered navigation and shipping the result to a live expo floor.</p>
+                <p>In September I move to Austria for a Master's in Cyber Security and Resilience. The plan is to keep working where security meets machines that move.</p>
+            </div>
         </div>
     </div>
 
@@ -460,25 +748,32 @@
         </div>
         <div class="profile-col profile-col-wide">
             <div class="journey">
-                <div class="journey-row">
+                <div class="journey-row journey-next">
                     <div class="journey-when">Sep 2026</div>
                     <div class="journey-what">
-                        <div class="journey-title">MSc Cybersecurity &amp; Resilience</div>
+                        <div class="journey-title">MSc Cyber Security &amp; Resilience <span class="journey-tag">next</span></div>
                         <div class="journey-where">St. Pölten University of Applied Sciences, Austria</div>
+                    </div>
+                </div>
+                <div class="journey-row">
+                    <div class="journey-when">Jun 2026</div>
+                    <div class="journey-what">
+                        <div class="journey-title">BSc Applied Computer Science — <span class="accent-em">cum laude</span></div>
+                        <div class="journey-where">Howest University of Applied Sciences, Brugge, Belgium. Cybersecurity track, 180 credits.</div>
                     </div>
                 </div>
                 <div class="journey-row">
                     <div class="journey-when">Feb–May 2026</div>
                     <div class="journey-what">
                         <div class="journey-title">AI &amp; Robotics Intern @ Advantech</div>
-                        <div class="journey-where">Tokyo, Japan. Autonomous drones, computer vision, flight control.</div>
+                        <div class="journey-where">Tokyo, Japan. Autonomous drones, edge inference, flight control. Demo shipped to Japan IT Week.</div>
                     </div>
                 </div>
                 <div class="journey-row">
                     <div class="journey-when">2023–2026</div>
                     <div class="journey-what">
-                        <div class="journey-title">BSc Applied Computer Science, Cybersecurity</div>
-                        <div class="journey-where">Howest University of Applied Sciences, Brugge, Belgium</div>
+                        <div class="journey-title">Moved to Belgium, alone, at 18</div>
+                        <div class="journey-where">Three years of study delivered in English, in a third language, in a fourth country.</div>
                     </div>
                 </div>
                 <div class="journey-row">
@@ -505,7 +800,7 @@
         </div>
         <div class="profile-col profile-col-wide">
             <div class="skill-cloud">
-                <span>Pentesting</span><span>Digital Forensics</span><span>Network Security</span><span>Python</span><span>Linux</span><span>Computer Vision</span><span>Drone Systems</span><span>AI / ML</span><span>Wireshark</span><span>Burp Suite</span><span>Nmap</span><span>Git</span>
+                <span>Pentesting</span><span>Digital Forensics</span><span>Network Security</span><span>Python</span><span>C</span><span>Linux</span><span>Computer Vision</span><span>Edge AI / NPU</span><span>Drone Systems</span><span>ROS 2</span><span>Wireshark</span><span>Burp Suite</span><span>Nmap</span><span>Docker</span><span>Git</span>
             </div>
         </div>
     </div>
@@ -529,24 +824,24 @@
 <!-- ======== CONTACT ======== -->
 <section class="contact" id="contact">
     <div class="contact-meta">
-        <div class="kicker">// 04 / contact</div>
+        <div class="kicker">// 06 / contact</div>
     </div>
     <h2 class="contact-cta">
         <span class="contact-line">Let's build</span>
         <span class="contact-line">something <span class="accent-em">good</span>.</span>
     </h2>
     <div class="contact-cards">
-        <a href="mailto:szymond200555@gmail.com" class="contact-card">
+        <a href="mailto:szymond200555@gmail.com" class="contact-card" data-spotlight data-magnetic>
             <span class="contact-label">Email</span>
             <span class="contact-value">szymond200555@gmail.com</span>
             <span class="contact-arrow">→</span>
         </a>
-        <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="contact-card">
+        <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener" class="contact-card" data-spotlight data-magnetic>
             <span class="contact-label">LinkedIn</span>
             <span class="contact-value">linkedin.com/in/szymon-dudek</span>
             <span class="contact-arrow">↗</span>
         </a>
-        <a href="https://github.com/holo911" target="_blank" rel="noopener" class="contact-card">
+        <a href="https://github.com/holo911" target="_blank" rel="noopener" class="contact-card" data-spotlight data-magnetic>
             <span class="contact-label">GitHub</span>
             <span class="contact-value">github.com/holo911</span>
             <span class="contact-arrow">↗</span>
@@ -560,6 +855,14 @@
         <div class="foot-block">
             <div class="muted">Szymon Dudek</div>
             <div>holo911</div>
+        </div>
+        <div class="foot-block">
+            <div class="muted">Status</div>
+            <div><span class="status-dot inline"></span>MSc @ St. Pölten, Sep 2026</div>
+        </div>
+        <div class="foot-block">
+            <div class="muted">Based</div>
+            <div>Belgium → Austria</div>
         </div>
     </div>
     <div class="foot-mark">SD ✕ HOLO911</div>
@@ -582,24 +885,34 @@
             <span class="side-menu-text">work</span>
             <span class="side-menu-arrow">→</span>
         </a>
-        <a href="#hackathons" class="side-menu-link">
+        <a href="#research" class="side-menu-link">
             <span class="side-menu-num">02</span>
+            <span class="side-menu-text">research</span>
+            <span class="side-menu-arrow">→</span>
+        </a>
+        <a href="#hackathons" class="side-menu-link">
+            <span class="side-menu-num">03</span>
             <span class="side-menu-text">hackathons</span>
             <span class="side-menu-arrow">→</span>
         </a>
+        <a href="#credentials" class="side-menu-link">
+            <span class="side-menu-num">04</span>
+            <span class="side-menu-text">credentials</span>
+            <span class="side-menu-arrow">→</span>
+        </a>
         <a href="#profile" class="side-menu-link">
-            <span class="side-menu-num">03</span>
+            <span class="side-menu-num">05</span>
             <span class="side-menu-text">profile</span>
             <span class="side-menu-arrow">→</span>
         </a>
         <a href="#contact" class="side-menu-link">
-            <span class="side-menu-num">04</span>
+            <span class="side-menu-num">06</span>
             <span class="side-menu-text">contact</span>
             <span class="side-menu-arrow">→</span>
         </a>
     </nav>
     <div class="side-menu-foot">
-        <div class="side-menu-status"><span class="status-dot inline"></span>Available July 2026</div>
+        <div class="side-menu-status"><span class="status-dot inline"></span>Graduated · MSc from Sep 2026</div>
         <div class="side-menu-social">
             <a href="https://github.com/holo911" target="_blank" rel="noopener">GitHub ↗</a>
             <a href="https://www.linkedin.com/in/szymon-dudek-968469355/" target="_blank" rel="noopener">LinkedIn ↗</a>
@@ -620,18 +933,46 @@
     </div>
 </div>
 
+<!-- ======== IMAGE LIGHTBOX (posters, certificates) ======== -->
+<div id="lightbox" class="lightbox" hidden>
+    <div class="lightbox-backdrop" data-lightbox-close></div>
+    <!-- Close sits outside .lightbox-shell: the shell is transformed while it
+         animates in, and a position:fixed child of a transformed element is
+         positioned against that element instead of the viewport. -->
+    <button class="lightbox-close" type="button" data-lightbox-close aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="lightbox-shell" role="dialog" aria-modal="true" aria-label="Image viewer" data-lenis-prevent>
+        <!-- src is assigned on open; an empty src="" would re-request the page -->
+        <img id="lightbox-img" alt="">
+        <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+</div>
+
 <!-- ======== PROJECT TEMPLATES ======== -->
 <template id="project-data-drone">
     <div class="m-meta"><span class="m-num">01</span><span class="m-cat">robotics × ai</span></div>
     <h3 class="m-title">Autonomous Drone <span class="accent-em">YOLO Object Tracking</span></h3>
-    <div class="m-tech"><span>Python</span><span>QUALCOMM RB5</span><span>YOLOv8</span><span>ROS2</span><span>MAVLink</span><span>RTAB-Map</span></div>
-    <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the flight controller, and installed ROS2 with MAVROS on a QUALCOMM companion board. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw (horizontal rotation) commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
-    <p>Also developed a second variant using a quantized YOLO model on the QUALCOMM Neural Processing Unit for significantly better inference performance, showcasing the board's edge AI capabilities at the expo.</p>
+    <div class="m-tech"><span>Python</span><span>Advantech ASR-D501</span><span>Qualcomm QCS6490</span><span>YOLOv8</span><span>ROS2</span><span>MAVLink</span><span>RTAB-Map</span></div>
+    <p>Built a fully autonomous drone system for Advantech's Japan IT Week demo. Assembled the hardware from scratch, configured the Pixhawk flight controller, and installed ROS 2 with MAVROS on the Advantech ASR-D501 companion computer. Wrote a Python pipeline that runs YOLO for real-time object detection, locks onto a target, tracks its screen position, and sends yaw commands to the motors so the drone rotates to follow the object while hovering at a fixed altitude.</p>
+    <p>Also developed a second variant running a quantized YOLO model on the board's Qualcomm Hexagon Neural Processing Unit, reaching 110.3 FPS against 1.3 FPS on the same board's CPU. That comparison became my bachelor thesis.</p>
     <p>In parallel, built a real-time SLAM pipeline with RTAB-Map for 3D environment reconstruction, laying the groundwork for fully spatially-aware drone navigation.</p>
+
+    <p class="m-crosslink"><a href="#research" data-modal-close>See the benchmarks and thesis →</a></p>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// on the show floor / japan it week, tokyo big sight</div>
+        <img class="m-media" src="media/tokyo-booth.jpg" alt="Szymon Dudek at the Advantech booth beside the demo drone" loading="lazy" decoding="async">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// the demo station</div>
+        <img class="m-media" src="media/tokyo-station.jpg" alt="Demo drone and ASR-D501 running live detection and SLAM at the expo" loading="lazy" decoding="async">
+    </div>
 
     <div class="m-media-section">
         <div class="m-media-label">// hardware</div>
-        <img class="m-media" src="media/drone-assembled.jpg" alt="Two drones assembled from scratch">
+        <img class="m-media" src="media/drone-assembled.jpg" alt="Two drones assembled from scratch" loading="lazy" decoding="async">
     </div>
 
     <div class="m-media-section">
@@ -676,7 +1017,7 @@
     <h3 class="m-title">BIOS <span class="accent-em">Flash Utility</span></h3>
     <div class="m-tech"><span>C</span><span>POSIX</span><span>Linux</span></div>
     <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
-    <img class="m-media" src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output">
+    <img class="m-media" src="media/BIOSupdateTOOL.png" alt="BIOS Flash Utility terminal output" loading="lazy" decoding="async">
 </template>
 
 <template id="project-data-pentest">
@@ -698,10 +1039,10 @@
     <h3 class="m-title">Labyrinth <span class="accent-em">Browser Board Game</span></h3>
     <div class="m-tech"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
     <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
-    <img class="m-media" src="media/Labyrinth2.png" alt="Labyrinth game board in action">
+    <img class="m-media" src="media/Labyrinth2.png" alt="Labyrinth game board in action" loading="lazy" decoding="async">
     <div class="m-gallery">
-        <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens">
-        <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules">
+        <img src="media/labyrinth1-1.png" alt="Labyrinth welcome, username and lobby screens" loading="lazy" decoding="async">
+        <img src="media/labyrinth1-2.png" alt="Labyrinth game creation, lobbies and rules" loading="lazy" decoding="async">
     </div>
 </template>
 
@@ -712,10 +1053,10 @@
     <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>
     <p>Built a complete Figma wireframe with every button and flow functional across both the user app and admin panel. Also developed a marketing website for the service. The concept won strong marks for creativity and execution depth.</p>
     <div class="m-gallery">
-        <img src="media/BinBots1.png" alt="BinBots user app screens">
-        <img src="media/BinBots2.png" alt="BinBots admin panel">
-        <img src="media/BinBots3.png" alt="BinBots wireframe overview">
-        <img src="media/BinBots4.png" alt="BinBots detailed screens">
+        <img src="media/BinBots1.png" alt="BinBots user app screens" loading="lazy" decoding="async">
+        <img src="media/BinBots2.png" alt="BinBots admin panel" loading="lazy" decoding="async">
+        <img src="media/BinBots3.png" alt="BinBots wireframe overview" loading="lazy" decoding="async">
+        <img src="media/BinBots4.png" alt="BinBots detailed screens" loading="lazy" decoding="async">
     </div>
 </template>
 
