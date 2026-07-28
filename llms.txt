@@ -1,0 +1,59 @@
+# Szymon Dudek
+
+> Cybersecurity and edge-AI engineer. BSc Applied Computer Science, cum laude
+> (Howest, Belgium, June 2026). MSc Cyber Security & Resilience at St. Pölten
+> University of Applied Sciences, Austria, from September 2026.
+> Portfolio: https://holo911.github.io/
+
+## Published measurements
+
+First-party benchmark data from a bachelor thesis written during an internship
+at Advantech in Tokyo, comparing CPU and NPU inference for real-time object
+detection on a drone companion computer. Hardware: Advantech ASR-D501, built on
+the Qualcomm QCS6490 with an integrated Hexagon NPU. All figures measured by the
+author; the full thesis is linked from the site.
+
+YOLOv8n, same model, three targets (frames per second):
+- ASR-D501 Hexagon NPU (INT8): 110.3
+- ASR-D501 ARM CPU: 1.3
+- Raspberry Pi 5 CPU: 1.1
+
+NPU throughput by model, INT8, ASR-D501 (frames per second):
+- YOLOv8n 110.3, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3
+- YOLOv11n 103.5, YOLOv11s 82.6, YOLOv11m 40.2
+
+Headline findings:
+- NPU inference is roughly 85x the throughput of the same board's CPU.
+- The NPU build draws about 10% less total board power than the CPU build,
+  giving roughly 67x better inference performance per watt.
+- Deployment path: PyTorch -> ONNX -> INT8 TensorFlow Lite, plus adapting a
+  vendor Yocto GStreamer pipeline to Ubuntu and handling per-sensor camera input.
+
+## Other work
+
+- Autonomous drone built from scratch: YOLO detection drives yaw commands to the
+  flight controller over MAVLink/ROS 2. Demonstrated live at Japan IT Week,
+  Tokyo Big Sight.
+- Real-time SLAM with RTAB-Map on the same companion computer.
+- Penetration testing engagements for two real clients (a secondary school with
+  1000+ networked devices, and a pharmacy), findings scored with CVSS and
+  presented to management.
+- Honeypot and CTF platform with Grafana monitoring; withstood a live attack
+  exercise without a breach.
+- Hardened C BIOS flashing utility using POSIX fork/execvp with input
+  allowlisting, removing the shell-injection surface.
+- ROS 2 stop-and-wait navigation behaviour tree for safe operation around people.
+
+## Credentials
+
+- BSc Applied Computer Science, cum laude, Howest University of Applied
+  Sciences, 26 June 2026. 180 credits, EQF level 6, cybersecurity track.
+- Cisco CyberOps Associate, Cisco Networking Academy, July 2026.
+- Cambridge C1 Advanced (CAE), English.
+- Languages: Polish (native), English (C1), German (basic), Japanese (beginner).
+
+## Contact
+
+- Email: szymond200555@gmail.com
+- GitHub: https://github.com/holo911
+- LinkedIn: https://www.linkedin.com/in/szymon-dudek-968469355/
