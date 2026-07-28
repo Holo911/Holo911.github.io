@@ -17,7 +17,11 @@ html {
     --line-2: #2a2a30;
     --text: #f4f4f6;
     --text-soft: #c5c5c8;
-    --text-mute: #6b6b72;
+    /* Was #6b6b72, which measured 3.81:1 on --bg and 3.51:1 on --bg-3 - under
+       the 4.5:1 AA floor, while carrying real 11-13px content (stat labels,
+       chart units, journey entries, captions). #85858e measures 5.51 / 5.34 /
+       5.07 across --bg / --bg-2 / --bg-3 and still reads as recessive grey. */
+    --text-mute: #85858e;
     --accent: #ccff00;
     --accent-soft: #d9ff4a;
     --accent-dim: rgba(204, 255, 0, 0.08);
@@ -50,6 +54,11 @@ body {
 
 body.loading { overflow: hidden; }
 body.modal-open { overflow: hidden; }
+
+/* JS removes .loading. With JS disabled it never goes away, and the scroll
+   lock would trap the visitor on the hero forever - the no-js tile fallbacks
+   below would be stacking content nobody could ever reach. */
+html.no-js body.loading { overflow: visible; }
 
 /* Reveal-on-scroll: opacity-only (no transform) so Lighthouse does not count
    it as layout shift. Pure fade-in, still feels alive without the CLS hit. */
@@ -94,7 +103,8 @@ em { font-style: italic; }
 /* Anchored sections stop below the fixed masthead instead of under it */
 section[id] { scroll-margin-top: var(--mast-h); }
 
-/* The signature italic - reserved for ONE place only: the hero name "Dudek" */
+/* The signature italic - reserved for exactly two moments: the hero name
+   "Dudek" and the thesis subtitle (.research-subtitle). Nowhere else. */
 .serif-italic {
     font-family: var(--font-serif);
     font-style: italic;
@@ -241,23 +251,28 @@ section[id] { scroll-margin-top: var(--mast-h); }
     justify-self: center;
 }
 
+/* Padding flexes with the viewport so six pills still fit at ~940px, the
+   narrowest width where the pill row is shown at all. */
 .mast-nav a {
     display: inline-flex;
     align-items: center;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: clamp(0.7rem, 0.35vw + 0.55rem, 0.78rem);
     font-weight: 500;
     color: var(--text-soft);
     text-transform: lowercase;
-    letter-spacing: 0.08em;
-    padding: 0.6rem 1.35rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    padding: 0.55rem clamp(0.7rem, 1vw, 1.2rem);
     border: 1px solid var(--line-2);
     border-radius: 100px;
     background: rgba(255, 255, 255, 0.02);
+    transform: translate3d(var(--mag-x, 0), var(--mag-y, 0), 0);
     transition:
         color 0.25s var(--ease),
         border-color 0.25s var(--ease),
-        background 0.25s var(--ease);
+        background 0.25s var(--ease),
+        transform 0.4s var(--ease);
 }
 
 .mast-nav a:hover {
@@ -689,9 +704,16 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
    Desktop: GSAP pin + horizontal translate
    Mobile: native overflow-x with scroll-snap-stop: always
    ============================================ */
+/* `clip` rather than `hidden`: overflow:hidden makes this a scroll container,
+   so tabbing to a button inside an off-screen tile let the browser scroll it
+   (scrollLeft jumped to 5241px) while GSAP only ever writes `transform` - the
+   track desynced from the pin permanently, for mouse users too. `clip` cannot
+   be scrolled at all. `hidden` stays first as the fallback for old engines,
+   which the scroll handler in initTilesPin then guards. */
 .tiles-shell {
     position: relative;
     overflow: hidden;
+    overflow: clip;
     background: var(--bg);
 }
 
@@ -794,12 +816,15 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
     contain: layout style paint;
 }
 
+/* --par is written per-tile by updateTileParallax(); the slight overscale
+   gives the drift somewhere to go without exposing an edge. */
 .tile-media-img,
 .tile-media-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transform: translate3d(calc(var(--par, 0) * 1px), 0, 0) scale(1.09);
 }
 
 /* For images that must show their full width (text screenshots, code, etc.) */
@@ -906,7 +931,6 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
     border: 1px solid var(--line-2);
     border-radius: 100px;
     letter-spacing: 0.03em;
-    cursor: pointer;
     transition:
         transform 0.35s var(--ease),
         color 0.35s var(--ease),
@@ -1370,16 +1394,39 @@ html.no-js .tile:last-child {
 
 .modal[hidden] { display: none; }
 
+/* Dialog entrances are keyframe animations layered over a *visible* resting
+   state, never transitions away from an invisible one.
+
+   With the old `opacity: 0` + transition-to-1 pattern, any browser that fails
+   to start the transition (it stays parked at currentTime 0) leaves the dialog
+   open but fully transparent - so the click that opened it lands on the
+   invisible backdrop and closes it again, which reads exactly like "clicking
+   does nothing". Resting visible means the worst case is a missing animation,
+   not missing content.
+
+   fill-mode is `forwards`, never `both`: `backwards` would re-apply the
+   from-keyframe (opacity 0) before the animation starts, reintroducing exactly
+   the invisible-dialog failure this pattern exists to prevent. */
+@keyframes dialogFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dialogFadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes dialogRise {
+    from { opacity: 0; transform: translateY(2rem) scale(0.96); }
+    to { opacity: 1; transform: none; }
+}
+@keyframes dialogSink {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: translateY(1rem) scale(0.98); }
+}
+
 .modal-backdrop {
     position: absolute;
     inset: 0;
     background: rgba(3, 3, 4, 0.8);
     backdrop-filter: blur(0.75rem);
-    opacity: 0;
-    transition: opacity 0.4s var(--ease);
 }
 
-.modal.open .modal-backdrop { opacity: 1; }
+.modal.open .modal-backdrop { animation: dialogFadeIn 0.4s var(--ease) forwards; }
+.modal.closing .modal-backdrop { animation: dialogFadeOut 0.3s var(--ease) forwards; }
 
 .modal-shell {
     position: relative;
@@ -1393,15 +1440,15 @@ html.no-js .tile:last-child {
     box-shadow: 0 3rem 6rem -1.5rem rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
-    transform: translateY(2rem) scale(0.96);
-    opacity: 0;
-    transition: transform 0.5s var(--ease), opacity 0.4s var(--ease);
 }
 
-.modal.open .modal-shell {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-}
+.modal.open .modal-shell { animation: dialogRise 0.5s var(--ease) forwards; }
+.modal.closing .modal-shell { animation: dialogSink 0.3s var(--ease) forwards; }
+
+/* JS adds .settled once the entrance has run (or timed out) - dropping the
+   animation returns the element to its visible resting style */
+.modal.settled .modal-backdrop,
+.modal.settled .modal-shell { animation: none; }
 
 .modal-close {
     position: absolute;
@@ -1542,6 +1589,1002 @@ video.m-media { background: #000; }
     width: 100%;
     border-radius: 0.4rem;
     border: 1px solid var(--line);
+}
+
+/* ============================================
+   CURSOR RETICLE
+   An autofocus box, not a trailing blob. Free-floating it sits exactly on the
+   pointer with no transition (zero perceived lag, so hiding the native cursor
+   is safe); when it locks onto something hoverable it animates to that
+   element's box. body.has-reticle is only ever added by JS, so a script
+   failure can never leave a visitor with no cursor at all.
+   ============================================ */
+.reticle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9000;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s var(--ease);
+}
+
+body:not(.has-reticle) .reticle { display: none; }
+
+.reticle.reticle-on { opacity: 1; }
+
+/* Only the locked state animates - free movement must be instant */
+.reticle.reticle-snap {
+    transition:
+        transform 0.28s var(--ease),
+        width 0.28s var(--ease),
+        height 0.28s var(--ease),
+        opacity 0.25s var(--ease);
+}
+
+.reticle-corner {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border: 1.5px solid var(--accent);
+    transition: width 0.2s var(--ease), height 0.2s var(--ease);
+}
+
+.reticle-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.reticle-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.reticle-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.reticle-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+.reticle-press .reticle-corner { width: 6px; height: 6px; }
+.reticle-locked .reticle-corner { width: 13px; height: 13px; }
+
+/* The precision pointer. Always present, always exactly under the physical
+   cursor, never hidden by a lock - this is what you actually aim with. The
+   dark ring keeps it legible on light surfaces such as certificate scans. */
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9001;
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.55), 0 0 8px rgba(204, 255, 0, 0.55);
+    pointer-events: none;
+    opacity: 0;
+    transition:
+        opacity 0.25s var(--ease),
+        width 0.18s var(--ease),
+        height 0.18s var(--ease),
+        margin 0.18s var(--ease),
+        background 0.18s var(--ease);
+}
+
+body:not(.has-reticle) .cursor-dot { display: none; }
+.cursor-dot.cursor-on { opacity: 1; }
+
+/* Over a locked target the dot opens into a ring: still precise, but it reads
+   as "armed" rather than competing with the brackets. */
+.cursor-dot.cursor-aim {
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    background: transparent;
+    box-shadow: 0 0 0 1.5px var(--accent), 0 0 10px rgba(204, 255, 0, 0.5);
+}
+
+.reticle-label {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s var(--ease);
+}
+
+.reticle-locked .reticle-label { opacity: 0.8; }
+
+body.has-reticle,
+body.has-reticle * { cursor: none; }
+
+/* Inside a dialog the native cursor comes back: you are reading a certificate,
+   scrubbing a video timeline, or inspecting an image, and those want real
+   pointer precision and the OS's own hit feedback rather than a custom cursor. */
+body.has-reticle.modal-open,
+body.has-reticle.modal-open * { cursor: auto; }
+
+body.modal-open .reticle,
+body.modal-open .cursor-dot { opacity: 0; }
+
+/* ============================================
+   SCROLL RAIL
+   ============================================ */
+.rail {
+    position: fixed;
+    left: 1.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+}
+
+.rail.rail-visible { opacity: 1; }
+body.menu-open .rail,
+body.modal-open .rail { opacity: 0; }
+
+.rail-pct {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.rail-track {
+    position: relative;
+    width: 1px;
+    height: 8rem;
+    background: var(--line-2);
+}
+
+.rail-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform-origin: top center;
+    transform: scaleY(0);
+    box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.rail-section {
+    writing-mode: vertical-rl;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+}
+
+/* ============================================
+   SPLIT WORD REVEAL
+   Words rise out of a clipped mask. The hidden state is scoped to
+   body.split-ready so the text is fully visible if JS never runs.
+   ============================================ */
+.rv-w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    /* room for descenders inside the clip, cancelled so layout is unchanged */
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+}
+
+body.split-ready .rv-i {
+    display: inline-block;
+    transform: translateY(115%);
+    opacity: 0;
+    transition:
+        transform 0.95s var(--ease),
+        opacity 0.6s var(--ease);
+}
+
+body.split-ready .rv-on .rv-i {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ============================================
+   MAGNETIC ELEMENTS
+   ============================================ */
+.brand,
+.menu-toggle,
+.tile-open,
+.btn-primary {
+    transform: translate3d(var(--mag-x, 0), var(--mag-y, 0), 0);
+}
+
+.brand { transition: transform 0.4s var(--ease); }
+.tile-open { transition: all 0.3s var(--ease), transform 0.4s var(--ease); }
+
+/* .contact-card also lifts on hover, so the two offsets are composed */
+.contact-card {
+    transform: translate3d(var(--mag-x, 0), calc(var(--mag-y, 0px) + var(--lift, 0px)), 0);
+}
+.contact-card:hover { --lift: -0.25rem; transform: translate3d(var(--mag-x, 0), calc(var(--mag-y, 0px) + var(--lift, 0px)), 0); }
+
+/* ============================================
+   CARD SPOTLIGHT - a lime wash follows the pointer across card surfaces
+   ============================================ */
+[data-spotlight] {
+    position: relative;
+    overflow: hidden;
+}
+
+[data-spotlight]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(18rem circle at var(--sx, 50%) var(--sy, 50%),
+                rgba(204, 255, 0, 0.10), transparent 62%);
+    opacity: var(--slit, 0);
+    transition: opacity 0.35s var(--ease);
+}
+
+[data-spotlight] > * { position: relative; z-index: 1; }
+
+/* ============================================
+   HERO SUBLINE
+   ============================================ */
+.hero-sub {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.15rem;
+    max-width: 46rem;
+    font-family: var(--font-mono);
+    font-size: clamp(0.66rem, 0.45vw + 0.52rem, 0.8rem);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+    color: var(--text-mute);
+}
+
+.hero-sub .accent-em { font-weight: 500; }
+.hero-sub-sep { color: var(--accent); margin: 0 0.3rem; }
+
+/* ============================================
+   RESEARCH / THESIS
+   ============================================ */
+.research {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem clamp(4rem, 10vh, 8rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 6vh, 5rem);
+}
+
+.research-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem clamp(2rem, 4vw, 3.5rem);
+}
+
+.research-titleblock { grid-column: 1 / -1; }
+
+.research-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.6vw, 3.1rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--text);
+    max-width: 22ch;
+}
+
+/* Second sanctioned use of the signature serif italic (the first is the hero
+   name). Reserved for these two moments only. */
+.research-subtitle {
+    margin-top: 0.6rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.8vw, 1.65rem);
+    color: var(--text-soft);
+    letter-spacing: -0.01em;
+}
+
+.research-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+}
+
+.research-abstract {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-soft);
+}
+
+.research-abstract strong { color: var(--accent); font-weight: 600; }
+.research-abstract em { color: var(--text); font-style: italic; }
+
+/* Headline numbers */
+.stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.stat {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+}
+
+.stat-value {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-unit {
+    font-size: 0.4em;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--text-soft);
+}
+
+.stat-label {
+    margin-top: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.65;
+    color: var(--text-mute);
+}
+
+/* Benchmark charts */
+.chart {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem 1.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.chart-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.chart-unit {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+}
+
+.chart-rows {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.chart-rows-dense { gap: 0.6rem; }
+
+.chart-row {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr 3.4rem;
+    gap: 1rem;
+    align-items: center;
+}
+
+.chart-label {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-soft);
+    letter-spacing: 0.02em;
+}
+
+.chart-bar {
+    position: relative;
+    height: 0.65rem;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+}
+
+.chart-bar > i {
+    display: block;
+    height: 100%;
+    width: var(--pct);
+    min-width: 3px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, rgba(204, 255, 0, 0.4), var(--accent));
+}
+
+.chart-val {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.chart-row.is-hero .chart-bar { height: 1.05rem; }
+.chart-row.is-hero .chart-label,
+.chart-row.is-hero .chart-val { color: var(--accent); font-weight: 600; }
+.chart-row.is-hero .chart-bar > i { box-shadow: 0 0 1.25rem rgba(204, 255, 0, 0.35); }
+
+/* Bars grow in when the chart scrolls into view. Hidden state scoped to
+   body.charts-ready so the widths in the markup stand alone without JS.
+
+   The transition lives on the *grown* state, not the collapsed one. Putting it
+   on the collapsed rule meant the browser queued a full-width -> zero
+   transition on an element thousands of pixels below the fold; Chrome never
+   starts those (the transition sits at currentTime 0 forever), so the bars
+   stayed at full width and never animated. Collapsing instantly and animating
+   only the growth has no such dependency. */
+body.charts-ready .chart-bar > i { width: 0; }
+
+body.charts-ready .chart-in .chart-bar > i {
+    width: var(--pct);
+    transition: width 1.1s var(--ease);
+}
+
+/* Poster + thesis link */
+.research-artifacts {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
+}
+
+.poster-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: var(--bg-2);
+    transition: border-color 0.3s var(--ease);
+}
+
+.poster-card:hover { border-color: var(--accent); }
+
+.poster-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s var(--ease);
+}
+
+.poster-card:hover img { transform: scale(1.03); }
+
+.poster-card-hint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem 0.9rem;
+    background: linear-gradient(to top, rgba(7, 7, 7, 0.95), transparent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.poster-card-icon { font-size: 0.9rem; }
+
+.research-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+}
+
+.research-links-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.95rem 1.6rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    background: var(--accent);
+    color: #000;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    transition:
+        background 0.3s var(--ease),
+        color 0.3s var(--ease),
+        transform 0.4s var(--ease);
+}
+
+.btn-primary:hover { background: transparent; color: var(--accent); }
+.btn-arrow { transition: transform 0.3s var(--ease); }
+.btn-primary:hover .btn-arrow { transform: translate(0.25rem, -0.25rem); }
+
+.research-links-note {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--text-soft);
+    max-width: 32rem;
+}
+
+.research-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.research-keywords span {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-mute);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    letter-spacing: 0.03em;
+}
+
+/* Japan IT Week */
+.expo {
+    border-top: 1px solid var(--line);
+    padding-top: clamp(2.5rem, 5vh, 4rem);
+}
+
+.expo-head {
+    max-width: 46rem;
+    margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.expo-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.9rem;
+}
+
+.expo-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.expo-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-soft);
+}
+
+.expo-shots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.expo-shot img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.875rem;
+    border: 1px solid var(--line);
+}
+
+.expo-shot figcaption {
+    margin-top: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--text-mute);
+}
+
+/* ============================================
+   CREDENTIALS
+   ============================================ */
+.cred-grid {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem clamp(4rem, 10vh, 8rem);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.cred-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 2.5vw, 2rem);
+    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.cred-card:hover {
+    border-color: var(--line-2);
+    transform: translateY(-0.25rem);
+}
+
+.cred-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 8.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cred-visual img {
+    height: 100%;
+    width: auto;
+    filter: drop-shadow(0 0.75rem 1.5rem rgba(0, 0, 0, 0.45));
+}
+
+.cred-visual-mark {
+    flex-direction: column;
+    gap: 0.3rem;
+    border: 1px solid var(--line);
+    border-radius: 0.875rem;
+    background: linear-gradient(135deg, var(--bg-3) 0%, var(--bg-2) 100%);
+}
+
+.cred-mark {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--accent);
+}
+
+.cred-mark-sub {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+}
+
+.cred-issuer {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.cred-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.cred-desc {
+    flex: 1;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-soft);
+}
+
+.cred-desc strong { color: var(--accent); font-weight: 600; }
+
+.cred-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.cred-date {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-mute);
+    letter-spacing: 0.05em;
+}
+
+/* A pill, matching .tile-open and the nav - "underlined text" did not read as
+   a control, and gave a 17px-tall target to aim at. */
+.cred-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(204, 255, 0, 0.35);
+    border-radius: 100px;
+    transition:
+        background 0.25s var(--ease),
+        border-color 0.25s var(--ease),
+        color 0.25s var(--ease);
+}
+
+.cred-link:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+}
+
+/* ============================================
+   PROFILE ADDITIONS
+   ============================================ */
+.profile-intro {
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.profile-portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.875rem;
+    border: 1px solid var(--line);
+}
+
+.profile-portrait figcaption {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+    color: var(--text-mute);
+}
+
+.journey-tag {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 100px;
+    background: var(--accent);
+    color: #000;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    vertical-align: 0.12em;
+}
+
+.journey-next .journey-where { color: var(--text-soft); }
+
+/* ============================================
+   MODAL ADDITIONS
+   ============================================ */
+.m-crosslink { margin-top: 1.5rem; }
+
+.m-crosslink a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    border-bottom: 1px solid rgba(204, 255, 0, 0.3);
+    transition: border-color 0.25s var(--ease);
+}
+
+.m-crosslink a:hover { border-bottom-color: var(--accent); }
+
+/* ============================================
+   IMAGE LIGHTBOX
+   ============================================ */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+}
+
+.lightbox[hidden] { display: none; }
+
+.lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 3, 4, 0.92);
+    backdrop-filter: blur(0.75rem);
+}
+
+.lightbox.open .lightbox-backdrop { animation: dialogFadeIn 0.35s var(--ease) forwards; }
+.lightbox.closing .lightbox-backdrop { animation: dialogFadeOut 0.28s var(--ease) forwards; }
+
+/* Same fail-safe rule as the modal: resting state is visible. */
+.lightbox-shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: min(58rem, 100%);
+    max-height: 92vh;
+}
+
+.lightbox.open .lightbox-shell { animation: dialogRise 0.4s var(--ease) forwards; }
+.lightbox.closing .lightbox-shell { animation: dialogSink 0.28s var(--ease) forwards; }
+
+.lightbox.settled .lightbox-backdrop,
+.lightbox.settled .lightbox-shell { animation: none; }
+
+.lightbox-shell img {
+    max-width: 100%;
+    max-height: 78vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    border: 1px solid var(--line-2);
+    background: #fff;
+    box-shadow: 0 3rem 6rem -1.5rem rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-caption {
+    max-width: 42rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: var(--text-soft);
+    text-align: center;
+}
+
+.lightbox-close {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 10;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    background: rgba(10, 10, 12, 0.85);
+    color: var(--text-soft);
+    transition: all 0.25s var(--ease);
+}
+
+.lightbox-close:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: rotate(90deg);
+}
+
+/* Contained tile images must not be overscaled by the parallax transform */
+.tile-media-img.tile-media-contain { transform: none; }
+
+/* The 1.09 overscale only exists to give the parallax drift somewhere to go.
+   In the stacked layout nothing writes --par, so the scale would just crop
+   every tile image by 9% for no reason - phones and tablets get the untouched
+   frame instead. */
+body.tiles-stacked .tile-media-img,
+body.tiles-stacked .tile-media-video,
+html.no-js .tile-media-img,
+html.no-js .tile-media-video { transform: none; }
+
+/* ============================================
+   TOUCH TARGETS
+   Fine-pointer sizes are too small to hit reliably with a thumb; anything
+   tappable gets padded out to ~44px. Width is in the condition alongside the
+   pointer queries because hybrid laptops and phone emulators report
+   `pointer: fine` while still being finger-operated at phone widths.
+   ============================================ */
+/* px, not rem: html{font-size} scales down to 13.5px on phones, so a 2.75rem
+   target would shrink to 37px on exactly the devices that need 44. */
+@media (hover: none), (pointer: coarse), (max-width: 48rem) {
+    .brand { min-height: 44px; align-items: center; }
+
+    /* .cred-link is already a pill; touch only needs the target height */
+    .cred-link { min-height: 44px; }
+
+    .btn-primary { min-height: 46px; }
+
+    .mast-nav a,
+    .side-menu-social a,
+    .contact-card { min-height: 44px; }
+
+    .side-menu-social a {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .modal-close,
+    .lightbox-close {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - new sections
+   ============================================ */
+@media (max-width: 64rem) {
+    .rail { display: none; }
+    .research-artifacts { grid-template-columns: 1fr; }
+    .poster-card { max-width: 32rem; margin: 0 auto; }
+    .cred-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 56.25rem) {
+    .research-head { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: 1fr; }
+    .expo-shots { grid-template-columns: 1fr; }
+    .profile-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+    .profile-portrait { max-width: 18rem; }
+    .chart-row { grid-template-columns: 5.5rem 1fr 3rem; gap: 0.75rem; }
+    .chart-label { font-size: 0.68rem; }
+    .chart-val { font-size: 0.72rem; }
+}
+
+@media (max-width: 30rem) {
+    .research { padding: 0 1rem 3rem; }
+    .cred-grid { padding: 0 1rem 3rem; }
+    .chart-row { grid-template-columns: 4.6rem 1fr 2.6rem; }
+    .chart { padding: 1.25rem; }
 }
 
 /* ============================================
