@@ -140,10 +140,10 @@ section[id] { scroll-margin-top: var(--mast-h); }
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    transition: opacity 0.45s var(--ease), visibility 0.45s var(--ease);
+    transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
     /* CSS-only safety fade-out: if JS fails to call completeLoader(), the loader
-       still disappears so visitors see the page. */
-    animation: loaderSafetyFade 0.8s 3s forwards;
+       still disappears after 4 seconds so visitors see the page. */
+    animation: loaderSafetyFade 0.8s 4s forwards;
 }
 
 @keyframes loaderSafetyFade {
@@ -194,7 +194,7 @@ section[id] { scroll-margin-top: var(--mast-h); }
     width: 0%;
     background: var(--accent);
     box-shadow: 0 0 8px var(--accent-glow);
-    transition: width 0.5s var(--ease-power);
+    transition: width 1.4s var(--ease-power);
 }
 
 #loader.starting .loader-bar-fill { width: 100%; }
