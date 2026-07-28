@@ -1,13 +1,6 @@
 /* ============================================
    ENVIRONMENT
-   Read live, never cached at boot. Every layout decision that depends on
-   viewport size or input type re-runs on resize, so rotating a tablet or
-   dragging a desktop window across the breakpoint can't strand the page in
-   a half-applied mode (the old code sampled these once and never again).
-
-   NARROW_Q matches the CSS breakpoint where .tiles-track becomes a vertical
-   block exactly. Media-query rem resolves against the *initial* font size
-   (16px), not html{font-size}, so 56.25rem here == 900px there.
+   Read live, never cached at boot.
    ============================================ */
 const NARROW_Q = window.matchMedia('(max-width: 56.25rem)');
 const COARSE_Q = window.matchMedia('(hover: none), (pointer: coarse)');
@@ -277,8 +270,6 @@ function initSmoothScroll() {
 /* ============================================
    TILES - pinned horizontal scroll (wide pointer devices only)
    Vertical scroll advances through tiles one-by-one, snap locked.
-   Any environment that can't run the pin gets the vertical stack fallback so
-   no tile is ever trapped off-screen.
    ============================================ */
 let tilesTween = null;
 
@@ -310,10 +301,8 @@ function buildTilesPin() {
         if (section.scrollTop) section.scrollTop = 0;
     });
 
-    /* Keyboard access to the horizontal track: tabbing into a tile that is
-       off-screen advances the pin until that tile is actually visible.
-       Skipped when the tile is already on screen, so the focus restore after
-       closing a modal doesn't yank the page around. */
+    /* Tabbing into an off-screen tile advances the pin so it becomes visible.
+       Skipped when already on screen, so closing a modal doesn't yank the page. */
     section.addEventListener('focusin', (e) => {
         if (!tilesTween || !tilesTween.scrollTrigger) return;
         const tile = e.target.closest('.tile');
@@ -360,10 +349,8 @@ function buildTilesPin() {
     setTimeout(() => ScrollTrigger.refresh(), 400);
 }
 
-/* Media drifts against its tile as the tile crosses the viewport. Cheap:
-   one custom property per tile, the transform lives in CSS. The tile list is
-   cached - this runs on every scrub frame, and re-querying the DOM 60x a
-   second for a list that never changes is pure waste. */
+/* Media drifts against its tile as the tile crosses the viewport. One custom
+   property per tile; the transform lives in CSS. List cached - runs every frame. */
 let parallaxTiles = null;
 
 function updateTileParallax() {
@@ -601,15 +588,6 @@ function initTileVideoAutoplay() {
 
 /* ============================================
    HERO BACKGROUND - live detection field
-   A synthetic camera feed: drifting targets get acquired and dropped by an
-   imaginary detector, each framed with corner brackets and a confidence
-   label, while a sensor band sweeps down the frame. The pointer is treated
-   as one more target and tracked with lag.
-
-   This is the same thing the drone does, rendered as wallpaper.
-
-   Perf guards: DPR capped at 1.5, fewer targets on small screens, animation
-   paused whenever the hero is off-screen, one static frame for reduced motion.
    ============================================ */
 const COCO_LABELS = [
     'person', 'drone', 'laptop', 'monitor', 'keyboard',
@@ -801,11 +779,6 @@ function initHeroCanvas() {
 
 /* ============================================
    CURSOR RETICLE
-   An autofocus box rather than a trailing blob: it sits on the pointer with
-   zero lag while free, and *locks* onto whatever is hoverable, animating to
-   that element's box. Only ever enabled on fine-pointer devices, and only
-   after the element exists - so `cursor:none` can never strand a visitor
-   with no cursor if this script fails to run.
    ============================================ */
 function initReticle() {
     const el = document.getElementById('reticle');
@@ -814,10 +787,8 @@ function initReticle() {
     const label = document.getElementById('reticle-label');
     const dot = document.getElementById('cursor-dot');
 
-    /* Only things that can actually be activated. Cards and decorative pills
-       used to be in here, which was misleading (a lock reads as "clickable")
-       and, worse, boxing a whole card hid the pointer exactly when you needed
-       to aim at the button inside it. */
+    /* Activatable things only - boxing a whole card hid the pointer just when
+       you needed to aim at the button inside it. */
     const LOCK_SELECTOR = 'a[href], button';
     let locked = null;
 
@@ -976,13 +947,8 @@ function initRail() {
     update();
 }
 
-/* Last section whose top has crossed the viewport centre. Section IDs mark
-   small intro headings rather than whole content blocks, so each one is
-   treated as "this section's territory starts here".
-
-   Both the rail and the nav ask for this on every scroll frame; the result is
-   memoised per frame so seven getBoundingClientRect() reads don't happen twice
-   in a row. */
+/* Last section whose top has crossed the viewport centre. Memoised per frame -
+   the rail and the nav both ask for it on every scroll tick. */
 let sectionCacheFrame = -1;
 let sectionCacheValue = SECTION_IDS[0];
 
@@ -1002,9 +968,6 @@ function currentSection() {
 
 /* ============================================
    NAVIGATION
-   Anchor smooth-scrolling, active-pill tracking, and the masthead auto-hide
-   (bar tucks away scrolling down, returns scrolling up; the hamburger stays
-   fixed and always reachable).
    ============================================ */
 function initNavTracking() {
     const mast = document.getElementById('mast');
@@ -1114,22 +1077,13 @@ function initMenu() {
 /* ============================================
    DIALOG PLUMBING - shared by the project modal and the image lightbox
    Moves focus in, keeps Tab inside the dialog while it is open, and hands
-   focus back to whatever opened it. Without this a keyboard user tabs
-   straight out of an open dialog into the page behind it.
+   focus back to whatever opened it.
    ============================================ */
 const FOCUSABLE = 'a[href], button:not([disabled]), video[controls], [tabindex]:not([tabindex="-1"])';
 
-/* Guarantee a dialog ends up visible.
-
-   The entrance is a keyframe animation over a visible resting state, but an
-   animation that never gets a start time (a throttled/non-compositing tab, an
-   extension that disables animations, a browser that holds the first keyframe
-   while pending) would park the dialog on its `from` frame - opacity 0 - and
-   the visitor sees nothing but a backdrop that closes on the next click.
-
-   `.settled` sets `animation: none`, dropping the element back to its resting
-   style. Fired by animationend in the healthy case, by a timer otherwise, so
-   the dialog is always visible within ~500ms no matter what. */
+/* Guarantee a dialog ends up visible. If the entrance animation never gets a
+   start time it parks on its `from` frame (opacity 0) and the dialog is open
+   but invisible. `.settled` kills the animation, restoring the resting style. */
 let settleToken = 0;
 
 function settleDialog(root, shell, maxWait) {
@@ -1175,11 +1129,17 @@ let modalReturnFocus = null;
 let modalReleaseTrap = null;
 
 function openModal(projectId, opener) {
-    const template = document.getElementById('project-data-' + projectId);
-    if (!template) return;
+    /* Hidden <div>, not <template>: template content sits in a detached
+       fragment that crawlers never index. */
+    const source = document.getElementById('project-data-' + projectId);
+    if (!source) return;
 
     modalBody.innerHTML = '';
-    modalBody.appendChild(template.content.cloneNode(true));
+    [...source.cloneNode(true).childNodes].forEach((n) => modalBody.appendChild(n));
+
+    /* Sources ship as preload="none" so six videos don't fetch metadata on
+       every page load just by existing in the DOM. Opt back in once visible. */
+    modalBody.querySelectorAll('video').forEach((v) => { v.preload = 'metadata'; });
 
     modalReturnFocus = opener || document.activeElement;
     modal.hidden = false;
