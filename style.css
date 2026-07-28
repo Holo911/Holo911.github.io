@@ -188,7 +188,6 @@ section[id] { scroll-margin-top: var(--mast-h); }
     overflow: hidden;
 }
 
-/* Must finish inside LOADER_HOLD in script.js (620ms) or the bar never fills */
 .loader-bar-fill {
     height: 100%;
     width: 0%;

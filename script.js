@@ -109,26 +109,24 @@ function completeLoader() {
 
 window.addEventListener('load', () => {
     requestAnimationFrame(() => loader.classList.add('starting'));
-    setTimeout(completeLoader, LOADER_HOLD);
+    setTimeout(completeLoader, 1700);
 });
 
 setTimeout(() => {
     if (!loaderDone) {
         loader.classList.add('starting');
-        setTimeout(completeLoader, LOADER_HOLD);
+        setTimeout(completeLoader, 1700);
     }
 }, 200);
 
 function initHeroEntrance() {
     if (!window.gsap || env.reduced) return;
-    /* Short delay on purpose: .hero-name is the LCP element, and every
-       millisecond it spends at opacity 0 is added straight to the metric. */
     gsap.from(['.hero-name', '.hero-terminal', '.hero-sub', '.scroll-cue'], {
         opacity: 0,
         y: 16,
-        duration: 0.75,
-        stagger: 0.07,
-        delay: 0.06,
+        duration: 0.9,
+        stagger: 0.08,
+        delay: 0.2,
         ease: 'power2.out',
     });
 }
