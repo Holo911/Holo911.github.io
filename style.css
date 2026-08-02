@@ -1706,19 +1706,32 @@ body.modal-open .cursor-dot { opacity: 0; }
 /* ============================================
    SCROLL RAIL
    ============================================ */
+/* Hidden by default and opted IN only when the window is provably wide enough.
+   The rail is fixed in the left gutter, but content is centred at max-width
+   80rem, so below ~1440px that gutter closes up and the rail sits on top of the
+   text. Failing closed means a viewport this never anticipated hides it rather
+   than colliding. */
 .rail {
+    display: none;
     position: fixed;
     left: 1.15rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 90;
-    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s var(--ease);
+}
+
+/* 93rem (1488px) is where the maths actually works out, not a round guess:
+   content is capped at 80rem and sits 26px from the edge at every width below
+   that, so the rail's 35px right edge has nowhere to go until the window is
+   this wide. First width with real clearance (~22px). */
+@media (min-width: 93rem) {
+    .rail { display: flex; }
 }
 
 .rail.rail-visible { opacity: 1; }
@@ -2626,7 +2639,6 @@ html.no-js .tile-media-video { transform: none; }
    RESPONSIVE - new sections
    ============================================ */
 @media (max-width: 64rem) {
-    .rail { display: none; }
     .research-artifacts { grid-template-columns: 1fr; }
     .poster-card { max-width: 32rem; margin: 0 auto; }
     .cred-grid { grid-template-columns: 1fr; }
