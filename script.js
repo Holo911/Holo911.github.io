@@ -73,6 +73,18 @@ function onScroll(fn) { scrollSubs.push(fn); }
 const loader = document.getElementById('loader');
 let loaderDone = false;
 
+/* GSAP arrives from a CDN, so "is it here yet" is a race, not a fact. Testing
+   once meant a slow or throttled connection permanently dropped desktop
+   visitors into the stacked-tile fallback for the rest of the session. */
+function whenGsapReady(cb, timeout = 5000) {
+    const start = performance.now();
+    (function check() {
+        if (window.gsap && window.ScrollTrigger) return cb(true);
+        if (performance.now() - start > timeout) return cb(false);
+        setTimeout(check, 50);
+    })();
+}
+
 function completeLoader() {
     if (loaderDone) return;
     loaderDone = true;
@@ -86,12 +98,12 @@ function completeLoader() {
 
     initHeroEntrance();
     setTimeout(() => {
-        if (window.gsap && window.ScrollTrigger) {
-            initGsapFeatures();
-        } else {
-            /* CDN blocked / offline: no pin possible, stack tiles vertically */
+        /* CDN blocked / offline: no pin possible, stack tiles vertically */
+        whenGsapReady((ok) => {
+            if (ok) return initGsapFeatures();
             ensureTilesStacked();
-        }
+            reportLayoutMode(false);
+        });
         runHeroScramble();
         startHeroTypewriter();
         initRevealOnScroll();
@@ -366,9 +378,27 @@ function updateTileParallax() {
     });
 }
 
+/* Says which layout the visitor got and why. Four separate conditions can send
+   someone to the stacked fallback, and from the outside every one of them looks
+   identical - this turns "it's broken on my friend's laptop" into a screenshot. */
+function reportLayoutMode(pinned) {
+    const why = pinned ? 'horizontal scroll active'
+        : !window.gsap || !window.ScrollTrigger ? 'GSAP did not load (blocked, offline, or SRI mismatch)'
+        : env.narrow ? `viewport is ${window.innerWidth}px, under the 900px threshold`
+        : env.coarse ? 'browser reports a touch / coarse pointer'
+        : env.reduced ? 'system "reduce motion" is switched on'
+        : 'unknown';
+    console.log(
+        `%c holo911 %c projects: ${pinned ? 'horizontal' : 'stacked'} — ${why}`,
+        'background:#ccff00;color:#000;font-weight:700;padding:2px 7px;font-family:monospace;',
+        'color:#85858e;font-family:monospace;padding-left:6px;'
+    );
+}
+
 function initTilesMode() {
     if (!window.gsap || !window.ScrollTrigger) {
         ensureTilesStacked();
+        reportLayoutMode(false);
         return;
     }
     if (env.canPin) {
@@ -378,6 +408,7 @@ function initTilesMode() {
         teardownTilesPin();
         ensureTilesStacked();
     }
+    reportLayoutMode(env.canPin);
 }
 
 /* Re-evaluate the layout mode whenever the viewport crosses a breakpoint or
