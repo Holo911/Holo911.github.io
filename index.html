@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <script>document.documentElement.classList.remove('no-js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Szymon Dudek — Cybersecurity &amp; Edge AI Engineer | Drone NPU Research</title>
+    <title>Szymon Dudek, Cybersecurity &amp; Edge AI Engineer | Drone NPU Research</title>
 
-    <meta name="description" content="Szymon Dudek (holo911) — BSc Applied Computer Science, cum laude. YOLOv8 object detection on a drone companion computer at 110.3 FPS on the Qualcomm QCS6490 NPU, 85× the same board's CPU. Penetration testing, edge AI, autonomous systems.">
+    <meta name="description" content="Szymon Dudek (holo911). BSc Applied Computer Science, cum laude. YOLOv8 object detection on a drone companion computer at 110.3 FPS on the Qualcomm QCS6490 NPU, 85× the same board's CPU. Penetration testing, edge AI, autonomous systems.">
     <meta name="author" content="Szymon Dudek">
     <meta name="theme-color" content="#070707">
     <link rel="canonical" href="https://holo911.github.io/">
@@ -14,16 +14,16 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Szymon Dudek">
     <meta property="og:title" content="Szymon Dudek / Cybersecurity &amp; Robotics">
-    <meta property="og:description" content="YOLO object detection on a drone companion computer at 110.3 FPS — 85× the same board's CPU. Selected work in edge AI, autonomous systems, and offensive security.">
+    <meta property="og:description" content="YOLO object detection on a drone companion computer at 110.3 FPS, 85× the same board's CPU. Selected work in edge AI, autonomous systems, and offensive security.">
     <meta property="og:image" content="https://holo911.github.io/media/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Szymon Dudek — cybersecurity and robotics portfolio">
+    <meta property="og:image:alt" content="Szymon Dudek, cybersecurity and robotics portfolio">
     <meta property="og:url" content="https://holo911.github.io/">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Szymon Dudek / Cybersecurity &amp; Robotics">
-    <meta name="twitter:description" content="YOLO object detection on a drone companion computer at 110.3 FPS — 85× the same board's CPU.">
+    <meta name="twitter:description" content="YOLO object detection on a drone companion computer at 110.3 FPS, 85× the same board's CPU.">
     <meta name="twitter:image" content="https://holo911.github.io/media/og-card.png">
 
     <link rel="icon" type="image/png" sizes="96x96" href="media/icon-96.png">
@@ -120,19 +120,35 @@
                     "https://github.com/holo911",
                     "https://www.linkedin.com/in/szymon-dudek-968469355/"
                 ],
-                "workExample": {
-                    "@type": "SoftwareSourceCode",
-                    "name": "Autonomous drone YOLO tracking and NPU inference",
-                    "codeRepository": "https://github.com/Holo911/Drone",
-                    "programmingLanguage": ["Python", "C"],
-                    "about": "YOLO object detection on the Qualcomm QCS6490 Hexagon NPU driving yaw commands to a Pixhawk flight controller over MAVLink and ROS 2."
-                }
+                "workExample": [
+                    {
+                        "@type": "SoftwareSourceCode",
+                        "name": "Autonomous drone YOLO tracking and NPU inference",
+                        "codeRepository": "https://github.com/Holo911/Drone",
+                        "programmingLanguage": ["Python", "C"],
+                        "about": "YOLO object detection on the Qualcomm QCS6490 Hexagon NPU driving yaw commands to a Pixhawk flight controller over MAVLink and ROS 2."
+                    },
+                    {
+                        "@type": "SoftwareSourceCode",
+                        "name": "GeoMeta Map, geography study tool",
+                        "codeRepository": "https://github.com/Holo911/geometa-map-github",
+                        "programmingLanguage": "JavaScript",
+                        "about": "Interactive world map for learning GeoGuessr country clues. Notes are attached per country, categorised and tagged, and the map can be recoloured by tag to show every country sharing a given clue."
+                    },
+                    {
+                        "@type": "SoftwareSourceCode",
+                        "name": "EraseAll, CPU-only object removal",
+                        "codeRepository": "https://github.com/Holo911/EraseAll",
+                        "programmingLanguage": "Python",
+                        "about": "Image editor that detects and removes people or objects from photographs and inpaints the background, running entirely offline on a laptop CPU with no GPU required."
+                    }
+                ]
             },
             {
                 "@type": "WebSite",
                 "@id": "https://holo911.github.io/#website",
                 "url": "https://holo911.github.io/",
-                "name": "Szymon Dudek — portfolio",
+                "name": "Szymon Dudek portfolio",
                 "inLanguage": "en",
                 "publisher": { "@id": "https://holo911.github.io/#person" }
             },
@@ -140,7 +156,7 @@
                 "@type": "ProfilePage",
                 "@id": "https://holo911.github.io/#webpage",
                 "url": "https://holo911.github.io/",
-                "name": "Szymon Dudek — Cybersecurity & Edge AI Engineer",
+                "name": "Szymon Dudek, Cybersecurity & Edge AI Engineer",
                 "isPartOf": { "@id": "https://holo911.github.io/#website" },
                 "about": { "@id": "https://holo911.github.io/#person" },
                 "mainEntity": { "@id": "https://holo911.github.io/#person" },
@@ -177,7 +193,7 @@
                         "name": "Is a Neural Processing Unit worth it for object detection on a drone?",
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "On this hardware, decisively yes. The same YOLOv8n model runs at 110.3 FPS on the Qualcomm QCS6490's Hexagon NPU versus 1.3 FPS on the same board's ARM CPU — about 85 times the throughput, while the board draws roughly 10% less total power. On the CPU the detector cannot keep up with a live camera feed at all, so a drone cannot react to what it sees. The NPU is what makes onboard detection a real-time control input rather than a recording."
+                            "text": "On this hardware, decisively yes. The same YOLOv8n model runs at 110.3 FPS on the Qualcomm QCS6490's Hexagon NPU versus 1.3 FPS on the same board's ARM CPU, about 85× the throughput, while the board draws roughly 10% less total power. On the CPU the detector cannot keep up with a live camera feed at all, so a drone cannot react to what it sees. The NPU is what makes onboard detection a real-time control input rather than a recording."
                         }
                     },
                     {
@@ -185,7 +201,7 @@
                         "name": "How fast is YOLO on the Qualcomm QCS6490 NPU?",
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "Measured on an Advantech ASR-D501, INT8-quantized, frames per second: YOLOv8n 110.3, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3. YOLOv11 tracks closely — YOLOv11n 103.5, YOLOv11s 82.6, YOLOv11m 40.2. Throughput falls off sharply above the small variants, so the nano and small models are the practical choices for a flight-control loop."
+                            "text": "Measured on an Advantech ASR-D501, INT8-quantized, frames per second: YOLOv8n 110.3, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3. YOLOv11 tracks closely: YOLOv11n 103.5, YOLOv11s 82.6, YOLOv11m 40.2. Throughput falls off sharply above the small variants, so the nano and small models are the practical choices for a flight-control loop."
                         }
                     },
                     {
@@ -193,7 +209,7 @@
                         "name": "Can a Raspberry Pi 5 run YOLOv8 object detection in real time?",
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "Not on the CPU. In the same benchmark a Raspberry Pi 5 reached 1.1 FPS with YOLOv8n — close to the ASR-D501's own CPU result of 1.3 FPS, and roughly a hundred times slower than that board's NPU. Real-time onboard detection needs a dedicated accelerator; general-purpose ARM cores are not enough at this model size."
+                            "text": "Not on the CPU. In the same benchmark a Raspberry Pi 5 reached 1.1 FPS with YOLOv8n, close to the ASR-D501's own CPU result of 1.3 FPS, and roughly a hundred times slower than that board's NPU. Real-time onboard detection needs a dedicated accelerator; general-purpose ARM cores are not enough at this model size."
                         }
                     },
                     {
@@ -201,7 +217,7 @@
                         "name": "What does it take to deploy a YOLO model on the Hexagon NPU under Ubuntu?",
                         "acceptedAnswer": {
                             "@type": "Answer",
-                            "text": "The conversion path is PyTorch → ONNX → INT8 TensorFlow Lite. The harder part is everything around it: the vendor ships a Yocto-based GStreamer pipeline that has to be adapted to run on Ubuntu, and camera input handling differs by sensor type. Quantizing the model was the quick step — the pipeline and camera plumbing took most of the work."
+                            "text": "The conversion path is PyTorch → ONNX → INT8 TensorFlow Lite. The harder part is everything around it: the vendor ships a Yocto-based GStreamer pipeline that has to be adapted to run on Ubuntu, and camera input handling differs by sensor type. Quantizing the model was the quick step. The pipeline and camera plumbing took most of the work."
                         }
                     }
                 ]
@@ -303,7 +319,7 @@
 <section class="section-intro" id="work">
     <div class="intro-grid">
         <div class="kicker">// 01 / selected work</div>
-        <h2 class="display-xl split-reveal">Seven projects.<br><span class="accent-em">Click to expand.</span></h2>
+        <h2 class="display-xl split-reveal">Nine projects.<br><span class="accent-em">Click to expand.</span></h2>
         <p class="intro-body">
             Security research, robotics, autonomous systems, and software. Each tile opens its full case.
         </p>
@@ -323,7 +339,7 @@
                         <span class="tile-kicker-num">// 01</span>
                         <span class="tile-kicker-cat">robotics × ai</span>
                     </span>
-                    <span class="tile-progress">01 / 07</span>
+                    <span class="tile-progress">01 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -348,16 +364,84 @@
             </div>
         </article>
 
-        <!-- 02 Behavior Tree -->
-        <article class="tile" data-project-id="bt">
+        <!-- 02 GeoMeta Map -->
+        <article class="tile" data-project-id="geometa">
             <span class="tile-bg-num" aria-hidden="true">02</span>
             <div class="tile-inner">
                 <div class="tile-top">
                     <span class="tile-kicker">
                         <span class="tile-kicker-num">// 02</span>
+                        <span class="tile-kicker-cat">software × tooling</span>
+                    </span>
+                    <span class="tile-progress">02 / 09</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">GeoMeta Map <span class="accent-em">Geography Trainer</span></h3>
+                            <p class="tile-teaser">Click any country, write what gives it away. Notes, tags and clues on an interactive world map, then flip it around and see every country that shares one.</p>
+                            <div class="tile-tech">
+                                <span>JavaScript</span><span>Leaflet</span><span>GeoJSON</span><span>Markdown</span><span>Self-hosted</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-magnetic>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media tile-media-wide">
+                        <img src="media/geometa-world.png" alt="" class="tile-media-img tile-media-contain" width="1500" height="701" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 03 EraseAll -->
+        <article class="tile" data-project-id="eraseall">
+            <span class="tile-bg-num" aria-hidden="true">03</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 03</span>
+                        <span class="tile-kicker-cat">software × ai</span>
+                    </span>
+                    <span class="tile-progress">03 / 09</span>
+                </div>
+                <div class="tile-main">
+                    <div class="tile-text">
+                        <div class="tile-content">
+                            <h3 class="tile-title">EraseAll <span class="accent-em">Object Removal</span></h3>
+                            <p class="tile-teaser">Detects every person in a photo, you pick who stays, one click removes the rest. Runs entirely on a normal laptop CPU. No GPU, no upload, nothing leaves the machine.</p>
+                            <div class="tile-tech">
+                                <span>Python</span><span>Inpainting</span><span>Segmentation</span><span>CPU-only</span><span>Offline</span>
+                            </div>
+                        </div>
+                        <div class="tile-bottom">
+                            <button class="tile-open" type="button" data-magnetic>
+                                <span class="tile-open-text">Open case</span>
+                                <span class="tile-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tile-media tile-media-wide">
+                        <img src="media/eraseall-deer.jpg" alt="" class="tile-media-img tile-media-contain" width="1318" height="656" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 04 Behavior Tree -->
+        <article class="tile" data-project-id="bt">
+            <span class="tile-bg-num" aria-hidden="true">04</span>
+            <div class="tile-inner">
+                <div class="tile-top">
+                    <span class="tile-kicker">
+                        <span class="tile-kicker-num">// 04</span>
                         <span class="tile-kicker-cat">robotics × ai</span>
                     </span>
-                    <span class="tile-progress">02 / 07</span>
+                    <span class="tile-progress">04 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -384,16 +468,16 @@
             </div>
         </article>
 
-        <!-- 03 BIOS -->
+        <!-- 05 BIOS -->
         <article class="tile" data-project-id="bios">
-            <span class="tile-bg-num" aria-hidden="true">03</span>
+            <span class="tile-bg-num" aria-hidden="true">05</span>
             <div class="tile-inner">
                 <div class="tile-top">
                     <span class="tile-kicker">
-                        <span class="tile-kicker-num">// 03</span>
+                        <span class="tile-kicker-num">// 05</span>
                         <span class="tile-kicker-cat">systems × security</span>
                     </span>
-                    <span class="tile-progress">03 / 07</span>
+                    <span class="tile-progress">05 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -418,16 +502,16 @@
             </div>
         </article>
 
-        <!-- 04 Pentest -->
+        <!-- 06 Pentest -->
         <article class="tile" data-project-id="pentest">
-            <span class="tile-bg-num" aria-hidden="true">04</span>
+            <span class="tile-bg-num" aria-hidden="true">06</span>
             <div class="tile-inner">
                 <div class="tile-top">
                     <span class="tile-kicker">
-                        <span class="tile-kicker-num">// 04</span>
+                        <span class="tile-kicker-num">// 06</span>
                         <span class="tile-kicker-cat">security</span>
                     </span>
-                    <span class="tile-progress">04 / 07</span>
+                    <span class="tile-progress">06 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -456,16 +540,16 @@
             </div>
         </article>
 
-        <!-- 05 Honeypot -->
+        <!-- 07 Honeypot -->
         <article class="tile" data-project-id="honeypot">
-            <span class="tile-bg-num" aria-hidden="true">05</span>
+            <span class="tile-bg-num" aria-hidden="true">07</span>
             <div class="tile-inner">
                 <div class="tile-top">
                     <span class="tile-kicker">
-                        <span class="tile-kicker-num">// 05</span>
+                        <span class="tile-kicker-num">// 07</span>
                         <span class="tile-kicker-cat">security</span>
                     </span>
-                    <span class="tile-progress">05 / 07</span>
+                    <span class="tile-progress">07 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -494,16 +578,16 @@
             </div>
         </article>
 
-        <!-- 06 Labyrinth -->
+        <!-- 08 Labyrinth -->
         <article class="tile" data-project-id="labyrinth">
-            <span class="tile-bg-num" aria-hidden="true">06</span>
+            <span class="tile-bg-num" aria-hidden="true">08</span>
             <div class="tile-inner">
                 <div class="tile-top">
                     <span class="tile-kicker">
-                        <span class="tile-kicker-num">// 06</span>
+                        <span class="tile-kicker-num">// 08</span>
                         <span class="tile-kicker-cat">software</span>
                     </span>
-                    <span class="tile-progress">06 / 07</span>
+                    <span class="tile-progress">08 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -528,16 +612,16 @@
             </div>
         </article>
 
-        <!-- 07 BinBots -->
+        <!-- 09 BinBots -->
         <article class="tile" data-project-id="binbots">
-            <span class="tile-bg-num" aria-hidden="true">07</span>
+            <span class="tile-bg-num" aria-hidden="true">09</span>
             <div class="tile-inner">
                 <div class="tile-top">
                     <span class="tile-kicker">
-                        <span class="tile-kicker-num">// 07</span>
+                        <span class="tile-kicker-num">// 09</span>
                         <span class="tile-kicker-cat">concept × ux</span>
                     </span>
-                    <span class="tile-progress">07 / 07</span>
+                    <span class="tile-progress">09 / 09</span>
                 </div>
                 <div class="tile-main">
                     <div class="tile-text">
@@ -585,20 +669,20 @@
             <p class="research-subtitle">Comparing Inference Hardware Approaches</p>
             <div class="research-meta">
                 <span>Howest University of Applied Sciences</span>
-                <span>Advantech Co., Ltd. — Tokyo</span>
+                <span>Advantech Co., Ltd., Tokyo</span>
                 <span>2025 / 2026</span>
             </div>
         </div>
         <p class="research-abstract">
-            One YOLOv8 detector, deployed twice on the same Advantech ASR-D501 board — once on the ARM CPU,
+            One YOLOv8 detector, deployed twice on the same Advantech ASR-D501 board: once on the ARM CPU,
             once offloaded to the Qualcomm QCS6490's Hexagon NPU. Same model, same camera, same drone, same
             motor-control loop. Only the silicon doing the inference changes.
         </p>
         <p class="research-abstract">
             The NPU build runs YOLOv8n at <strong>110.3 frames per second</strong> while drawing roughly ten
-            percent <em>less</em> total board power. The thesis documents the whole deployment path — PyTorch
+            percent <em>less</em> total board power. The thesis documents the whole deployment path: PyTorch
             through ONNX to INT8 TFLite, moving the vendor's Yocto pipeline onto Ubuntu, handling camera input
-            across sensor types — plus a benchmark sweep over eight YOLO variants to characterise how NPU
+            across sensor types, plus a benchmark sweep over eight YOLO variants to characterise how NPU
             throughput scales with model size.
         </p>
     </div>
@@ -621,7 +705,7 @@
 
     <!-- Chart 1: one model, three targets -->
     <figure class="chart" role="img"
-            aria-label="Chart: same model, three targets. YOLOv8n inference throughput in frames per second — Advantech ASR-D501 NPU 110.3, ASR-D501 CPU 1.3, Raspberry Pi 5 1.1. The NPU is roughly 85 times faster than the CPU on the same board.">
+            aria-label="Chart: same model, three targets. YOLOv8n inference throughput in frames per second: Advantech ASR-D501 NPU 110.3, ASR-D501 CPU 1.3, Raspberry Pi 5 1.1. The NPU is roughly 85 times faster than the CPU on the same board.">
         <figcaption class="chart-head">
             <span class="chart-title">Same model, three targets</span>
             <span class="chart-unit">YOLOv8n · frames per second</span>
@@ -647,7 +731,7 @@
 
     <!-- Chart 2: throughput scaling across model sizes -->
     <figure class="chart" role="img"
-            aria-label="Chart: how throughput scales with model size. NPU throughput by model, INT8 quantized on the ASR-D501, in frames per second — YOLOv8n 110.3, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3, YOLOv11n 103.5, YOLOv11s 82.6, YOLOv11m 40.2.">
+            aria-label="Chart: how throughput scales with model size. NPU throughput by model, INT8 quantized on the ASR-D501, in frames per second: YOLOv8n 110.3, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3, YOLOv11n 103.5, YOLOv11s 82.6, YOLOv11m 40.2.">
         <figcaption class="chart-head">
             <span class="chart-title">How throughput scales with model size</span>
             <span class="chart-unit">eight variants · INT8 · ASR-D501 NPU</span>
@@ -673,7 +757,7 @@
             <p class="finding-a">
                 On this hardware, decisively yes. The same YOLOv8n model runs at <strong>110.3 FPS</strong>
                 on the Qualcomm QCS6490's Hexagon NPU versus <strong>1.3 FPS</strong> on the same board's
-                ARM CPU — about 85× the throughput, while the board draws roughly 10% <em>less</em> total
+                ARM CPU, about 85× the throughput, while the board draws roughly 10% <em>less</em> total
                 power. On the CPU the detector cannot keep up with a live camera feed at all, so a drone
                 cannot react to what it sees. The NPU is what makes onboard detection a real-time control
                 input rather than a recording.
@@ -685,7 +769,7 @@
             <p class="finding-a">
                 Measured on an Advantech ASR-D501, INT8-quantized, frames per second:
                 YOLOv8n <strong>110.3</strong>, YOLOv8s 89.9, YOLOv8m 42.6, YOLOv8l 30.8, YOLOv8x 20.3.
-                YOLOv11 tracks closely — YOLOv11n <strong>103.5</strong>, YOLOv11s 82.6, YOLOv11m 40.2.
+                YOLOv11 tracks closely: YOLOv11n <strong>103.5</strong>, YOLOv11s 82.6, YOLOv11m 40.2.
                 Throughput falls off sharply above the small variants, so the nano and small models are
                 the practical choices for a flight-control loop.
             </p>
@@ -695,7 +779,7 @@
             <h4 class="finding-q">Can a Raspberry Pi 5 run YOLOv8 object detection in real time?</h4>
             <p class="finding-a">
                 Not on the CPU. In the same benchmark a Raspberry Pi 5 reached <strong>1.1 FPS</strong>
-                with YOLOv8n — close to the ASR-D501's own CPU result of 1.3 FPS, and roughly a hundred
+                with YOLOv8n, close to the ASR-D501's own CPU result of 1.3 FPS, and roughly a hundred
                 times slower than that board's NPU. Real-time onboard detection needs a dedicated
                 accelerator; general-purpose ARM cores are not enough at this model size.
             </p>
@@ -707,7 +791,7 @@
                 The conversion path is PyTorch → ONNX → INT8 TensorFlow Lite. The harder part is
                 everything around it: the vendor ships a Yocto-based GStreamer pipeline that has to be
                 adapted to run on Ubuntu, and camera input handling differs by sensor type. Quantizing
-                the model was the quick step — the pipeline and camera plumbing took most of the work.
+                the model was the quick step. The pipeline and camera plumbing took most of the work.
             </p>
         </article>
     </div>
@@ -715,7 +799,7 @@
     <!-- Poster + thesis link -->
     <div class="research-artifacts">
         <button class="poster-card" type="button" data-lightbox="media/thesis-poster.png"
-                data-lightbox-caption="Thesis poster — Object Detection on an Embedded Drone Companion Computer">
+                data-lightbox-caption="Thesis poster: Object Detection on an Embedded Drone Companion Computer">
             <img src="media/thesis-poster.png" alt="Thesis poster: Object Detection on a Drone, showing NPU throughput charts and the assembled drone" width="1240" height="1754" loading="lazy" decoding="async">
             <span class="poster-card-hint"><span class="poster-card-icon">⤢</span> View poster</span>
         </button>
@@ -746,7 +830,7 @@
     <div class="expo">
         <div class="expo-head">
             <div class="expo-kicker">// shipped</div>
-            <h3 class="expo-title">Japan IT Week — <span class="accent-em">Tokyo Big Sight</span></h3>
+            <h3 class="expo-title">Japan IT Week, <span class="accent-em">Tokyo Big Sight</span></h3>
             <p class="expo-body">
                 The build did not stop at the report. It ran on the show floor for the duration of the expo,
                 demonstrating the Advantech ASR-D501 and the Qualcomm QCS6490 NPU as a companion computer for
@@ -761,7 +845,7 @@
             </figure>
             <figure class="expo-shot">
                 <img src="media/tokyo-station.jpg" alt="The demo drone and ASR-D501 companion computer running live SLAM on the expo floor" width="1200" height="1277" loading="lazy" decoding="async">
-                <figcaption>The demo station — live detection and RTAB-Map SLAM</figcaption>
+                <figcaption>The demo station: live detection and RTAB-Map SLAM</figcaption>
             </figure>
         </div>
     </div>
@@ -835,7 +919,7 @@
             <div class="cred-foot">
                 <span class="cred-date">Issued Jul 2026</span>
                 <button class="cred-link" type="button" data-lightbox="media/cyberops-certificate.png"
-                        data-lightbox-caption="Cisco Networking Academy — CyberOps Associate, issued 1 July 2026">
+                        data-lightbox-caption="Cisco Networking Academy, CyberOps Associate, issued 1 July 2026">
                     View certificate <span aria-hidden="true">⤢</span>
                 </button>
             </div>
@@ -851,13 +935,13 @@
             <div class="cred-issuer">Howest University of Applied Sciences</div>
             <h3 class="cred-title">BSc Applied Computer Science</h3>
             <p class="cred-desc">
-                Three-year bachelor in the Cybersecurity track — 180 credits, EQF level 6.
+                Three-year bachelor in the Cybersecurity track: 180 credits, EQF level 6.
                 Graduated <strong>cum laude</strong> with the drone inference thesis as final work.
             </p>
             <div class="cred-foot">
                 <span class="cred-date">Conferred 26 Jun 2026</span>
                 <button class="cred-link" type="button" data-lightbox="media/howest-degree.png"
-                        data-lightbox-caption="Howest — Provisional certificate, Bachelor of Applied Computer Science, cum laude (personal data redacted)">
+                        data-lightbox-caption="Howest provisional certificate, Bachelor of Applied Computer Science, cum laude (personal data redacted)">
                     View certificate <span aria-hidden="true">⤢</span>
                 </button>
             </div>
@@ -901,11 +985,11 @@
         <div class="profile-col profile-col-wide profile-intro">
             <figure class="profile-portrait">
                 <img src="media/portrait-advantech.jpg" alt="Szymon Dudek at the Advantech office in Tokyo" width="1200" height="1118" loading="lazy" decoding="async">
-                <figcaption>Advantech, Tokyo — Spring 2026</figcaption>
+                <figcaption>Advantech, Tokyo, Spring 2026</figcaption>
             </figure>
             <div class="profile-prose">
                 <p>Born and raised in Poland. Spent six years in music school alongside regular education, studying music theory, history, and playing piano from age 7 to 12. That training shaped how I think: pattern recognition, discipline, and a structured approach to complex problems.</p>
-                <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge, drawn by the program's reputation and the challenge of building an independent life in a new country. I graduated <em>cum laude</em> in June 2026, after a spring in Tokyo interning at Advantech — building autonomous drones with AI-powered navigation and shipping the result to a live expo floor.</p>
+                <p>At 18 I moved to Belgium alone to study cybersecurity at Howest in Brugge, drawn by the program's reputation and the challenge of building an independent life in a new country. I graduated <em>cum laude</em> in June 2026, after a spring in Tokyo interning at Advantech, building autonomous drones with AI-powered navigation and shipping the result to a live expo floor.</p>
                 <p>In September I move to Austria for a Master's in Cyber Security and Resilience. The plan is to keep working where security meets machines that move.</p>
             </div>
         </div>
@@ -927,7 +1011,7 @@
                 <div class="journey-row">
                     <div class="journey-when">Jun 2026</div>
                     <div class="journey-what">
-                        <div class="journey-title">BSc Applied Computer Science — <span class="accent-em">cum laude</span></div>
+                        <div class="journey-title">BSc Applied Computer Science, <span class="accent-em">cum laude</span></div>
                         <div class="journey-where">Howest University of Applied Sciences, Brugge, Belgium. Cybersecurity track, 180 credits.</div>
                     </div>
                 </div>
@@ -1165,8 +1249,65 @@
     </div>
 </div>
 
+<div id="project-data-geometa" class="project-source" hidden>
+    <div class="m-meta"><span class="m-num">02</span><span class="m-cat">software × tooling</span></div>
+    <h3 class="m-title">GeoMeta Map <span class="accent-em">Geography Trainer</span></h3>
+    <div class="m-tech"><span>JavaScript</span><span>Leaflet</span><span>GeoJSON</span><span>Markdown</span><span>Self-hosted</span></div>
+    <p>A study tool for GeoGuessr. Every country on the world map is clickable, and each one holds your own notes on what identifies it: bollards, road markings, license plates, utility poles, script, the shape of a stop sign. Notes are written in Markdown, screenshots paste straight in, and each one is filed under a category and tagged.</p>
+    <p>Clicking a country opens its dossier: driving side, top-level domain, phone prefix, currency, language and writing system, plus every note recorded for it. Countries are shaded by whether they drive on the left or right and outlined when they have notes, so the map itself shows what has been covered and what has not.</p>
+    <p>The part that makes it useful for actual learning is the inverse view. Switch to browse by category or tag and the map re-colours to show every country sharing that clue at once. Pick "yellow plates" and Colombia, Israel, the Netherlands and Uganda light up together. That turns a pile of individual notes into the pattern you are really trying to memorise.</p>
+
+    <p class="m-crosslink"><a href="https://github.com/Holo911/geometa-map-github" target="_blank" rel="noopener">Source on GitHub ↗</a></p>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// world overview / coverage and driving side at a glance</div>
+        <img class="m-media" src="media/geometa-world.png" alt="GeoMeta Map world overview, countries shaded by driving side and outlined where notes exist" loading="lazy" decoding="async">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// country dossier / Thailand</div>
+        <img class="m-media" src="media/geometa-country.png" alt="Thailand panel showing domain, phone code, currency, driving side, Thai script chart and a stop sign note" loading="lazy" decoding="async">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// writing a note / category, tags, regions, screenshots</div>
+        <img class="m-media m-media-compact" src="media/geometa-note.png" alt="New note dialog with category dropdown, tag chips, region scope and screenshot paste area" loading="lazy" decoding="async">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// browse by tag / every country with yellow plates</div>
+        <img class="m-media" src="media/geometa-category.png" alt="Category view with the yellow plates tag highlighting every country that shares it" loading="lazy" decoding="async">
+    </div>
+</div>
+
+<div id="project-data-eraseall" class="project-source" hidden>
+    <div class="m-meta"><span class="m-num">03</span><span class="m-cat">software × ai</span></div>
+    <h3 class="m-title">EraseAll <span class="accent-em">Object Removal</span></h3>
+    <div class="m-tech"><span>Python</span><span>Segmentation</span><span>Inpainting</span><span>CPU-only</span><span>Offline</span></div>
+    <p>An image editor built around one job: taking things out of photographs and reconstructing what was behind them. The constraint I set myself was that it had to run on an ordinary laptop CPU: no dedicated GPU, no cloud service, no uploading someone's holiday photos to a server.</p>
+    <p>Several selection modes cover different situations. <strong>Select people</strong> detects everyone in the frame automatically and labels them, so you tick which ones stay and remove the rest in a single click. <strong>Smart</strong> and <strong>Object</strong> snap to edges for quick selections, <strong>Raw</strong> is a plain brush for full manual control, and there is a clone stamp for touching up whatever the fill gets wrong.</p>
+    <p>After a removal the tool proposes several fill variants and you keep the one that reads best, rather than being stuck with a single guess. Clearing an entire tourist crowd out of a temple courtyard takes about ten seconds of selection work.</p>
+
+    <p class="m-crosslink"><a href="https://github.com/Holo911/EraseAll" target="_blank" rel="noopener">Source on GitHub ↗</a></p>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// tōdai-ji, nara / entire crowd removed, one person kept</div>
+        <img class="m-media" src="media/eraseall-crowd.jpg" alt="Todai-ji temple before and after: the tourist crowd removed, one person deliberately kept" loading="lazy" decoding="async">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// nara deer / kerb, grass and road markings reconstructed</div>
+        <img class="m-media" src="media/eraseall-deer.jpg" alt="A deer standing on a road median removed, with the kerb and grass rebuilt behind it" loading="lazy" decoding="async">
+    </div>
+
+    <div class="m-media-section">
+        <div class="m-media-label">// select people mode / three subjects detected, then removed in one click</div>
+        <img class="m-media" src="media/eraseall-ui.png" alt="EraseAll interface with three people automatically detected and labelled, then removed with fill variants offered" loading="lazy" decoding="async">
+    </div>
+</div>
+
 <div id="project-data-bt" class="project-source" hidden>
-    <div class="m-meta"><span class="m-num">02</span><span class="m-cat">robotics × ai</span></div>
+    <div class="m-meta"><span class="m-num">04</span><span class="m-cat">robotics × ai</span></div>
     <h3 class="m-title">Autonomous Navigation <span class="accent-em">Behavior Tree</span></h3>
     <div class="m-tech"><span>ROS2</span><span>C++</span><span>Behavior Trees</span><span>Nav2</span></div>
     <p>Engineered a custom ROS 2 Behavior Tree for the ROSMASTER X3 to handle autonomous navigation in tight, dynamic environments. Default navigation stacks try to aggressively replan around obstacles, which creates collision risks in spaces like warehouse aisles or restaurant dining areas.</p>
@@ -1181,7 +1322,7 @@
 </div>
 
 <div id="project-data-bios" class="project-source" hidden>
-    <div class="m-meta"><span class="m-num">03</span><span class="m-cat">systems × security</span></div>
+    <div class="m-meta"><span class="m-num">05</span><span class="m-cat">systems × security</span></div>
     <h3 class="m-title">BIOS <span class="accent-em">Flash Utility</span></h3>
     <div class="m-tech"><span>C</span><span>POSIX</span><span>Linux</span></div>
     <p>Built a compiled, systems-level C utility for Advantech that streamlines BIOS flashing. The tool scans the local directory for .rom files and generates an interactive menu for the operator. Includes strict memory-bounds checking to prevent buffer overflows, an input allowlist to reject suspicious filenames, and uses native POSIX process management (fork() and execvp()) to execute the flash tool directly via the kernel, eliminating any risk of shell-based command injection.</p>
@@ -1189,21 +1330,21 @@
 </div>
 
 <div id="project-data-pentest" class="project-source" hidden>
-    <div class="m-meta"><span class="m-num">04</span><span class="m-cat">security</span></div>
+    <div class="m-meta"><span class="m-num">06</span><span class="m-cat">security</span></div>
     <h3 class="m-title">Real-World <span class="accent-em">Penetration Testing</span></h3>
     <div class="m-tech"><span>Nmap</span><span>Wireshark</span><span>Burp Suite</span><span>CVSS</span><span>Reporting</span></div>
     <p>Conducted full security audits for two real clients as part of a Howest project: a high school with over 1,000 students and 1,000+ devices active on the network daily, and a local pharmacy. All vulnerabilities were scored using the CVSS (Common Vulnerability Scoring System) framework to prioritize findings by severity. Documented everything with concrete mitigations, presented the reports to both IT departments, and wrote management summaries so leadership could quickly understand the risks. Both clients were highly satisfied with the results.</p>
 </div>
 
 <div id="project-data-honeypot" class="project-source" hidden>
-    <div class="m-meta"><span class="m-num">05</span><span class="m-cat">security</span></div>
+    <div class="m-meta"><span class="m-num">07</span><span class="m-cat">security</span></div>
     <h3 class="m-title">Honeypot <span class="accent-em">&amp; CTF Platform</span></h3>
     <div class="m-tech"><span>Docker</span><span>Grafana</span><span>Linux</span><span>CTF</span></div>
     <p>Built a website with an admin panel and integrated honeypot, monitored using the Grafana stack with custom dashboards. Created 3 CTF challenges for fellow students. In the second phase, the site was intentionally exposed for classmates to attack. No successful breach occurred: neither data nor the admin panel was compromised, and most attack attempts were logged and visualized on the dashboards.</p>
 </div>
 
 <div id="project-data-labyrinth" class="project-source" hidden>
-    <div class="m-meta"><span class="m-num">06</span><span class="m-cat">software</span></div>
+    <div class="m-meta"><span class="m-num">08</span><span class="m-cat">software</span></div>
     <h3 class="m-title">Labyrinth <span class="accent-em">Browser Board Game</span></h3>
     <div class="m-tech"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
     <p>Developed a fully functional browser-based version of the board game "Labyrinth" during my first year at Howest. Implemented the complete game logic and all rules, and created a custom set of images, icons, tiles, characters, and a full menu interface from scratch.</p>
@@ -1215,7 +1356,7 @@
 </div>
 
 <div id="project-data-binbots" class="project-source" hidden>
-    <div class="m-meta"><span class="m-num">07</span><span class="m-cat">concept × ux</span></div>
+    <div class="m-meta"><span class="m-num">09</span><span class="m-cat">concept × ux</span></div>
     <h3 class="m-title">BinBots <span class="accent-em">Drone Fleet · 2079</span></h3>
     <div class="m-tech"><span>Figma</span><span>UI/UX</span><span>VueJS</span><span>Concept</span></div>
     <p>Created a full proof-of-concept for a futuristic business set in 2079, where a returning space colony needs new infrastructure. The idea: a drone fleet that picks up trash from residents' windows in dense skyscrapers and delivers it to wastelands outside habitable zones.</p>

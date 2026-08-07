@@ -344,12 +344,12 @@ function buildTilesPin() {
             trigger: section,
             pin: true,
             scrub: true,
-            snap: {
-                snapTo: 1 / (tiles.length - 1),
-                duration: { min: 0.15, max: 0.3 },
-                ease: 'power2.out',
-                delay: 0.05,
-            },
+            /* Deliberately no snap. Lenis already animates the scroll position
+               with a long glide, and ScrollTrigger's snap tweens that same
+               value, so the two fought each other: on a trackpad the snap fired
+               mid-momentum and the leftover glide dragged it to a neighbouring
+               tile. Straight scrub means the track goes exactly where you put
+               it and stays there. */
             start: 'top top',
             end: () => `+=${getPinLength()}`,
             invalidateOnRefresh: true,
@@ -389,7 +389,7 @@ function reportLayoutMode(pinned) {
         : env.reduced ? 'system "reduce motion" is switched on'
         : 'unknown';
     console.log(
-        `%c holo911 %c projects: ${pinned ? 'horizontal' : 'stacked'} — ${why}`,
+        `%c holo911 %c projects: ${pinned ? 'horizontal' : 'stacked'} - ${why}`,
         'background:#ccff00;color:#000;font-weight:700;padding:2px 7px;font-family:monospace;',
         'color:#85858e;font-family:monospace;padding-left:6px;'
     );

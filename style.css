@@ -829,6 +829,11 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
     padding: 0.5rem;
 }
 
+/* Wide UI screenshots letterbox badly in the 4:5 frame; give them a shorter
+   box so the whole interface stays legible instead of being cropped or lost
+   in black. Still vertically centred in the media column. */
+.tile-media-wide { aspect-ratio: 16 / 9; }
+
 .tile-media-abstract {
     display: flex;
     align-items: center;
@@ -2064,7 +2069,7 @@ body.charts-ready .chart-in .chart-bar > i {
     transition: width 1.1s var(--ease);
 }
 
-/* Findings — plain question/answer pairs. Deliberately quiet: this block earns
+/* Findings: plain question/answer pairs. Deliberately quiet: this block earns
    its place by being quotable, not by shouting. */
 .findings {
     border-top: 1px solid var(--line);

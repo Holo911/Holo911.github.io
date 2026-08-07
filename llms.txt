@@ -31,6 +31,19 @@ Headline findings:
 
 ## Other work
 
+- GeoMeta Map (https://github.com/Holo911/geometa-map-github): an interactive
+  world map for learning GeoGuessr country clues. Notes are attached per
+  country in Markdown, filed under categories such as bollards, signs, license
+  plates and utility poles, and tagged. The map can be recoloured by tag to
+  show every country sharing a clue at once, turning individual notes into
+  visible patterns. Each country also stores driving side, top-level domain,
+  phone prefix, currency and writing system.
+- EraseAll (https://github.com/Holo911/EraseAll): an image editor that removes
+  people and objects from photographs and inpaints the background. Includes an
+  automatic person-detection mode that labels everyone in the frame so unwanted
+  subjects can be removed in one click, plus edge-snapping and manual brush
+  selection and a clone stamp. Runs entirely offline on a laptop CPU with no
+  GPU and no uploading of images.
 - Autonomous drone built from scratch: YOLO detection drives yaw commands to the
   flight controller over MAVLink/ROS 2. Demonstrated live at Japan IT Week,
   Tokyo Big Sight.
