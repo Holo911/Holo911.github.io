@@ -1307,13 +1307,15 @@ html.no-js .tile:last-child {
     margin: 0 auto;
 }
 
+/* The value gets the full card width, arrow up beside the label: in a column
+   of its own the arrow squeezed the LinkedIn URL onto two lines. */
 .contact-card {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
     grid-template-areas:
         "label arrow"
-        "value arrow";
+        "value value";
     gap: 0.5rem 1rem;
     padding: 1.5rem 1.75rem;
     background: var(--bg-2);
@@ -1348,11 +1350,13 @@ html.no-js .tile:last-child {
     font-size: 1rem;
     color: var(--text);
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .contact-arrow {
     grid-area: arrow;
     font-size: 1.5rem;
+    line-height: 1;
     color: var(--accent);
     transition: transform 0.3s var(--ease);
 }
