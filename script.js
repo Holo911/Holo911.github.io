@@ -1164,7 +1164,9 @@ function settleDialog(root, shell, maxWait) {
 function trapFocus(shell) {
     function onKey(e) {
         if (e.key !== 'Tab') return;
-        const items = [...shell.querySelectorAll(FOCUSABLE)].filter((n) => n.offsetParent !== null);
+        /* getClientRects, not offsetParent: offsetParent is null for anything
+           position:fixed, which silently dropped the lightbox close button */
+        const items = [...shell.querySelectorAll(FOCUSABLE)].filter((n) => n.getClientRects().length > 0);
         if (!items.length) return;
         const first = items[0];
         const last = items[items.length - 1];
