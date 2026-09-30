@@ -1105,26 +1105,23 @@ html.no-js .tile:last-child {
 
 .hk-card p + p { margin-top: 0.75rem; }
 
-/* These three photos have very different shapes (a 2:1 panorama and two 3:4
-   portraits), so they are sized by both axes and left to keep their own ratio.
-   `height: auto` is load-bearing: without it the intrinsic height attribute
-   wins over width:100% and the image renders stretched. */
+/* A 2:1 panorama in the featured card, 3:4 portraits in the other two.
+   Width must be definite so the width/height attributes reserve the box
+   before the lazy load lands: with width:auto the portraits sat at 0px until
+   then and the page grew 500px mid-scroll. 22.5rem is 30rem tall at 3:4.
+   `height: auto` is load-bearing: without it the height attribute wins and
+   the image renders stretched. */
 .hk-img {
     display: block;
-    width: auto;
+    width: min(100%, 22.5rem);
     height: auto;
-    max-width: 100%;
-    max-height: 30rem;
     margin: 1.5rem auto 0;
     border-radius: 0.5rem;
     border: 1px solid var(--line);
 }
 
 /* The featured panorama earns the full card width */
-.hk-featured .hk-img {
-    width: 100%;
-    max-height: none;
-}
+.hk-featured .hk-img { width: 100%; }
 
 /* ============================================
    PROFILE
