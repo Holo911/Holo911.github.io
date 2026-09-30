@@ -1,8 +1,9 @@
 # Szymon Dudek
 
-> Cybersecurity and edge-AI engineer. BSc Applied Computer Science, cum laude
-> (Howest, Belgium, June 2026). MSc Cyber Security & Resilience at St. Pölten
-> University of Applied Sciences, Austria, from September 2026.
+> Cybersecurity and edge-AI engineer, based in Austria. MSc student in Cyber
+> Security & Resilience at St. Pölten University of Applied Sciences (since
+> September 2026). BSc Applied Computer Science, cybersecurity track, cum laude
+> (Howest, Belgium, June 2026).
 > Portfolio: https://holo911.github.io/
 
 ## Published measurements
@@ -59,8 +60,11 @@ Headline findings:
 
 ## Credentials
 
+- MSc Cyber Security & Resilience, St. Pölten University of Applied Sciences,
+  Austria: in progress since September 2026.
 - BSc Applied Computer Science, cum laude, Howest University of Applied
-  Sciences, 26 June 2026. 180 credits, EQF level 6, cybersecurity track.
+  Sciences (Brugge, Belgium), 26 June 2026. 180 credits, EQF level 6,
+  cybersecurity track.
 - Cisco CyberOps Associate, Cisco Networking Academy, July 2026.
 - Cambridge C1 Advanced (CAE), English.
 - Languages: Polish (native), English (C1), German (basic), Japanese (beginner).
