@@ -98,10 +98,13 @@ function completeLoader() {
 
     initHeroEntrance();
     setTimeout(() => {
-        /* CDN blocked / offline: no pin possible, stack tiles vertically */
+        /* CDN blocked / offline: no pin possible, stack tiles vertically.
+           Stack at once rather than when the poll gives up, or the track sits
+           frozen with eight projects clipped off-screen for five seconds.
+           initGsapFeatures() still upgrades to the pin if GSAP turns up. */
+        if (!window.gsap || !window.ScrollTrigger) ensureTilesStacked();
         whenGsapReady((ok) => {
             if (ok) return initGsapFeatures();
-            ensureTilesStacked();
             reportLayoutMode(false);
         });
         runHeroScramble();
