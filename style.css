@@ -63,19 +63,21 @@ body.modal-open { overflow: hidden; }
 html.no-js body.loading { overflow: visible; }
 
 /* Reveal-on-scroll: opacity-only (no transform) so Lighthouse does not count
-   it as layout shift. Pure fade-in, still feels alive without the CLS hit. */
-body.reveal-ready .reveal-up {
-    opacity: 0;
-    transition: opacity 0.8s var(--ease);
-}
+   it as layout shift. An animation, not a transition: a `transition` here
+   replaced the cards' own hover transitions and their lift stopped easing. */
+body.reveal-ready .reveal-up { opacity: 0; }
 body.reveal-ready .reveal-up.revealed {
     opacity: 1;
+    animation: revealFade 0.8s var(--ease);
 }
 
+@keyframes revealFade { from { opacity: 0; } to { opacity: 1; } }
+
 @media (prefers-reduced-motion: reduce) {
-    body.reveal-ready .reveal-up {
+    body.reveal-ready .reveal-up,
+    body.reveal-ready .reveal-up.revealed {
         opacity: 1;
-        transition: none;
+        animation: none;
     }
 }
 
@@ -1313,7 +1315,10 @@ html.no-js .tile:last-child {
     border: 1px solid var(--line);
     border-radius: 0.875rem;
     text-align: left;
-    transition: all 0.3s var(--ease);
+    transition:
+        border-color 0.3s var(--ease),
+        background 0.3s var(--ease),
+        transform 0.3s var(--ease);
     align-items: center;
 }
 
