@@ -897,10 +897,11 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
 /* Title and teaser also cap on height: a tile is exactly one screen tall, and
    on short laptop windows (1366x625 and the like) width-only sizing pushed
    the text through the rules above and below it. 10.7vh never bites on a
-   16:9 or taller window, so full-screen sizes are untouched. */
+   16:9 or taller window, so full-screen sizes are untouched. --tile-fit is
+   fitTileTitles() in script.js, for small windows where that still spills. */
 .tile-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, min(6vw, 10.7vh), 5.5rem);
+    font-size: calc(clamp(2.5rem, min(6vw, 10.7vh), 5.5rem) * var(--tile-fit, 1));
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.04em;

@@ -437,6 +437,35 @@ function watchViewportMode() {
 }
 
 /* ============================================
+   TILE TITLE FIT
+   The CSS height cap covers normal laptop windows. Small short ones (a
+   Surface at 1200x670, say) can still wrap a long title or the tech pills
+   onto an extra line and spill past the rules. Titles then shrink together,
+   5% at a time, until every tile fits; they never shrink where nothing spills.
+   ============================================ */
+function fitTileTitles() {
+    const track = document.getElementById('tiles-track');
+    if (!track) return;
+    track.style.removeProperty('--tile-fit');
+    if (env.narrow) return; /* the phone layout grows to fit its content */
+
+    const boxes = [...track.querySelectorAll('.tile-content')];
+    const spills = (box) =>
+        box.lastElementChild.getBoundingClientRect().bottom -
+        box.firstElementChild.getBoundingClientRect().top > box.getBoundingClientRect().height;
+
+    for (let fit = 0.95; fit >= 0.6 && boxes.some(spills); fit -= 0.05) {
+        track.style.setProperty('--tile-fit', fit.toFixed(2));
+    }
+}
+
+function initTileFit() {
+    fitTileTitles();
+    if (document.fonts) document.fonts.ready.then(fitTileTitles);
+    window.addEventListener('resize', debounce(fitTileTitles, 150));
+}
+
+/* ============================================
    REVEAL ON SCROLL (IntersectionObserver - lightweight)
    ============================================ */
 function initRevealOnScroll() {
@@ -1308,6 +1337,7 @@ initRail();
 initModal();
 initLightbox();
 initTileVideoAutoplay();
+initTileFit();
 initHeroCanvas();
 initHeroScrambleTriggers();
 initReticle();
