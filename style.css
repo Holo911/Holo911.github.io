@@ -894,9 +894,13 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
     min-height: 0;
 }
 
+/* Title and teaser also cap on height: a tile is exactly one screen tall, and
+   on short laptop windows (1366x625 and the like) width-only sizing pushed
+   the text through the rules above and below it. 10.7vh never bites on a
+   16:9 or taller window, so full-screen sizes are untouched. */
 .tile-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-size: clamp(2.5rem, min(6vw, 10.7vh), 5.5rem);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.04em;
@@ -913,7 +917,7 @@ body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s
 
 .tile-teaser {
     font-family: var(--font-display);
-    font-size: clamp(1.05rem, 1.3vw + 0.3rem, 1.4rem);
+    font-size: clamp(1.05rem, min(1.3vw + 0.3rem, 3.2vh), 1.4rem);
     line-height: 1.5;
     color: var(--text-soft);
     max-width: 38rem;
