@@ -670,8 +670,11 @@ body.menu-open .side-menu-link:nth-child(7) { transition-delay: 0.46s, 0.46s, 0s
     border-top: 1px solid var(--line);
 }
 
+/* 77rem, not 80: the content blocks cap their padded box at 80rem, this sits
+   inside the section's padding. Same number and the heads drift 1.5rem left
+   of the content on wide screens. */
 .intro-grid {
-    max-width: 80rem;
+    max-width: 77rem;
     margin: 0 auto;
 }
 
@@ -1373,11 +1376,12 @@ html.no-js .tile:last-child {
     position: relative;
 }
 
+/* 77rem for the same reason as .intro-grid */
 .foot-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: 1.5rem;
-    max-width: 80rem;
+    max-width: 77rem;
     margin: 0 auto 2rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--line);
@@ -2733,7 +2737,7 @@ html.no-js .tile-media-video { transform: none; }
         width: 100%;
         min-height: 100vh;
         min-height: 100svh;
-        padding: 3vh 1.25rem;
+        padding: 3vh 1.5rem;
         border-bottom: 1px solid var(--line);
     }
     .tile:last-child { border-bottom: none; }
@@ -2799,6 +2803,13 @@ html.no-js .tile-media-video { transform: none; }
 @media (max-width: 30rem) {
     .hero { justify-content: center; padding: var(--mast-h) 1rem 5rem; }
 
+    /* one 1rem gutter for every block, headings and footer included */
+    .section-intro,
+    .foot {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
     .tile { padding: 4vh 1rem; }
     .tile-title { font-size: clamp(2rem, 10vw, 3rem); }
 
@@ -2826,7 +2837,9 @@ html.no-js .tile-media-video { transform: none; }
         width: 100% !important;
         min-height: 100vh;
         min-height: 100dvh;
-        padding: 4vh 1.25rem;
+        /* sides come from the width blocks above, so tiles share the page gutter */
+        padding-top: 4vh;
+        padding-bottom: 4vh;
         border-bottom: 1px solid var(--line);
         display: flex;
         align-items: center;
