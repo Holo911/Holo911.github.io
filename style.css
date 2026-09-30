@@ -441,6 +441,8 @@ body.menu-open .side-menu-link:nth-child(2) { transition-delay: 0.16s, 0.16s, 0s
 body.menu-open .side-menu-link:nth-child(3) { transition-delay: 0.22s, 0.22s, 0s, 0s; }
 body.menu-open .side-menu-link:nth-child(4) { transition-delay: 0.28s, 0.28s, 0s, 0s; }
 body.menu-open .side-menu-link:nth-child(5) { transition-delay: 0.34s, 0.34s, 0s, 0s; }
+body.menu-open .side-menu-link:nth-child(6) { transition-delay: 0.40s, 0.40s, 0s, 0s; }
+body.menu-open .side-menu-link:nth-child(7) { transition-delay: 0.46s, 0.46s, 0s, 0s; }
 
 .side-menu-link:hover {
     color: var(--text);
