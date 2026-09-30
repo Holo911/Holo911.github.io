@@ -2901,6 +2901,12 @@ html.no-js .tile-media-video { transform: none; }
     .display-xl { font-size: clamp(2rem, 9vw, 4rem) !important; }
 }
 
+/* Short screens (phones in landscape): the hero outgrows the viewport and the
+   scroll cue, pinned to its bottom edge, landed on the subline. */
+@media (max-height: 32rem) {
+    .hero { padding-bottom: 4rem; }
+}
+
 /* ============================================
    REDUCED MOTION
    ============================================ */
