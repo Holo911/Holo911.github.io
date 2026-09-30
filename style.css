@@ -36,6 +36,10 @@ html {
 
 html, body { height: 100%; }
 
+/* Lenis re-measures the page only when <html> changes size, which a fixed
+   100% height never does. Anything that loaded in later sat beyond the wheel. */
+html.lenis, html.lenis body { height: auto; }
+
 body {
     background: #070707; /* explicit fallback before var resolves */
     background: var(--bg);
