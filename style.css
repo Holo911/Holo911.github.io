@@ -333,7 +333,10 @@ section[id] { scroll-margin-top: var(--mast-h); }
     border-radius: 50%;
     background: rgba(12, 12, 14, 0.85);
     cursor: pointer;
-    transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+    transition:
+        border-color 0.3s var(--ease),
+        background 0.3s var(--ease),
+        transform 0.4s var(--ease);
 }
 
 .menu-toggle:hover { border-color: var(--accent); }
