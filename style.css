@@ -1878,7 +1878,7 @@ body.split-ready .rv-on .rv-i {
     position: relative;
     z-index: 1;
     margin-top: 1.15rem;
-    max-width: 46rem;
+    max-width: 52rem;
     font-family: var(--font-mono);
     font-size: clamp(0.66rem, 0.45vw + 0.52rem, 0.8rem);
     letter-spacing: 0.06em;
@@ -1888,6 +1888,16 @@ body.split-ready .rv-on .rv-i {
 
 .hero-sub .accent-em { font-weight: 500; }
 .hero-sub-sep { color: var(--accent); margin: 0 0.3rem; }
+
+/* Degrees on one line, focus on the next. A degree never breaks mid-name;
+   on phones each gets its own line so no separator is left dangling. */
+.hero-sub-part { white-space: nowrap; }
+.hero-sub-focus { display: block; }
+
+@media (max-width: 48rem) {
+    .hero-sub-part { display: block; }
+    .hero-sub-part + .hero-sub-sep { display: none; }
+}
 
 /* ============================================
    RESEARCH / THESIS
