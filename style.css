@@ -2511,7 +2511,7 @@ body.charts-ready .chart-in .chart-bar > i {
     vertical-align: 0.12em;
 }
 
-.journey-next .journey-where { color: var(--text-soft); }
+.journey-now .journey-where { color: var(--text-soft); }
 
 /* ============================================
    MODAL ADDITIONS
