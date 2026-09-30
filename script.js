@@ -319,13 +319,16 @@ function buildTilesPin() {
         });
 
         /* Tabbing into an off-screen tile advances the pin so it becomes visible.
-           Skipped when already on screen, so closing a modal doesn't yank the page. */
+           Skipped when already on screen, so closing a modal doesn't yank the page.
+           Both axes count: tile 1 sits at left 0 while still below the fold, and
+           the browser's own scroll-into-view then overshot the pin start. */
         section.addEventListener('focusin', (e) => {
             if (!tilesTween || !tilesTween.scrollTrigger) return;
             const tile = e.target.closest('.tile');
             if (!tile) return;
             const rect = tile.getBoundingClientRect();
-            if (rect.left > -20 && rect.right < window.innerWidth + 20) return;
+            if (rect.left > -20 && rect.right < window.innerWidth + 20 &&
+                rect.top > -20 && rect.bottom < window.innerHeight + 20) return;
             const idx = tiles.indexOf(tile);
             if (idx < 0) return;
             const st = tilesTween.scrollTrigger;
