@@ -284,6 +284,8 @@ function initSmoothScroll() {
    Vertical scroll advances through tiles one-by-one, snap locked.
    ============================================ */
 let tilesTween = null;
+/* the pin is rebuilt on every breakpoint crossing; its listeners are not */
+let tileListenersBound = false;
 
 function ensureTilesStacked() {
     document.body.classList.add('tiles-stacked');
@@ -306,28 +308,32 @@ function buildTilesPin() {
     const tiles = [...document.querySelectorAll('.tile')];
     if (!section || !track || tiles.length === 0) return;
 
-    /* Fallback guard for engines without overflow:clip - never let the shell
-       hold a scroll offset, or it fights the pin transform. */
-    section.addEventListener('scroll', () => {
-        if (section.scrollLeft) section.scrollLeft = 0;
-        if (section.scrollTop) section.scrollTop = 0;
-    });
+    if (!tileListenersBound) {
+        tileListenersBound = true;
 
-    /* Tabbing into an off-screen tile advances the pin so it becomes visible.
-       Skipped when already on screen, so closing a modal doesn't yank the page. */
-    section.addEventListener('focusin', (e) => {
-        if (!tilesTween || !tilesTween.scrollTrigger) return;
-        const tile = e.target.closest('.tile');
-        if (!tile) return;
-        const rect = tile.getBoundingClientRect();
-        if (rect.left > -20 && rect.right < window.innerWidth + 20) return;
-        const idx = tiles.indexOf(tile);
-        if (idx < 0) return;
-        const st = tilesTween.scrollTrigger;
-        const to = st.start + (idx / (tiles.length - 1)) * (st.end - st.start);
-        if (lenis) lenis.scrollTo(to, { duration: 0.6 });
-        else window.scrollTo({ top: to, behavior: env.reduced ? 'auto' : 'smooth' });
-    });
+        /* Fallback guard for engines without overflow:clip - never let the shell
+           hold a scroll offset, or it fights the pin transform. */
+        section.addEventListener('scroll', () => {
+            if (section.scrollLeft) section.scrollLeft = 0;
+            if (section.scrollTop) section.scrollTop = 0;
+        });
+
+        /* Tabbing into an off-screen tile advances the pin so it becomes visible.
+           Skipped when already on screen, so closing a modal doesn't yank the page. */
+        section.addEventListener('focusin', (e) => {
+            if (!tilesTween || !tilesTween.scrollTrigger) return;
+            const tile = e.target.closest('.tile');
+            if (!tile) return;
+            const rect = tile.getBoundingClientRect();
+            if (rect.left > -20 && rect.right < window.innerWidth + 20) return;
+            const idx = tiles.indexOf(tile);
+            if (idx < 0) return;
+            const st = tilesTween.scrollTrigger;
+            const to = st.start + (idx / (tiles.length - 1)) * (st.end - st.start);
+            if (lenis) lenis.scrollTo(to, { duration: 0.6 });
+            else window.scrollTo({ top: to, behavior: env.reduced ? 'auto' : 'smooth' });
+        });
+    }
 
     /* Tiles are sized in vw. With scrollbar-gutter:stable, 100vw resolves to
        the *content* width, not window.innerWidth - measuring against innerWidth
